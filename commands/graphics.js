@@ -10,7 +10,7 @@ exports.run = (client, message, args) => {
   "https://i.imgur.com/JvEO7KS.png"
   ];
   var img = Math.floor(Math.random() * graphics_img.length);
-  message.channel.send(graphics_img[img]);
+  message.channel.send({content:graphics_img[img]});
 }
 
 exports.conf = {

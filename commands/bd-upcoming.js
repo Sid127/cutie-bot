@@ -14,7 +14,7 @@ exports.run = async(client, message) => {
             }
         }
     }
-    message.channel.send(recup)
+    message.channel.send({content:recup})
 }
 
 exports.conf = {

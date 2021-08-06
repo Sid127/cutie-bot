@@ -1,5 +1,5 @@
 exports.run = async(client, message, [srvr, ...confession]) => {
-    if (message.channel.type === 'dm') {
+    if (!message.guild) {
         const { Client, MessageEmbed } = require('discord.js');
 
         const embed = new MessageEmbed()
@@ -12,7 +12,7 @@ exports.run = async(client, message, [srvr, ...confession]) => {
         const sendChnl = await client.settings.get(`${srvr}.anonChnl`)
 
         if (srvr === sendSrvr) {
-            client.channels.cache.get(sendChnl).send(embed).catch(console.error);
+            client.channels.cache.get(sendChnl).send({embeds: [embed]}).catch(console.error);
         }
     } else {}
 }

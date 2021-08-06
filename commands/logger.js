@@ -1,8 +1,8 @@
 exports.run = async(client, message, args) => {
     const { Client, MessageEmbed } = require('discord.js');
 
-    if (!message.member.hasPermission('ADMINISTRATOR'))
-        return message.reply("you can't use this command.");
+    if (!message.member.permissions.has('ADMINISTRATOR'))
+        return message.reply({content:"you can't use this command."});
 
     let channel = message.mentions.channels.first();
     let loggerChnl = channel.id;
@@ -15,7 +15,7 @@ exports.run = async(client, message, args) => {
     const embed = new MessageEmbed()
         .setColor(0xffd1dc)
         .setDescription(`Logs channel set to <#${channel.id}>.`)
-    message.channel.send(embed)
+    message.channel.send({embeds:[embed]})
 }
 
 exports.conf = {

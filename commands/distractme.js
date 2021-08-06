@@ -14,7 +14,7 @@ exports.run = (client, message, args) => {
   "https://www.youtube.com/watch?v=HRwiPJkm1WE"
   ];
   var vid = Math.floor(Math.random() * distraction.length);
-  message.channel.send(distraction[vid]);
+  message.channel.send({content:distraction[vid]});
 }
 
 exports.conf = {

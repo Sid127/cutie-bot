@@ -16,7 +16,7 @@ exports.run = async(client, message, args) => {
         await client.points.delete(`${message.guild.id}-${data.user}`);
     };
 
-    message.channel.send(`I've cleaned up ${toRemove.size} old farts.`);
+    message.channel.send({content:`I've cleaned up ${toRemove.size} old farts.`});
 }
 
 exports.conf = {

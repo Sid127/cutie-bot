@@ -1,4 +1,5 @@
 exports.run = (client, message, args, level) => {
+	const {Formatters, Util} = require("discord.js");
 	// If no specific command is called, show all filtered commands.
 	if (!args[0]) {
 		// Filter all commands by which are available for the user's level, using the <Collection>.filter() method.
@@ -22,12 +23,7 @@ exports.run = (client, message, args, level) => {
 				output += `${c.help.name}${" ".repeat(longest - c.help.name.length)} :: ${c.help.description}\n`;
 			}
 		});
-		message.channel.send(output, {
-			code: "asciidoc",
-			split: {
-				char: "\u200b"
-			}
-		});
+		message.channel.send(Formatters.codeBlock('asciidoc', output));
 	} else {
 		// Show individual command's help.
 		let command = args[0];
@@ -35,9 +31,7 @@ exports.run = (client, message, args, level) => {
 			command = client.commands.get(command);
 			// if (level < client.levelCache[command.conf.permLevel])
 			// 	return;
-			message.channel.send(`= ${command.help.name} = \n${command.help.description}\nusage:: ${command.help.usage}\naliases:: ${command.conf.aliases.join(", ")}\n= ${command.help.name} =`, {
-				code: "asciidoc"
-			});
+			message.channel.send(Formatters.codeBlock('asciidoc', `= ${command.help.name} = \n${command.help.description}\nusage:: ${command.help.usage}\naliases:: ${command.conf.aliases.join(", ")}\n= ${command.help.name} =`));
 		}
 	}
 };

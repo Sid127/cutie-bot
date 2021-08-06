@@ -1,8 +1,8 @@
 exports.run = (client, message, [param, ...announcement]) => {
   const { Client, MessageEmbed } = require('discord.js');
 
-  if(!message.member.hasPermission('ADMINISTRATOR'))
-    return message.reply("you can't use this command.");
+  if(!message.member.permissions.has('ADMINISTRATOR'))
+    return message.reply({content:"you can't use this command."});
 
   if (param === "everyone"){
     let channel = message.mentions.channels.first();
@@ -14,14 +14,14 @@ exports.run = (client, message, [param, ...announcement]) => {
       .setDescription(`${msg}`)
       .setTimestamp();
 
-    message.guild.channels.cache.get(channel.id).send(`@everyone`, embed)
+    message.guild.channels.cache.get(channel.id).send({content: `@everyone`, embeds: [embed]})
   } else {
     const embed = new MessageEmbed()
       .setColor(0xffd1dc)
       .setDescription(`${announcement.join(" ")}`)
       .setTimestamp();
     let channel = message.mentions.channels.first();
-    message.guild.channels.cache.get(channel.id).send(embed)
+    message.guild.channels.cache.get(channel.id).send({embeds: [embed]})
   }
 }
 

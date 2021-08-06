@@ -1,12 +1,12 @@
 exports.run = async(client, message, args) => {
     const { Client, MessageEmbed } = require('discord.js');
 
-    if (!message.member.hasPermission('ADMINISTRATOR'))
-        return message.reply("you can't use this command.");
+    if (!message.member.permissions.has('ADMINISTRATOR'))
+        return message.reply({content:"you can't use this command."});
 
     let channel = message.mentions.channels.first();
     let confessChnl = channel.id;
-    if (!channel) return message.reply("Usage: `anon-setup #channel`");
+    if (!channel) return message.reply({content:"Usage: `anon-setup #channel`"});
 
     const key = `${message.guild.id}`
 
@@ -18,7 +18,7 @@ exports.run = async(client, message, args) => {
         .setDescription(`Anonymous channel set to <#${channel.id}>. DM me a message like this:` + `
 
 ${setChannel}`)
-    message.channel.send(embed)
+    message.channel.send({embeds: [embed]})
 }
 
 exports.conf = {

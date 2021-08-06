@@ -1,19 +1,15 @@
-const Discord = require("discord.js");
+const {Client, Intents} = require("discord.js");
 const Enmap = require("enmap");
 const Josh = require("@joshdb/core");
 const provider = require("@joshdb/mongo");
 const fs = require("fs");
-const client = new Discord.Client({ partials: ["MESSAGE", "USER", "REACTION"] });
+
+const myIntents = new Intents();
+myIntents.add(Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_BANS, Intents.FLAGS.GUILD_MESSAGE_REACTIONS, Intents.FLAGS.GUILD_PRESENCES, Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.DIRECT_MESSAGES);
+const client = new Client({ partials: ["MESSAGE", "USER", "REACTION", "CHANNEL"], intents: myIntents});
 const config = require("./config.json");
 
-const { play } = require("./include/play");
 const { YOUTUBE_API_KEY } = require("./config.json");
-const ytdl = require("ytdl-core");
-const YouTubeAPI = require("simple-youtube-api");
-const youtube = new YouTubeAPI(YOUTUBE_API_KEY);
-
-client.queue = new Map();
-client.past = new Map();
 
 client.mongoUrl = fs.readFileSync('./commandStorage/mongoUrl.txt').toString()
 
@@ -48,14 +44,16 @@ client.birthdays = new Josh({
     }
 });
 
-fs.readdir("./events/", (err, files) => {
-    if (err) return console.error(err);
-    files.forEach(file => {
-        const event = require(`./events/${file}`);
-        let eventName = file.split(".")[0];
-        client.on(eventName, event.bind(null, client));
-    });
-});
+const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'));
+
+for (const file of eventFiles) {
+	const event = require(`./events/${file}`);
+	if (event.once) {
+		client.once(event.name, (...args) => event.execute(...args, client));
+	} else {
+		client.on(event.name, (...args) => event.execute(...args, client));
+	}
+}
 
 client.commands = new Enmap();
 client.aliases = new Enmap();

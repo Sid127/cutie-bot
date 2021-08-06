@@ -1,5 +1,5 @@
 exports.run = (client, message, args) => {
-  const mmbr = message.guild.member(message.author);
+  const mmbr = message.guild.members.cache.get(message.author.id);
   if (mmbr == client.user) return;
 
   const roleCheck = message.member.roles.cache.find(a => a.name.endsWith(' col'))
@@ -7,7 +7,7 @@ exports.run = (client, message, args) => {
     return;
 
   mmbr.roles.cache.find(a => a.name.endsWith(' col')).delete();
-  message.channel.send(`${mmbr.displayName}, color removed.`).catch(console.error)
+  message.channel.send({content:`${mmbr.displayName}, color removed.`}).catch(console.error)
 }
 
 exports.conf = {

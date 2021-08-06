@@ -1,13 +1,17 @@
-module.exports = client => {
-    // set activity status
-    client.user.setPresence({
-        status: 'online',
-        activity: {
-            name: "qt help | v4",
-            type: "LISTENING"
-        }
-    });
+module.exports = {
+    name: "ready",
+    once: true,
+    execute(client) {
+        // set activity status
+        client.user.setPresence({
+            status: 'online',
+            activities: [{
+                name: "qt help | v5",
+                type: "LISTENING"
+            }]
+        });
 
-    // tell host that bot is online
-    console.log(`CUTIE v4 is now online`);
+        // tell host that bot is online
+        console.log(`CUTIE v5 is now online`);
+    },
 };

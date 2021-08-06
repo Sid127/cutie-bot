@@ -5,7 +5,7 @@ exports.run = (client, message, args) => {
   "https://media.giphy.com/media/PqleouQXdpCfu/giphy.gif"
   ];
   var gif = Math.floor(Math.random() * breathe_gif.length);
-  message.channel.send(breathe_gif[gif]);
+  message.channel.send({content:breathe_gif[gif]});
 }
 
 exports.conf = {

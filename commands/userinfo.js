@@ -32,7 +32,7 @@ exports.run = async (client, message, args, level) => {
 		.addField("Roles", `${member.roles.cache.filter(r => r.id !== message.guild.id).map(roles => `\`${roles.name}\``).join(" **|** ") || "No Roles"}`, true)
 		.addField("Joined", `${moment().diff(moment.utc(member.joinedAt), 'days')} Days Ago (Created ${moment.utc(member.user.createdAt).format("MMMM Do YYYY")})`, true)
 
-	message.channel.send({embed});
+		message.channel.send({embeds:[embed]});
 }
 
 exports.conf = {

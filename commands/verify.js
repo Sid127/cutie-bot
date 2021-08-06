@@ -3,7 +3,7 @@ exports.run = async(client, message, args, level) => { // eslint-disable-line no
         return;
 
     if (message.mentions.members.size === 0)
-        return message.reply("please mention a user to verify");
+        return message.reply({content:"please mention a user to verify"});
 
     let verifyMember = message.mentions.members.first();
 

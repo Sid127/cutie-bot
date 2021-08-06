@@ -1,4 +1,6 @@
 exports.run = async(client, message, args, level) => {
+    const {Formatters} = require("discord.js");
+
     var fs = require("fs")
     var argu = ""
     for (var i = 1; i < args.length; i++) {
@@ -9,14 +11,12 @@ exports.run = async(client, message, args, level) => {
     }
     if (!args[0]) {
         var rankData = fs.readFileSync("./commandStorage/pronouns.txt", "utf8")
-        message.channel.send("== Available Pronouns ==\n" + rankData, {
-            code: "asciidoc"
-        })
+        message.channel.send(Formatters.codeBlock('asciidoc', "== Available Pronouns ==\n" + rankData))
         return
     }
     if (args[0] == "create") {
         if (!args[1]) {
-            message.channel.send("I need a name of a role to make.")
+            message.channel.send({content:"I need a name of a role to make."})
             return
         }
         if (message.member.hasPermission('ADMINISTRATOR')) {
@@ -29,9 +29,9 @@ exports.run = async(client, message, args, level) => {
             var rankData = fs.readFileSync("./commandStorage/pronouns.txt", "utf8")
             rankData += "\n" + argu
             fs.writeFileSync("./commandStorage/pronouns.txt", rankData)
-            message.channel.send("Created the Pronoun Role " + argu)
+            message.channel.send({content:"Created the Pronoun Role " + argu})
         } else {
-            message.channel.send("You need to be a moderator to create or delete pronouns.")
+            message.channel.send({content:"You need to be a moderator to create or delete pronouns."})
             return
         }
 
@@ -39,9 +39,7 @@ exports.run = async(client, message, args, level) => {
 
     if (args[0] == "list") {
         var rankData = fs.readFileSync("./commandStorage/pronouns.txt", "utf8")
-        message.channel.send("== Available Pronouns ==\n" + rankData, {
-            code: "asciidoc"
-        })
+        message.channel.send(Formatters.codeBlock('asciidoc', "== Available Pronouns ==\n" + rankData))
         return
     }
 
@@ -52,21 +50,19 @@ exports.run = async(client, message, args, level) => {
                 message.guild.roles.cache.find(role => role.name === argu).delete();
                 rankData = rankData.replace("\n" + argu, "")
                 fs.writeFileSync("./commandStorage/pronouns.txt", rankData)
-                message.channel.send("Deleted the pronoun role")
+                message.channel.send({content:"Deleted the pronoun role"})
                 return
             } else {
-                message.channel.send("I cannot delete that rank!")
+                message.channel.send({content:"I cannot delete that rank!"})
                 return
             }
-        } else {
-            message.channel.send("You need to be a moderator to create or delete pronoun role.")
-            return
         }
-        if (!args[1]) {
-            message.channel.send("I need a pronoun role to delete!")
-            return
-        }
-
+    } else if (!args[1]) {
+        message.channel.send({content:"I need a pronoun role to delete!"})
+        return
+    } else {
+        message.channel.send({content:"You need to be a moderator to create or delete pronoun role."})
+        return
     }
 
     var theRank = ""
@@ -81,10 +77,10 @@ exports.run = async(client, message, args, level) => {
         let role = message.guild.roles.cache.find(r => r.name.toLowerCase() === theRank.toLowerCase())
         if (message.member.roles.cache.find(r => r.name.toLowerCase() === theRank.toLowerCase())) {
             message.member.roles.remove(role);
-            message.channel.send("The role was removed from you: " + role.name)
+            message.channel.send({content:"The role was removed from you: " + role.name})
         } else {
             message.member.roles.add(role)
-            message.channel.send("The role was added to you: " + role.name)
+            message.channel.send({content:"The role was added to you: " + role.name})
         }
 
     }

@@ -7,7 +7,7 @@ exports.run = (client, message, [chnl, ...text]) => {
   message.guild.channels.cache.get(checkChannel).startTyping();
   var timeout = text.length * 250
 	setTimeout(() => {
-		client.channels.cache.get(checkChannel).send(`${text.join(" ")}`).then((message) => {
+		client.channels.cache.get(checkChannel).send({content:`${text.join(" ")}`}).then((message) => {
 			client.channels.cache.get(checkChannel).stopTyping();
 		});
 	}, timeout)

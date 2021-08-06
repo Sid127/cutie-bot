@@ -22,7 +22,7 @@ exports.run = async(client, message, args) => {
         embed.addField(`${data[1]['username']}`, `${data[1]['points']} points (level ${data[1]['level']})`);
     }
     try {
-        var leaderboard = await message.channel.send({ embed });
+        var leaderboard = await message.channel.send({embeds: [embed] });
         await leaderboard.react("⬅️");
         await leaderboard.react("➡️");
     } catch (error) {
