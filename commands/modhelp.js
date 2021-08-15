@@ -46,6 +46,6 @@ exports.conf = {
 exports.help = {
 	name: "modhelp",
 	category: "Miscellaneous",
-	description: "Displays all the available commands for your permission level.",
+	description: "Displays all the available moderator commands.",
 	usage: "modhelp <command>"
 };

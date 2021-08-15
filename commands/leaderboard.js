@@ -35,7 +35,7 @@ exports.run = async(client, message, args) => {
     });
 
     collector.on("collect", async(reaction, user) => {
-        const member = message.guild.member(user);
+        const member = message.guild.members.cache.get(user);
 
         if (reaction.emoji.name === "➡️") {
             var newfiltered = await client.points.filter(p => p.guild === message.guild.id);

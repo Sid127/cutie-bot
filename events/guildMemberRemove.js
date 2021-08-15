@@ -10,6 +10,10 @@ module.exports = {
             .setDescription(`${member.user} left the server`)
             .setTimestamp();
 
+        if (await client.birthdays.has(`${member.guild.id}-${member.id}`)){
+            await client.birthdays.delete(`${member.guild.id}-${member.id}`)
+        }
+
         if (await !client.settings.has(`${key}`)) return;
         if (await client.settings.get(`${key}.logChnl`) === null) return;
         const sendChnl = await client.settings.get(`${key}.logChnl`)

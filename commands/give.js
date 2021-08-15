@@ -26,22 +26,7 @@ exports.run = async(client, message, args) => {
     // And we save it!
     await client.points.set(`${message.guild.id}-${user.id}.points`, userPoints)
 
-<<<<<<< HEAD
-    message.channel.send(`${user.tag} has received ${pointsToAdd} points and now stands at ${userPoints} points.`);
-=======
-    // Calculate the user's current level
-    const curLevel = Math.floor(0.1 * Math.sqrt(await client.points.get(`${key}.points`)));
-
-    // Act upon level up by sending a message and updating the user's level in enmap.
-    if (await client.points.get(`${key}.level`) < curLevel) {
-        await client.points.set(`${key}.level`, curLevel);
-    }
-    if (await client.points.get(`${key}.level`) > curLevel) {
-        await client.points.set(`${key}.level`, curLevel);
-    }
-    
     message.channel.send({content:`${user.tag} has received ${pointsToAdd} points and now stands at ${userPoints} points.`});
->>>>>>> eeb259b (Update for Node.js v16.6.1+ and discord.js v13)
 }
 
 exports.conf = {

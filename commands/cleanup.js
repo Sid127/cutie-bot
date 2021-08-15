@@ -7,16 +7,16 @@ exports.run = async(client, message, args) => {
 
     // We then filter it again (ok we could just do this one, but for clarity's sake...)
     // So we get only users that haven't been online for a month, or are no longer in the guild.
-    const rightNow = new Date();
     const toRemove = filtered.filter(data => {
-        return !message.guild.members.cache.has(data.user) || rightNow - 2592000000 > data.lastSeen;
+        return !message.guild.members.cache.has(data[1].user);
     });
 
-    toRemove.forEach = async(data) => {
-        await client.points.delete(`${message.guild.id}-${data.user}`);
+    for(let i = 0; i < toRemove.length; i++) {
+        // await client.points.delete(`${message.guild.id}-${toRemove[i][1].user}`);
+        await client.birthdays.delete(`${message.guild.id}-${toRemove[i][1].user}`);
     };
 
-    message.channel.send({content:`I've cleaned up ${toRemove.size} old farts.`});
+    message.channel.send({content:`I've cleaned up ${toRemove.length} old farts.`});
 }
 
 exports.conf = {
@@ -29,6 +29,6 @@ exports.conf = {
 exports.help = {
 	name: "cleanup",
 	category: "Modmin",
-	description: "Clean up the leaderboard",
+	description: "Clean up database for this guild",
 	usage: "cleanup"
 };
