@@ -27,8 +27,8 @@ exports.run = async (client, message, args, level) => {
 		.setThumbnail(`${member.user.avatar != null ? member.user.avatarURL() : "https://discordapp.com/assets/dd4dbc0016779df1378e7812eabaa04d.png"}`)
 		.setAuthor(`${member.user.tag} (${member.id})`)
 		.addField("Nickname:", `${(member.nickname !== null && member.nickname !== undefined) ? `Nickname: ${member.nickname}` : "No nickname"}`, true)
-		.addField("Status", `${status[member.user.presence.status]}`, true)
-		.addField("Playing", `${member.user.presence.activities.state ? `${member.user.presence.activities.state}` : "Not playing anything."}`, true)
+		.addField("Status", `${status[member.presence.status]}`, true)
+		.addField("Playing", `${member.presence.activities.state ? `${member.presence.activities.state}` : "Not playing anything."}`, true)
 		.addField("Roles", `${member.roles.cache.filter(r => r.id !== message.guild.id).map(roles => `\`${roles.name}\``).join(" **|** ") || "No Roles"}`, true)
 		.addField("Joined", `${moment().diff(moment.utc(member.joinedAt), 'days')} Days Ago (Created ${moment.utc(member.user.createdAt).format("MMMM Do YYYY")})`, true)
 
