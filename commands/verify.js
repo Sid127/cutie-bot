@@ -1,5 +1,5 @@
 exports.run = async(client, message, args, level) => { // eslint-disable-line no-unused-vars
-    if (!message.member.hasPermission('MANAGE_ROLES'))
+    if (!message.member.permissions.has('MANAGE_ROLES'))
         return;
 
     if (message.mentions.members.size === 0)

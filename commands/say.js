@@ -1,5 +1,5 @@
 exports.run = (client, message, [chnl, ...text]) => {
-  if(!message.member.hasPermission('MANAGE_MESSAGES'))
+  if(!message.member.permissions.has('MANAGE_MESSAGES'))
     return;
 
   var checkChannel = message.mentions.channels.first().id

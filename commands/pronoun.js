@@ -19,7 +19,7 @@ exports.run = async(client, message, args, level) => {
             message.channel.send({content:"I need a name of a role to make."})
             return
         }
-        if (message.member.hasPermission('ADMINISTRATOR')) {
+        if (message.member.permissions.has('ADMINISTRATOR')) {
             message.guild.roles.create({
                 data: {
                     name: argu,
@@ -44,7 +44,7 @@ exports.run = async(client, message, args, level) => {
     }
 
     if (args[0] == "delete") {
-        if (message.member.hasPermission('ADMINISTRATOR')) {
+        if (message.member.permissions.has('ADMINISTRATOR')) {
             var rankData = fs.readFileSync("./commandStorage/pronouns.txt", "utf8")
             if (rankData.includes(argu)) {
                 message.guild.roles.cache.find(role => role.name === argu).delete();
