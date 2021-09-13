@@ -11,7 +11,7 @@ const config = require("./config.json");
 
 const { YOUTUBE_API_KEY } = require("./config.json");
 
-client.mongoUrl = fs.readFileSync('./commandStorage/mongoUrl.txt').toString()
+client.mongoUrl = config.mongoURL
 
 // We also need to make sure we're attaching the config to the CLIENT so it's accessible everywhere!
 client.config = config;
