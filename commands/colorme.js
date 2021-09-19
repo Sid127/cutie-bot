@@ -19,12 +19,10 @@ exports.run = (client, message, args) => {
     }
     else { //create and assign a role
       message.guild.roles.create({
-        data: {
-          name: clr + ' col',
-          color: clr,
-          mentionable: false,
-          position: message.guild.me.roles.highest.position
-        }
+        name: clr + ' col',
+        color: clr,
+        mentionable: false,
+        position: message.guild.me.roles.highest.position
       }).then(function(role) {
         mmbr.roles.add(role);
         message.channel.send({content:`${mmbr.displayName}, color assigned!`})
