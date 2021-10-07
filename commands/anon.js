@@ -2,15 +2,18 @@ exports.run = async(client, message, [srvr, ...confession]) => {
     if (!message.guild) {
         const { Client, MessageEmbed } = require('discord.js');
 
+        //put the anon message in a neat little embed
         const embed = new MessageEmbed()
             .setColor(0xffd1dc)
             .setDescription(`${confession.join(" ")}`)
             .setTimestamp();
 
+        //grab anon settings from mongo
         if (await client.settings.get(`${srvr}.anonChnl`) === null) return;
         const sendSrvr = await client.settings.get(`${srvr}.guild`)
         const sendChnl = await client.settings.get(`${srvr}.anonChnl`)
 
+        //send the anon embed
         if (srvr === sendSrvr) {
             client.channels.cache.get(sendChnl).send({embeds: [embed]}).catch(console.error);
         }

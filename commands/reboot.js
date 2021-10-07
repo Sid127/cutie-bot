@@ -1,6 +1,4 @@
 exports.run = async(client, message, args, level) => { // eslint-disable-line no-unused-vars
-	if(!message.member.permissions.has('ADMINISTRATOR'))
-    return;
 	await message.reply({content:"Bot is shutting down."});
 	client.commands.forEach(async cmd => {
 		await client.unloadCommand(cmd);
@@ -12,7 +10,7 @@ exports.conf = {
 	enabled: true,
 	guildOnly: true,
 	aliases: [],
-	permLevel: "Modmin"
+	permLevel: "modAssist"
 };
 
 exports.help = {

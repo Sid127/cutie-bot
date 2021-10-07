@@ -1,16 +1,15 @@
-exports.run = async(client, message, args) => {
+exports.run = async(client, message) => {
     const { Client, MessageEmbed } = require('discord.js');
 
-    if (!message.member.permissions.has('ADMINISTRATOR'))
-        return message.reply({content:"you can't use this command."});
-
+    //grb channel metadata
     let channel = message.mentions.channels.first();
     let loggerChnl = channel.id;
 
+    //push data to mongo
     const key = `${message.guild.id}`
-
     await client.settings.set(`${key}.logChnl`, loggerChnl);
 
+    //confirm it to the user
     const setChannel = `${client.config.prefix} anon ${key} [message]`
     const embed = new MessageEmbed()
         .setColor(0xffd1dc)
@@ -22,7 +21,7 @@ exports.conf = {
 	enabled: true,
 	guildOnly: true,
 	aliases: [],
-	permLevel: "Modmin"
+	permLevel: "serverAdmin"
 };
 
 exports.help = {

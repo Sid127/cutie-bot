@@ -20,7 +20,7 @@ exports.conf = {
 	enabled: true,
 	guildOnly: true,
 	aliases: ["recruit", "sacrifice"],
-	permLevel: "Modmin"
+	permLevel: "serverAdmin"
 };
 
 exports.help = {

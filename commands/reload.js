@@ -1,5 +1,4 @@
 exports.run = (client, message, args) => {
-  if (message.member.permissions.has('ADMINISTRATOR')) {
     if(!args || args.length < 1) return message.channel.send({content:"Must provide a command name to reload."});
     const commandName = args[0];
     // Check if the command exists and is valid
@@ -13,16 +12,13 @@ exports.run = (client, message, args) => {
     const props = require(`./${commandName}.js`);
     client.commands.set(commandName, props);
     message.channel.send({content:`The command ${commandName} has been reloaded`});
-  } else {
-    message.channel.send({content:"I'm sure you didn't create me"});
-  }
 }
 
 exports.conf = {
 	enabled: true,
 	guildOnly: true,
 	aliases: [],
-	permLevel: "Modmin"
+	permLevel: "serverAdmin"
 };
 
 exports.help = {

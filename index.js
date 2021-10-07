@@ -8,9 +8,8 @@ myIntents.add(Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.
 const client = new Client({ partials: ["MESSAGE", "USER", "REACTION", "CHANNEL"], intents: myIntents});
 const config = require("./config.json");
 
-const { YOUTUBE_API_KEY } = require("./config.json");
-
 client.mongoUrl = config.mongoURL
+client.botadmin = new Map()
 
 // We also need to make sure we're attaching the config to the CLIENT so it's accessible everywhere!
 client.config = config;
@@ -90,7 +89,12 @@ const init = async() => {
         if (response)
             console.log(response);
     });
-}
+
+    let ids = await client.settings.keys
+    for(i of ids) {
+        client.botadmin.set(i, await client.settings.get(`${i}.botadmin`))
+    }
+} 
 
 init();
 
@@ -124,6 +128,11 @@ setIntervalAsync(async() => {
                 birthdayFolk.roles.remove(birthdayRole);
             }
         }
+    }
+
+    let ids = await client.settings.keys
+    for(i of ids) {
+        client.botadmin.set(i, await client.settings.get(`${i}.botadmin`))
     }
 }, 900000);
 

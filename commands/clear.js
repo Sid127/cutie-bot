@@ -1,8 +1,5 @@
 exports.run = async(client, message, args) => {
 
-    if (!message.member.permissions.has('MANAGE_MESSAGES'))
-        return message.reply({content:"you can't use this command."});
-
     const amount = args.join(' '); // Amount of messages which should be deleted
 
     if (!amount) return message.reply({content:'you haven\'t given an amount of messages which should be deleted!'}); // Checks if the `amount` parameter is given
@@ -26,7 +23,7 @@ exports.conf = {
 	enabled: true,
 	guildOnly: true,
 	aliases: ["purge"],
-	permLevel: "Modmin"
+	permLevel: "modAssist"
 };
 
 exports.help = {

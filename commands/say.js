@@ -17,7 +17,7 @@ exports.conf = {
 	enabled: true,
 	guildOnly: true,
 	aliases: ["mimic", "utter"],
-	permLevel: "Modmin"
+	permLevel: "modAssist"
 };
 
 exports.help = {

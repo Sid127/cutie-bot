@@ -1,7 +1,4 @@
 exports.run = async(client, message, args) => {
-    // Limited to mods- adjust to your own preference!
-    if (!message.member.permissions.has('VIEW_AUDIT_LOG'))
-        return message.reply({content:"you can't use this command."});
 
     const user = message.mentions.users.first();
     if (!user) return message.reply({content:"You must mention!"});
@@ -33,7 +30,7 @@ exports.conf = {
 	enabled: true,
 	guildOnly: true,
 	aliases: ["reward"],
-	permLevel: "Modmin"
+	permLevel: "modAssist"
 };
 
 exports.help = {

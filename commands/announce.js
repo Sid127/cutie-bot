@@ -1,10 +1,9 @@
-exports.run = (client, message, [param, ...announcement]) => {
+exports.run = (message, [param, ...announcement]) => {
   const { Client, MessageEmbed } = require('discord.js');
 
-  if(!message.member.permissions.has('ADMINISTRATOR'))
-    return message.reply({content:"you can't use this command."});
-
+  // Check to see if the command is in the form of "announce everyone #channel announcement" similar to Dyno's announce command
   if (param === "everyone"){
+    // Remove the "everyone" text from the [param, ...announcement] arguments
     let channel = message.mentions.channels.first();
     var announce = announcement.join(" ")
     var space = announce.indexOf(' ')
@@ -29,7 +28,7 @@ exports.conf = {
 	enabled: true,
 	guildOnly: true,
 	aliases: ["megaphone", "decree"],
-	permLevel: "Modmin"
+	permLevel: "serverAdmin"
 };
 
 exports.help = {

@@ -2,6 +2,7 @@ exports.run = async(client, message, [date, ...timezone]) => {
     const moment = require("moment-timezone");
     require("moment-duration-format");
 
+    //create an empty mongo entry for the user that is also server specific
     await client.birthdays.ensure(`${message.guild.id}-${message.author.id}`, {
         guild: message.guild.id,
         username: message.author.id,
@@ -9,6 +10,7 @@ exports.run = async(client, message, [date, ...timezone]) => {
         timezone: null
     });
 
+    //handle the actual info
     if (moment(date, "DD-MMM").format("DD-MMM") !== date) 
         return message.channel.send({content:"Please tell me your date in the DD-MMM format. Example: 17-Aug"})
     

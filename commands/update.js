@@ -1,6 +1,4 @@
 exports.run = async(client, message, args, level) => { // eslint-disable-line no-unused-vars
-    if (!message.member.permissions.has('ADMINISTRATOR'))
-        return;
     const sh = require('shelljs');
 
     if (args[0] === 'force') {
@@ -19,7 +17,7 @@ exports.conf = {
 	enabled: true,
 	guildOnly: true,
 	aliases: [],
-	permLevel: "Modmin"
+	permLevel: "serverAdmin"
 };
 
 exports.help = {

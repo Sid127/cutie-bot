@@ -1,9 +1,6 @@
 exports.run = (client, message, [mention, ...reason]) => {
     let muteRole = message.guild.roles.cache.find(role => role.name === "Muted");
 
-    if (!message.member.permissions.has('MUTE_MEMBERS'))
-        return message.reply({content:"you can't use this command."});
-
     if (message.mentions.members.size === 0)
         return message.reply({content:"please mention a user to mute"});
 
@@ -17,7 +14,7 @@ exports.conf = {
 	enabled: true,
 	guildOnly: true,
 	aliases: [],
-	permLevel: "Modmin"
+	permLevel: "modAssist"
 };
 
 exports.help = {

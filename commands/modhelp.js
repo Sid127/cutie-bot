@@ -63,7 +63,7 @@ exports.conf = {
 	enabled: true,
 	guildOnly: true,
 	aliases: ["mh", "modhalp","modhelpme"],
-	permLevel: "Modmin"
+	permLevel: "modAssist"
 };
 
 exports.help = {

@@ -1,8 +1,11 @@
 exports.run = async(client, message, args, level) => {
+
+    //if a member is mentioned, get their info
     if (message.mentions.members.size > 0) {
         member = message.mentions.members.first();
         date = await client.birthdays.get(`${message.guild.id}-${member.id}.date`)
         message.channel.send({content:`${member.user.tag}'s birthday is on ${date}!`})
+    //or just get your own
     } else {
         member = message.member;
         date = await client.birthdays.get(`${message.guild.id}-${member.id}.date`)

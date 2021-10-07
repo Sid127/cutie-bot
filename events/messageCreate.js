@@ -21,7 +21,9 @@ module.exports = {
             await client.settings.ensure(`${message.guild.id}`, {
                 guild: message.guild.id,
                 anonChnl: null,
-                logChnl: null
+                logChnl: null,
+                prefix: "r!",
+                botadmin: ["319391726613823489", "283607841779089409"]
             });
 
             if (message.content.length >= 7 && !message.content.startsWith(client.config.prefix)) {
@@ -69,7 +71,24 @@ module.exports = {
         // If that command doesn't exist, silently exit and do nothing
         if (!cmd) return;
 
-        // Run the command
-        cmd.run(client, message, args);
-    }
+        // Check perm level and run the command
+        const botadmins = client.botadmin.get(`${message.guild.id}`)
+        if (botadmins.includes(`${message.author.id}`)){
+            cmd.run(client, message, args);
+        } else if (cmd.conf.permLevel === "User"){
+            cmd.run(client, message, args);
+        } else if (cmd.conf.permLevel === "modAssist"){
+            if (!message.member.permissions.has('VIEW_AUDIT_LOG')){
+                return message.reply({content:"you can't use this command."});
+            } else {
+                cmd.run(client, message, args);
+            }
+        } else if (cmd.conf.permLevel === "serverAdmin"){
+            if (!message.member.permissions.has('ADMINISTRATOR'))
+                return message.reply({content:"you can't use this command."});
+            else {
+                cmd.run(client, message, args);
+            }
+        }
+    },
 };

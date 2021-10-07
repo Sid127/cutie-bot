@@ -1,9 +1,6 @@
 exports.run = async(client, message, args) => {
     const { Client, MessageEmbed } = require('discord.js');
 
-    if (!message.member.permissions.has('ADMINISTRATOR'))
-        return message.reply({content:"you can't use this command."});
-
     const key = `${message.guild.id}`
     if (args[0] === "anon") {
         await client.settings.set(`${key}.anonChnl`, null);
@@ -20,7 +17,7 @@ exports.conf = {
 	enabled: true,
 	guildOnly: true,
 	aliases: [],
-	permLevel: "Modmin"
+	permLevel: "serverAdmin"
 };
 
 exports.help = {

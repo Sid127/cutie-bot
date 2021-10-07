@@ -1,31 +1,31 @@
-exports.run = async(client, message, args) => {
+exports.run = async(client, message) => {
     const { Client, MessageEmbed } = require('discord.js');
 
-    if (!message.member.permissions.has('ADMINISTRATOR'))
-        return message.reply({content:"you can't use this command."});
-
+    // grab the mentioned channel
     let channel = message.mentions.channels.first();
-    let confessChnl = channel.id;
     if (!channel) return message.reply({content:"Usage: `anon-setup #channel`"});
+    let confessChnl = channel.id;
 
+
+    // save to mongo before confirming it to the user
     const key = `${message.guild.id}`
-
     await client.settings.set(`${key}.anonChnl`, confessChnl);
 
+    // confirm it to the user with usage example
     const setChannel = `${client.config.prefix} anon ${key} [message]`
     const embed = new MessageEmbed()
         .setColor(0xffd1dc)
         .setDescription(`Anonymous channel set to <#${channel.id}>. DM me a message like this:` + `
 
 ${setChannel}`)
-    message.channel.send({embeds: [embed]})
+    client.channels.cache.get(confessChnl).send({embeds: [embed]})
 }
 
 exports.conf = {
 	enabled: true,
 	guildOnly: true,
 	aliases: [],
-	permLevel: "Modmin"
+	permLevel: "serverAdmin"
 };
 
 exports.help = {

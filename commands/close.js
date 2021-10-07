@@ -1,4 +1,8 @@
 exports.run = (client, message) => {
+
+//to-do
+//rework this whole command to not have hardcoded role names
+
     let staffRole = message.guild.roles.cache.find(role => role.name === "staff").id;
 
     if (!message.channel.name.includes("ticket-")) return message.channel.send({content:"You cannot use that here!"})
