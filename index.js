@@ -1,5 +1,4 @@
 const {Client, Intents} = require("discord.js");
-const Enmap = require("enmap");
 const Josh = require("@joshdb/core");
 const provider = require("@joshdb/mongo");
 const fs = require("fs");
@@ -55,8 +54,8 @@ for (const file of eventFiles) {
 	}
 }
 
-client.commands = new Enmap();
-client.aliases = new Enmap();
+client.commands = new Map();
+client.aliases = new Map();
 
 loadCommand = (commandName) => {
     try {
