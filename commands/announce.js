@@ -1,4 +1,4 @@
-exports.run = (message, [param, ...announcement]) => {
+exports.run = (client, message, [param, ...announcement]) => {
   const { Client, MessageEmbed } = require('discord.js');
 
   // Check to see if the command is in the form of "announce everyone #channel announcement" similar to Dyno's announce command

@@ -2,9 +2,6 @@ exports.run = async(client, message, args) => {
     // ticket-setup #channel
     const Discord = require("discord.js");
 
-    if (!message.member.permissions.has('MANAGE_CHANNELS'))
-        return message.reply({content:"you can't use this command."});
-
     let channel = message.mentions.channels.first();
     if (!channel) return message.reply({content:"Usage: `ticket-setup #channel`"});
     let embed = new Discord.MessageEmbed()

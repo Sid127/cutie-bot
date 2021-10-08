@@ -98,10 +98,7 @@ const init = async() => {
 
 init();
 
-
-const { setIntervalAsync } = require('set-interval-async/dynamic')
-
-setIntervalAsync(async() => {
+setInterval(async() => {
     const moment = require("moment-timezone")
     let db = await client.birthdays.filter(p => p.timezone)
     for (ident of db) {

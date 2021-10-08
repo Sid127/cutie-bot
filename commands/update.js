@@ -1,15 +1,25 @@
-exports.run = async(client, message, args, level) => { // eslint-disable-line no-unused-vars
-    const sh = require('shelljs');
+exports.run = async(client, message, args) => { // eslint-disable-line no-unused-vars
+    const { spawn } = require("child_process");
 
     if (args[0] === 'force') {
-        sh.exec(`git reset --hard HEAD~${parseInt(args[1])}`)
-        var output = sh.exec('git pull origin main').stdout;
-        message.channel.send({content:"```" + output + "```"})
+        const forcePull = spawn('git', [`reset --hard HEAD~${parseInt(args[1])}`], {shell:true})
+        const update = spawn(`git`, [`pull origin main`], {shell:true})
+        forcePull.stderr.on("data", data => {
+            message.channel.send({content: "```"+`${data}`+"```"});
+        });
+        update.stderr.on("data", data => {
+            message.channel.send({content: "```"+`${data}`+"```"});
+        });
     } else if (args[0] === 'npm') {
-        sh.exec('npm install')
+        const npm = spawn(`npm`, [`install`], {shell:true})
+        npm.stdout.on("data", data => {
+            message.channel.send({content: "```"+`${data}`+"```"});
+        });
     } else {
-        var output = sh.exec('git pull origin main').stdout;
-        message.channel.send({content:"```" + output + "```"})
+        const update = spawn(`git`, [`pull origin main`], {shell:true})
+        update.stderr.on("data", data => {
+            message.channel.send({content: "```"+`${data}`+"```"});
+        });
     }
 };
 

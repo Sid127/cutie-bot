@@ -20,13 +20,10 @@
     "dependencies": {
         "@joshdb/core": "^1.2.6",
         "@joshdb/mongo": "^1.1.6",
-        "better-sqlite3": "^7.4.3",
         "discord.js": "^13.0.0",
         "moment-duration-format": "^2.3.2",
         "moment-timezone": "^0.5.33",
         "random-puppy": "^1.1.0",
-        "set-interval-async": "^2.0.3",
-        "shelljs": "^0.8.4",
         "xmlhttprequest": "^1.8.0"
     }
 }
