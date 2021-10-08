@@ -5,10 +5,17 @@ exports.run = (client, message, args, level) => {
 		// variables for different things used
 		let longestName = 0;
 		let categories = {};
+		let userAllowedCmds = [];
 
-		// loop through the commands, checking that it's a guild only one and not modmin
+		// check what perms the user has and add to userAllowedCmds
+		if (message.member.permissions.has('VIEW_AUDIT_LOG')) userAllowedCmds.push("modAssist");
+		if (message.member.permissions.has('ADMINISTRATOR')) userAllowedCmds.push("serverAdmin", "modAssist");
+
+		// loop through the commands, checking that it's a guild only one and check if the user perms are enough to use the command (or is bot admin)
 		client.commands.forEach(command => {
-			if (command.conf.guildOnly && command.conf.permLevel === "Modmin") {
+			if (command.conf.guildOnly &&
+				(userAllowedCmds.includes(command.conf.permLevel) ||
+				(client.botadmin.get(`${message.guild.id}`).includes(`${message.author.id}`) && command.conf.permLevel !== "User"))) {
 				// check for the longest name
 				longestName = Math.max(longestName, command.help.name.length);
 

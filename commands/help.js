@@ -8,8 +8,7 @@ exports.run = (client, message, args, level) => {
 
 		// loop through the commands, checking that it's a guild only one and not modmin
 		client.commands.forEach(command => {
-			if (command.conf.guildOnly && command.conf.permLevel !== "Modmin") {
-				console.log(command);
+			if (command.conf.guildOnly && command.conf.permLevel === "User") {
 				// check for the longest name
 				longestName = Math.max(longestName, command.help.name.length);
 
