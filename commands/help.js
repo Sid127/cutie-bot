@@ -5,10 +5,18 @@ exports.run = (client, message, args, level) => {
 		// variables for different things used
 		let longestName = 0;
 		let categories = {};
+		let userAllowedCmds = [];
 
-		// loop through the commands, checking that it's a guild only one and not modmin
+		// check what perms the user has and add to userAllowedCmds
+		if (message.member.permissions.has('SEND_MESSAGES')) userAllowedCmds.push("User");
+		if (message.member.permissions.has('VIEW_AUDIT_LOG')) userAllowedCmds.push("modAssist", "User");
+		if (message.member.permissions.has('ADMINISTRATOR')) userAllowedCmds.push("serverAdmin", "modAssist", "User");
+
+		// loop through the commands, checking that it's a guild only one and check if the user perms are enough to use the command (or is bot admin)
 		client.commands.forEach(command => {
-			if (command.conf.guildOnly && command.conf.permLevel === "User") {
+			if (command.conf.guildOnly &&
+				(userAllowedCmds.includes(command.conf.permLevel) ||
+				(client.botadmin.includes(`${message.author.id}`) && command.conf.permLevel !== "User"))) {
 				// check for the longest name
 				longestName = Math.max(longestName, command.help.name.length);
 
@@ -24,12 +32,12 @@ exports.run = (client, message, args, level) => {
 
 		// create the "header" for the message
 		let output = (`== Command List ==\n` +
-			`[Use ${client.config.prefix}helpme <command> for details]\n`);
+			`[Use ${client.config.prefix}helpme <command> for details]\n\n`);
 
 		// create the blocks for each category and add that to output
 		for (catKey of Object.keys(categories).sort()) {
 			// add the category header to the output
-			output += `\u200b\n= ${catKey} =\n`;
+			output += `= ${catKey} =\n`;
 
 			// sort the list by name
 			categories[catKey].sort(dynamicSort("name"));
@@ -38,9 +46,10 @@ exports.run = (client, message, args, level) => {
 			for (cmd of categories[catKey]) {
 				output += `${cmd.name.padEnd(longestName, " ")} :: ${cmd.description}\n`
 			}
-		}
 
-		message.channel.send(Formatters.codeBlock('asciidoc', output));
+			message.channel.send(Formatters.codeBlock('asciidoc', output));
+			output=""
+		}
 	} else {
 		// Show individual command's help.
 		let command = args[0];
@@ -68,7 +77,7 @@ exports.conf = {
 exports.help = {
 	name: "help",
 	category: "Miscellaneous",
-	description: "Displays all the available commands for your permission level.",
+	description: "Displays all available commands for a user's permission level.",
 	usage: "help <command>"
 };
 

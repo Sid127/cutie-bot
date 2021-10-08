@@ -23,6 +23,8 @@ module.exports = {
                 anonChnl: null,
                 logChnl: null,
                 prefix: "r!",
+            });
+            await client.settings.ensure(`botSettings`,{
                 botadmin: ["319391726613823489", "283607841779089409"]
             });
 
@@ -72,8 +74,7 @@ module.exports = {
         if (!cmd) return;
 
         // Check perm level and run the command
-        const botadmins = client.botadmin.get(`${message.guild.id}`)
-        if (botadmins.includes(`${message.author.id}`)){
+        if (client.botadmin.includes(`${message.author.id}`)){
             cmd.run(client, message, args);
         } else if (cmd.conf.permLevel === "User"){
             cmd.run(client, message, args);

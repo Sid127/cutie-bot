@@ -9,7 +9,6 @@ const client = new Client({ partials: ["MESSAGE", "USER", "REACTION", "CHANNEL"]
 const config = require("./config.json");
 
 client.mongoUrl = config.mongoURL
-client.botadmin = new Map()
 
 // We also need to make sure we're attaching the config to the CLIENT so it's accessible everywhere!
 client.config = config;
@@ -90,10 +89,7 @@ const init = async() => {
             console.log(response);
     });
 
-    let ids = await client.settings.keys
-    for(i of ids) {
-        client.botadmin.set(i, await client.settings.get(`${i}.botadmin`))
-    }
+    client.botadmin = (await client.settings.get(`botSettings.botadmin`))
 } 
 
 init();
@@ -127,10 +123,7 @@ setInterval(async() => {
         }
     }
 
-    let ids = await client.settings.keys
-    for(i of ids) {
-        client.botadmin.set(i, await client.settings.get(`${i}.botadmin`))
-    }
+    client.botadmin = (await client.settings.get(`botSettings.botadmin`))
 }, 900000);
 
 client.login(config.token);
