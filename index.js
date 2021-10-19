@@ -103,6 +103,9 @@ setInterval(async() => {
         const sendGuild = ident[1]['guild'];
         const birthdayRole = await client.settings.get(`${sendGuild}.birthdayRole`);
 
+        //don't run this block if we're not in that guild
+        if (!client.guilds.cache.get(sendGuild)) return;
+
         // user data we're targeting now
         const birthdayFolk = client.guilds.cache.get(sendGuild).members.cache.get(ident[1]['username']);
 
