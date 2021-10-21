@@ -5,13 +5,12 @@ exports.run = async(client, message, args) => {
     //help with usage if a timezone isn't given
     if(args.trim().length === 0) return message.channel.send({content:"Find your timezone here <https://xske.github.io/tz/> and tell me it by passing the command `bd-zone timezone`. Example: `bd-zone Asia/Calcutta"});
 
-    //to-do
-    //make this timezone check proper to make sure it complies with the tz-database
-    if (args.includes('/')) {
+    //check validity of timezone before adding to mongo
+    if (moment.tz.zone(args)) {
         await client.peopleData.set(`${message.guild.id}-${message.author.id}.timezone`, args)
         message.channel.send({content:"Added your timezone to my records"})
     } else {
-        return message.channel.send({content:"Invalid timezone format :("})
+        return message.channel.send({content:"Invalid timezone format :(\nFind your timezone here <https://xske.github.io/tz/>"})
     }
 }
 

@@ -1,4 +1,4 @@
-exports.run = async(client, message, args) => {
+exports.run = async(client, message) => {
     // ticket-setup #channel
     const Discord = require("discord.js");
 
@@ -10,7 +10,7 @@ exports.run = async(client, message, args) => {
        .setColor(0xffd1dc)
     let sent = await channel.send({embeds:[embed]});
     sent.react('🎫');
-    await client.serverData.set(`${message.guild.id}-ticket`, sent.id);
+    await client.serverData.set(`${message.guild.id}.ticket`, sent.id);
     message.channel.send({content:"Ticket system setup done!"})
 }
 

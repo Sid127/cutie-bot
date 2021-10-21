@@ -2,7 +2,8 @@ module.exports = {
   name: "messageReactionAdd",
   async execute(reaction, user, client) {
     const Discord = require("discord.js");
-    const ticCat = client.channels.cache.find(c=>["ticket support", "tickets"].includes(c.name)).id
+    const ticCatStub = await client.serverData.get(`${reaction.message.guild.id}.ticket`)
+    const ticCat = client.channels.cache.find(c => c.id === ticCatStub).parentID
 
     if(reaction.message.channel.type === 'DM') return;
     if(user.partial) await user.fetch();
@@ -11,7 +12,7 @@ module.exports = {
 
     if(user.bot) return;
 
-    let ticketid = await client.serverData.get(`${reaction.message.guild.id}-ticket`);
+    let ticketid = await client.serverData.get(`${reaction.message.guild.id}.ticket`);
 
     if(!ticketid) return;
 
