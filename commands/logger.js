@@ -7,7 +7,7 @@ exports.run = async(client, message) => {
 
     //push data to mongo
     const key = `${message.guild.id}`
-    await client.settings.set(`${key}.logChnl`, loggerChnl);
+    await client.serverData.set(`${key}.logChnl`, loggerChnl);
 
     //confirm it to the user
     const setChannel = `${client.config.prefix} anon ${key} [message]`

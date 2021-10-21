@@ -5,7 +5,7 @@ exports.run = async(client, message) => {
     let recup = `Recent and upcoming birthdays: \n`
 
     //grab data from mongo
-    let db = await client.birthdays.filter(p => p.timezone)
+    let db = await client.peopleData.filter(p => p.timezone)
     for (ident of db) {
         if(ident[1]['guild'] === message.guild.id){
             //strip data to only include birthdays from up to one week before now or 2 weeks away from now

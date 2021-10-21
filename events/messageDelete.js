@@ -5,8 +5,8 @@ module.exports = {
         if (!message.guild) return;
         const key = `${message.guild.id}`
 
-        if (await !client.settings.has(`${key}`)) return;
-        if (await client.settings.get(`${key}.logChnl`) === null) return;
+        if (await !client.serverData.has(`${key}`)) return;
+        if (await client.serverData.get(`${key}.logChnl`) === null) return;
 
         if (message.partial) return;
         if (message.content === null) return;
@@ -17,7 +17,7 @@ module.exports = {
                 .addField(`Message deleted in #${message.channel.name}`, `*An image/video was deleted*`)
                 .addField(`Message Author`, `${message.author}`)
                 .setTimestamp();
-            const sendChnl = await client.settings.get(`${key}.logChnl`)
+            const sendChnl = await client.serverData.get(`${key}.logChnl`)
             client.channels.cache.get(sendChnl).send({embeds: [embed]})
         } else if (message.author.bot) {} else {
             const embed = new MessageEmbed()
@@ -25,7 +25,7 @@ module.exports = {
                 .addField(`Message deleted in #${message.channel.name}`, `${message.content}`)
                 .addField(`Message Author`, `${message.author}`)
                 .setTimestamp();
-            const sendChnl = await client.settings.get(`${key}.logChnl`)
+            const sendChnl = await client.serverData.get(`${key}.logChnl`)
             client.channels.cache.get(sendChnl).send({embeds: [embed]})
         }
     }

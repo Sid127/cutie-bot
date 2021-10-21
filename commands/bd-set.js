@@ -4,7 +4,7 @@ exports.run = async(client, message, args) => {
 
     let [date, timezone] = args.split(" ")
     //create an empty mongo entry for the user that is also server specific
-    await client.birthdays.ensure(`${message.guild.id}-${message.author.id}`, {
+    await client.peopleData.ensure(`${message.guild.id}-${message.author.id}`, {
         guild: message.guild.id,
         username: message.author.id,
         date: null,
@@ -16,13 +16,13 @@ exports.run = async(client, message, args) => {
         return message.channel.send({content:"Please tell me your date in the DD-MMM format. Example: 17-Aug"})
     
     if (!timezone) {
-        await client.birthdays.set(`${message.guild.id}-${message.author.id}.date`, date)
-        await client.birthdays.set(`${message.guild.id}-${message.author.id}.timezone`, "Etc/UTC")
+        await client.peopleData.set(`${message.guild.id}-${message.author.id}.date`, date)
+        await client.peopleData.set(`${message.guild.id}-${message.author.id}.timezone`, "Etc/UTC")
 
         message.channel.send({content:"Your birthday has been recorded!"})
     } else {
-        await client.birthdays.set(`${message.guild.id}-${message.author.id}.date`, date)
-        await client.birthdays.set(`${message.guild.id}-${message.author.id}.timezone`, timezone)
+        await client.peopleData.set(`${message.guild.id}-${message.author.id}.date`, date)
+        await client.peopleData.set(`${message.guild.id}-${message.author.id}.timezone`, timezone)
 
         message.channel.send({content:"Your birthday has been recorded!"})
     }

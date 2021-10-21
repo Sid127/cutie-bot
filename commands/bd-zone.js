@@ -8,7 +8,7 @@ exports.run = async(client, message, args) => {
     //to-do
     //make this timezone check proper to make sure it complies with the tz-database
     if (args.includes('/')) {
-        await client.birthdays.set(`${message.guild.id}-${message.author.id}.timezone`, args)
+        await client.peopleData.set(`${message.guild.id}-${message.author.id}.timezone`, args)
         message.channel.send({content:"Added your timezone to my records"})
     } else {
         return message.channel.send({content:"Invalid timezone format :("})

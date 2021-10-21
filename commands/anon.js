@@ -11,9 +11,9 @@ exports.run = async(client, message, args) => {
             .setTimestamp();
 
         //grab anon settings from mongo
-        if (await client.settings.get(`${srvr}.anonChnl`) === null) return;
-        const sendSrvr = await client.settings.get(`${srvr}.guild`)
-        const sendChnl = await client.settings.get(`${srvr}.anonChnl`)
+        if (await client.serverData.get(`${srvr}.anonChnl`) === null) return;
+        const sendSrvr = await client.serverData.get(`${srvr}.guild`)
+        const sendChnl = await client.serverData.get(`${srvr}.anonChnl`)
 
         //send the anon embed
         if (srvr === sendSrvr) {

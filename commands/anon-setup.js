@@ -9,7 +9,7 @@ exports.run = async(client, message) => {
 
     // save to mongo before confirming it to the user
     const key = `${message.guild.id}`
-    await client.settings.set(`${key}.anonChnl`, confessChnl);
+    await client.serverData.set(`${key}.anonChnl`, confessChnl);
 
     // confirm it to the user with usage example
     const setChannel = `${client.config.prefix} anon ${key} [message]`

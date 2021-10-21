@@ -1,6 +1,6 @@
 {
     "name": "cutie-bot",
-    "version": "4.0.0",
+    "version": "6.0.0",
     "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1"
@@ -20,7 +20,7 @@
     "dependencies": {
         "@joshdb/core": "^1.2.6",
         "@joshdb/mongo": "^1.1.6",
-        "discord.js": "^13.0.0",
+        "discord.js": "^13.2.0",
         "moment-duration-format": "^2.3.2",
         "moment-timezone": "^0.5.33",
         "random-puppy": "^1.1.0",

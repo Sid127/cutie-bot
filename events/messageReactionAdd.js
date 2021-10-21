@@ -11,7 +11,7 @@ module.exports = {
 
     if(user.bot) return;
 
-    let ticketid = await client.settings.get(`${reaction.message.guild.id}-ticket`);
+    let ticketid = await client.serverData.get(`${reaction.message.guild.id}-ticket`);
 
     if(!ticketid) return;
 

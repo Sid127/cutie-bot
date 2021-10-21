@@ -12,30 +12,20 @@ client.mongoUrl = config.mongoURL
 
 // We also need to make sure we're attaching the config to the CLIENT so it's accessible everywhere!
 client.config = config;
-client.points = new Josh({
+client.serverData = new Josh({
     name: 'Cutie',
     provider,
     providerOptions: {
-        collection: "points",
+        collection: "serverdata",
         dbName: "Cutie",
         url: client.mongoUrl
     }
 });
-client.settings = new Josh({
+client.peopleData = new Josh({
     name: 'Cutie',
     provider,
     providerOptions: {
-        collection: "settings",
-        dbName: "Cutie",
-        url: client.mongoUrl
-    }
-});
-
-client.birthdays = new Josh({
-    name: 'Cutie',
-    provider,
-    providerOptions: {
-        collection: "birthdays",
+        collection: "peopledata",
         dbName: "Cutie",
         url: client.mongoUrl
     }
@@ -89,19 +79,19 @@ const init = async() => {
             console.log(response);
     });
 
-    client.botadmin = (await client.settings.get(`botSettings.botadmin`))
+    client.botadmin = (await client.serverData.get(`botSettings.botadmin`))
 } 
 
 init();
 
 setInterval(async() => {
     const moment = require("moment-timezone")
-    let db = await client.birthdays.filter(p => p.timezone)
+    let db = await client.peopleData.filter(p => p.timezone)
     for (ident of db) {
 
         // these two variables are used in both cases
         const sendGuild = ident[1]['guild'];
-        const birthdayRole = await client.settings.get(`${sendGuild}.birthdayRole`);
+        const birthdayRole = await client.serverData.get(`${sendGuild}.birthdayRole`);
 
         //don't run this block if we're not in that guild
         if (!client.guilds.cache.get(sendGuild)) return;
@@ -116,7 +106,7 @@ setInterval(async() => {
                 birthdayFolk.roles.add(birthdayRole);
 
                 // get the channel where to send a message
-                const msgChannel = await client.settings.get(`${sendGuild}.birthdayChnl`);
+                const msgChannel = await client.serverData.get(`${sendGuild}.birthdayChnl`);
                 client.channels.cache.get(msgChannel).send(`Happy Birthday, <@${ident[1]['username']}>`)
             }
         } else { // else remove the role
@@ -126,7 +116,7 @@ setInterval(async() => {
         }
     }
 
-    client.botadmin = (await client.settings.get(`botSettings.botadmin`))
+    client.botadmin = (await client.serverData.get(`botSettings.botadmin`))
 }, 900000);
 
 client.login(config.token);

@@ -1,8 +1,8 @@
 //function for grabbing a list of whitelisted roles
 module.exports.blacklistChck = async(client, message, member) => {
 	//remove blacklisted roles
-	let hiddenRoles = await client.settings.get(`${message.guild.id}.hiddenRoles`);
-	let blacklistPfx = await client.settings.get(`${message.guild.id}.blacklistPfx`);
+	let hiddenRoles = await client.serverData.get(`${message.guild.id}.hiddenRoles`);
+	let blacklistPfx = await client.serverData.get(`${message.guild.id}.blacklistPfx`);
 	matchString = "("
 	for (pfx of blacklistPfx){
 		//regex to check if starting is alphanumeric

@@ -3,11 +3,11 @@ exports.run = async(client, message, args) => {
 
     const key = `${message.guild.id}`
     if (args.toLowerCase().trim() === "anon") {
-        await client.settings.set(`${key}.anonChnl`, null);
+        await client.serverData.set(`${key}.anonChnl`, null);
         message.channel.send({content:"Anonymous channel unset"})
     } else if (args.toLowerCase().trim() === "logger") {
-        await client.settings.set(`${key}.logChnl`, null)
-        message.channel.send("Log channel unset")
+        await client.serverData.set(`${key}.logChnl`, null)
+        message.channel.send({content:"Log channel unset"})
     } else {
         message.channel.send("You aren't doing it right - the command is `qt unset <anon/logger>`")
     }

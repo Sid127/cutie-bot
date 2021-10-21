@@ -5,3 +5,5 @@ data
 log.log
 err.log
 out.log
+
+commands/migrate.js

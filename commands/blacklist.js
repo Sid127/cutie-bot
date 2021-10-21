@@ -1,7 +1,7 @@
 exports.run = async(client, message, args) => {
     
     //initialize required settings and variables
-    await client.settings.ensure(`${message.guild.id}`, {
+    await client.serverData.ensure(`${message.guild.id}`, {
         hiddenRoles: null,
         blacklistPfx: null
     })
@@ -11,8 +11,8 @@ exports.run = async(client, message, args) => {
     
     //display blacklist if no args passed
     if(!args){
-        prefixes = await client.settings.push(`${message.guild.id}.blacklistPfx`).join(", ")
-        roles = await client.settings.push(`${message.guild.id}.hiddenRoles`)
+        prefixes = await client.serverData.push(`${message.guild.id}.blacklistPfx`).join(", ")
+        roles = await client.serverData.push(`${message.guild.id}.hiddenRoles`)
 
         for(r of roles){
             roles = client.guild.roles.cache.filter(r => r.name).join(", ")
@@ -23,20 +23,20 @@ exports.run = async(client, message, args) => {
     else if (action === add) {
         if (param === "prefix" || param === "pfx"){
             let pfx = details
-            await client.settings.push(`${message.guild.id}.blacklistPfx`, pfx)
+            await client.serverData.push(`${message.guild.id}.blacklistPfx`, pfx)
             message.channel.send(`Role prefix${message.mentions.roles.length === 1 ? "" : "es"} blacklisted`)
         } else if (param === "roles") {
             let roles = message.mentions.roles.map(role => role.id)
-            await client.settings.push(`${message.guild.id}.hiddenRoles`, roles)
+            await client.serverData.push(`${message.guild.id}.hiddenRoles`, roles)
             message.channel.send(`Role${message.mentions.roles.length === 1 ? "" : "s"} blacklisted`)
         } else message.channel.send("I'm not genie, tell me what you wanna add :/")
     //code to remove all blacklists of a type
     } else if (action === "clear"){
         if (param === "prefix" || param === "pfx"){
-            await client.settings.push(`${message.guild.id}.blacklistPfx`, null)
+            await client.serverData.push(`${message.guild.id}.blacklistPfx`, null)
             message.channel.send("Role prefix blacklist cleared")
         } else if (param === "roles") {
-            await client.settings.push(`${message.guild.id}.hiddenRoles`, blacklist)
+            await client.serverData.push(`${message.guild.id}.hiddenRoles`, blacklist)
             message.channel.send("Role blacklist cleared")
         } else message.channel.send("I'm not a genie, tell me what you wanna remove :/")
     } else {
