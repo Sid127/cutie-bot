@@ -16,14 +16,12 @@ exports.run = async (client, message) => {
 	// set the member object to get the info from, if a user was tagged, prioritize that
 	let member;
 	message.mentions.members.size > 0 ? member = message.mentions.members.first() : member = message.member
-	// get a random color generator
-	let randomColor = "#000000".replace(/0/g, function () { return (~~(Math.random() * 16)).toString(16); });
 
 	let whitelistRoles = await blacklistChck(await mongoGet(client, message.guild.id, ["blacklistPfx", "hiddenRoles"]), member.roles.cache)
 
 	// now create the embed object and give it the data it wants
 	let embed = new Discord.MessageEmbed()
-		.setColor(randomColor)
+		.setColor('RANDOM')
 		.setThumbnail(`${member.user.avatar != null ? member.user.avatarURL() : "https://discordapp.com/assets/dd4dbc0016779df1378e7812eabaa04d.png"}`)
 		.setAuthor(`${member.user.tag} (${member.id})`)
 		.addField("Nickname:", `${(member.nickname !== null && member.nickname !== undefined) ? `Nickname: ${member.nickname}` : "No nickname"}`, true)
