@@ -11,7 +11,7 @@ const status = {
 
 exports.run = async (client, message) => {
 
-	const { blacklistChck } = require("../functionFiles/helperFunctions.js")
+	const { blacklistChck, mongoGet } = require("../functionFiles/helperFunctions.js")
 
 	// set the member object to get the info from, if a user was tagged, prioritize that
 	let member;
@@ -19,7 +19,7 @@ exports.run = async (client, message) => {
 	// get a random color generator
 	let randomColor = "#000000".replace(/0/g, function () { return (~~(Math.random() * 16)).toString(16); });
 
-	const whitelistRoles = await blacklistChck(client, message, member)
+	let whitelistRoles = await blacklistChck(await mongoGet(client, message.guild.id, ["blacklistPfx", "hiddenRoles"]), member.roles.cache)
 
 	// now create the embed object and give it the data it wants
 	let embed = new Discord.MessageEmbed()
@@ -29,7 +29,7 @@ exports.run = async (client, message) => {
 		.addField("Nickname:", `${(member.nickname !== null && member.nickname !== undefined) ? `Nickname: ${member.nickname}` : "No nickname"}`, true)
 		.addField("Status", `${status[member.presence.status]}`, true)
 		.addField("Playing", `${member.presence.activities.state ? `${member.presence.activities.state}` : "Not playing anything."}`, true)
-		.addField("Roles", `${whitelistRoles || "No Roles"}`, true)
+		.addField("Roles", `${whitelistRoles.map(roles => `\`${roles.name}\``).join(" **|** ") || "No Roles"}`, true)
 		.addField("Joined", `${moment().diff(moment.utc(member.joinedAt), 'days')} Days Ago (Created ${moment.utc(member.user.createdAt).format("MMMM Do YYYY")})`, true)
 
 		message.channel.send({embeds:[embed]});
