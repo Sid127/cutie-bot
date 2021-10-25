@@ -21,7 +21,7 @@ exports.run = async(client, message, args) => {
             sendroles.push(message.guild.roles.cache.find(role => role.id === r))
         }
 
-        message.channel.send(`Blacklist\n\nPrefixes: ${blacklistMap.get(`blacklistPfx`).join(" ")}\nRoles: ${sendroles.join(" ")}`)
+        message.channel.send(`Blacklist\n\nPrefixes: ${blacklistMap.get(`blacklistPfx`).join(" ") || "No prefixes set"} \nRoles: ${sendroles.join(" ") || "No roles set"}`)
     }
     //code to add blacklists to mongo
     else if (action === "add") {
