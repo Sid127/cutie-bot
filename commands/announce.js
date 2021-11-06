@@ -1,6 +1,8 @@
-exports.run = (client, message, [param, ...announcement]) => {
+exports.run = (client, message, args) => {
   const { Client, MessageEmbed } = require('discord.js');
 
+  let [param, ...announcement] = args.split(" ")
+ 
   // Check to see if the command is in the form of "announce everyone #channel announcement" similar to Dyno's announce command
   if (param === "everyone"){
     // Remove the "everyone" text from the [param, ...announcement] arguments

@@ -1,7 +1,9 @@
-exports.run = async(client, message, [srvr, ...confession]) => {
+exports.run = async(client, message, args) => {
     if (!message.guild) {
         const { Client, MessageEmbed } = require('discord.js');
-
+        
+        let [srvr, ...confession] = args.split(" ")
+        
         //put the anon message in a neat little embed
         const embed = new MessageEmbed()
             .setColor(0xffd1dc)

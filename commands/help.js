@@ -1,7 +1,7 @@
-exports.run = (client, message, args, level) => {
+exports.run = (client, message, args) => {
 	const { Formatters } = require("discord.js");
 	// If no specific command is called, show all filtered commands.
-	if (!args[0]) {
+	if (args.trim().length == 0) {
 		// variables for different things used
 		let longestName = 0;
 		let categories = {};
@@ -52,7 +52,7 @@ exports.run = (client, message, args, level) => {
 		}
 	} else {
 		// Show individual command's help.
-		let command = args[0];
+		let command = args;
 		if (client.commands.has(command)) {
 			command = client.commands.get(command);
 			// if (level < client.levelCache[command.conf.permLevel])

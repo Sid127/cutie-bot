@@ -1,6 +1,6 @@
 exports.run = (client, message, args) => {
     if(!args || args.length < 1) return message.channel.send({content:"Must provide a command name to reload."});
-    const commandName = args[0];
+    const commandName = args;
     // Check if the command exists and is valid
     if(!client.commands.has(commandName)) {
       return message.channel.send({content:"That command does not exist"});

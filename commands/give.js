@@ -1,9 +1,11 @@
 exports.run = async(client, message, args) => {
 
+    let [mention, amount] = args.split(" ")
+
     const user = message.mentions.users.first();
     if (!user) return message.reply({content:"You must mention!"});
 
-    const pointsToAdd = parseInt(args[1], 10);
+    const pointsToAdd = parseInt(amount, 10);
     if (!pointsToAdd)
         return message.reply({content:"You didn't tell me how many points to give... :("})
 

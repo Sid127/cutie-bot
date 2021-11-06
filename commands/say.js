@@ -1,4 +1,4 @@
-exports.run = (client, message, [chnl, ...text]) => {
+exports.run = (client, message, args) => {
   if(!message.member.permissions.has('MANAGE_MESSAGES'))
     return;
 

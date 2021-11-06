@@ -1,7 +1,8 @@
-exports.run = async(client, message, [date, ...timezone]) => {
+exports.run = async(client, message, args) => {
     const moment = require("moment-timezone");
     require("moment-duration-format");
 
+    let [date, timezone] = args.split(" ")
     //create an empty mongo entry for the user that is also server specific
     await client.birthdays.ensure(`${message.guild.id}-${message.author.id}`, {
         guild: message.guild.id,

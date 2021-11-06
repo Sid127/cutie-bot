@@ -1,4 +1,4 @@
-exports.run = (client, message, [mention, ...reason]) => {
+exports.run = (client, message) => {
     let muteRole = message.guild.roles.cache.find(role => role.name === "Muted");
 
     if (message.mentions.members.size === 0)

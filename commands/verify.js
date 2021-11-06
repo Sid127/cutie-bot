@@ -1,4 +1,6 @@
-exports.run = async(client, message, args, level) => { // eslint-disable-line no-unused-vars
+exports.run = async(client, message, args) => { // eslint-disable-line no-unused-vars
+    let [param, member] = args.split(" ")
+
     if (!message.member.permissions.has('MANAGE_ROLES'))
         return;
 
@@ -11,7 +13,7 @@ exports.run = async(client, message, args, level) => { // eslint-disable-line no
     verifyMember.roles.add(message.guild.roles.cache.find(role => role.name === "member"))
     verifyMember.roles.add(message.guild.roles.cache.find(role => role.name === "verified"))
 
-    if (args[0] === "18") {
+    if (param === "18") {
         verifyMember.roles.add(message.guild.roles.cache.find(role => role.name === "senior citizen"))
     } else {}
 }

@@ -1,5 +1,8 @@
 exports.run = async(client, message, args) => {
-    const user = message.mentions.users.first()
+  
+    let [mention, amount] = args.split(" ")
+    
+    const user = message.mentions.users.first();
     if (!user) return message.reply({content:"You must mention someone!"});
 
     const pointsToDed = parseInt(args[1], 10);
@@ -8,7 +11,7 @@ exports.run = async(client, message, args) => {
 
     // Ensure there is a points entry for this user.
     await client.points.ensure(`${message.guild.id}-${user.id}`, {
-        user: message.author.id,
+        user: user.id,
         guild: message.guild.id,
         points: 0,
         level: 0

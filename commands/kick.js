@@ -1,6 +1,8 @@
-exports.run = (client, message, [mention, ...reason]) => {
+exports.run = (client, message, args) => {
   const moment = require("moment-timezone");
   actionDate = moment().tz('Europe/London').format('DD MMM YYYY hh:mm:ss')
+
+  let [mention, ...reason] = args.split(" ")
 
   //handle there not being a mentioned member
   if (message.mentions.members.size === 0)
@@ -15,7 +17,7 @@ exports.run = (client, message, [mention, ...reason]) => {
 	const log = message.mentions.users.first().tag;
 
   //the actual kick
-  kickMember.kick({reason: reason.join(" ")}).then(member => {
+  kickMember.kick(reason.join(" ")).then(member => {
     message.reply({content:`${member.user.username} was succesfully kicked.`});
 
   //log it, if the logging channel is set

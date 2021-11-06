@@ -1,4 +1,4 @@
-exports.run = (client, message, args) => {
+exports.run = (client, message) => {
   const mmbr = message.guild.members.cache.get(message.author.id);
   if (mmbr == client.user) return;
 

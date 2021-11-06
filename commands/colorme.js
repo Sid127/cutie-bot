@@ -1,8 +1,9 @@
 exports.run = (client, message, args) => {
+
   const mmbr = message.guild.members.cache.get(message.author.id);
   if (mmbr == client.user) return;
 
-  let clr = message.content.split(" ").pop(); if (clr.startsWith('#')) clr = clr.substr(1);
+  let clr = args; if (clr.startsWith('#')) clr = clr.substr(1);
   if (clr === 'random') {
     clr = Math.floor(Math.random() * (0xFFFFFF + 1));
   } else if (clr === 'impressed') {

@@ -9,7 +9,7 @@ const status = {
   offline: "Offline/Invisible"
 };
 
-exports.run = async (client, message, args, level) => {
+exports.run = async (client, message) => {
 	// set the member object to get the info from, if a user was tagged, prioritize that
 	let member;
 	// get a random color generator

@@ -2,10 +2,10 @@ exports.run = async(client, message, args) => {
     const { Client, MessageEmbed } = require('discord.js');
 
     const key = `${message.guild.id}`
-    if (args[0] === "anon") {
+    if (args.toLowerCase().trim() === "anon") {
         await client.settings.set(`${key}.anonChnl`, null);
         message.channel.send({content:"Anonymous channel unset"})
-    } else if (args[0] === "logger") {
+    } else if (args.toLowerCase().trim() === "logger") {
         await client.settings.set(`${key}.logChnl`, null)
         message.channel.send("Log channel unset")
     } else {

@@ -1,6 +1,6 @@
 exports.run = (client, message, args) => {
     if(!args || args.length < 1) return message.channel.send({content:"Must provide a command name to load."});
-    const commandName = args[0];
+    const commandName = args;
 
     // the path is relative to the *current folder*, so just ./filename.js
     delete require.cache[require.resolve(`./${commandName}.js`)];

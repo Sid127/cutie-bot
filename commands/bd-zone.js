@@ -3,13 +3,12 @@ exports.run = async(client, message, args) => {
     require("moment-duration-format");
 
     //help with usage if a timezone isn't given
-    if (!args[0]) return message.channel.send({content:"Find your timezone here <https://xske.github.io/tz/> and tell me it by passing the command `qt bd-zone timezone`. Example: `qt bd-zone Asia/Calcutta"});
-    let timezone = args[0]
+    if(args.trim().length === 0) return message.channel.send({content:"Find your timezone here <https://xske.github.io/tz/> and tell me it by passing the command `bd-zone timezone`. Example: `bd-zone Asia/Calcutta"});
 
     //to-do
     //make this timezone check proper to make sure it complies with the tz-database
-    if (timezone.includes('/')) {
-        await client.birthdays.set(`${message.guild.id}-${message.author.id}.timezone`, timezone)
+    if (args.includes('/')) {
+        await client.birthdays.set(`${message.guild.id}-${message.author.id}.timezone`, args)
         message.channel.send({content:"Added your timezone to my records"})
     } else {
         return message.channel.send({content:"Invalid timezone format :("})

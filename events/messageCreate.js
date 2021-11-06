@@ -60,12 +60,13 @@ module.exports = {
         }
 
         // Ignore messages not starting with the prefix (in config.json)
-        msg = message.content.toLowerCase();
-        if (msg.indexOf(client.config.prefix) !== 0) return;
-
-        // Our standard argument/command name definition.
-        const args = message.content.slice(client.config.prefix.length).trim().split(/ +/g);
-        const command = args.shift().toLowerCase();
+        if (!message.content.toLowerCase().trim().startsWith(client.config.prefix)) return;
+		
+		// Define command and the rest of the text in the message
+		let [command, ...args] = message.content.trim().split(/ +/g);
+		// From command slice out prefix length and force lowercase while just joining args together to a string with spaces (since split by them)
+		command = command.slice(client.config.prefix.length).toLowerCase();
+		args = args.join(" ").trim();
 
         // Grab the command data from the client.commands Map
         const cmd = client.commands.get(command) || client.commands.get(client.aliases.get(command));
