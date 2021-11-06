@@ -21,6 +21,8 @@ exports.run = async(client, message, args) => {
 
         message.channel.send({content:"Your birthday has been recorded!"})
     } else {
+	if(!moment.tz.zone(timezone))
+	    return message.channel.send({content:"Invalid timezone format :(\nFind your timezone here <https://xske.github.io/tz/>"})
         await client.peopleData.set(`${message.guild.id}-${message.author.id}.date`, date)
         await client.peopleData.set(`${message.guild.id}-${message.author.id}.timezone`, timezone)
 
