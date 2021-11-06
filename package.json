@@ -18,9 +18,9 @@
     "homepage": "https://github.com/Sid127/cutie-bot#readme",
     "description": "",
     "dependencies": {
-        "@joshdb/core": "^1.2.6",
+        "@joshdb/core": "^1.2.7",
         "@joshdb/mongo": "^1.1.6",
-        "discord.js": "^13.2.0",
+        "discord.js": "^13.3.1",
         "moment-duration-format": "^2.3.2",
         "moment-timezone": "^0.5.33",
         "random-puppy": "^1.1.0"
