@@ -63,9 +63,9 @@ module.exports = {
         if (!message.content.toLowerCase().trim().startsWith(client.config.prefix)) return;
 		
 		// Define command and the rest of the text in the message
-		let [command, ...args] = message.content.trim().split(/ +/g);
+		let [command, ...args] = message.content.slice(client.config.prefix.length).toLowerCase().trim().split(/ +/g);
 		// From command slice out prefix length and force lowercase while just joining args together to a string with spaces (since split by them)
-		command = command.slice(client.config.prefix.length).toLowerCase();
+		command = command.toLowerCase();
 		args = args.join(" ").trim();
 
         // Grab the command data from the client.commands Map
