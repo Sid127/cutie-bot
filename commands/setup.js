@@ -107,6 +107,18 @@ exports.run = async(client, message, args) => {
         }
     }
 
+    else if (arg1 === "activitypoints"){
+        if(arg2 === "disabled"){
+            client.activityLeaderboard.set(`${message.guild.id}`, arg2)//update our local cache
+            await client.serverData.set(`${message.guild.id}.activityLeaderboard`, arg2)//update mongo
+            message.channel.send("Activity based points system disabled")
+        } else if (arg2 === "enabled"){
+            client.activityLeaderboard.set(`${message.guild.id}`, arg2)//update our local cache
+            await client.serverData.set(`${message.guild.id}.activityLeaderboard`, arg2)//update mongo
+            message.channel.send("Activity based points system disabled")
+        }
+    }
+
     else {message.channel.send("Lord help me D:")}
 }
 
@@ -117,5 +129,5 @@ exports.config = {
 	name: "setup",
 	category: "Management",
 	description: "Set up various bot modules",
-	usage: ["[anon || bd-config channel || bgs || logger || ticket] [<#channel>]", "bd-config role [<@birthday role>]"]
+	usage: ["[anon || bd-config channel || bgs || logger || ticket] [<#channel>]", "bd-config role [<@birthday role>]", "prefix [<prefix>]", "activitypoints [enabled || disabled]"]
 };

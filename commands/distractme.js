@@ -22,7 +22,7 @@ exports.config = {
 	aliases: ["distract me"],
 	permLevel: "User",
 	name: "distractme",
-	category: "Miscellaneous",
+	category: "Support",
 	description: "Send a cute animal video to help you distract yourself",
 	usage: []
 };

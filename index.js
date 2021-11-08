@@ -81,18 +81,20 @@ const init = async() => {
 
     client.disabledModules = new Map();
     client.prefixes = new Map();
+    client.activityLeaderboard = new Map();
     let guilds = await client.serverData.keys
     for (g of guilds) {
         client.disabledModules.set(g, await client.serverData.get(`${g}.disabledModules`))
         client.prefixes.set(g, await client.serverData.get(`${g}.prefix`))
-
+        client.activityLeaderboard.set(g, await client.serverData.get(`${g}.activityLeaderboard`))
     }
     client.botadmin = await client.serverData.get(`botSettings.botadmin`)
 } 
 
 init();
 
-const { chck15 } = require("./functionFiles/listeners.js");
+const { chck15, chck10 } = require("./functionFiles/listeners.js");
 chck15(client)
+chck10(client)
 
 client.login(config.token);

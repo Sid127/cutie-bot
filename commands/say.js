@@ -16,7 +16,7 @@ exports.run = (client, message, args) => {
 exports.config = {
 	guildOnly: true,
 	aliases: ["mimic", "utter"],
-	permLevel: "modAssist",
+	permLevel: "serverAdmin",
 	name: "say",
 	category: "Metadata",
 	description: "Make me say things",

@@ -4,59 +4,63 @@ module.exports = {
         // Ignore all bots
         if (message.author.bot) return;
 
-        // If this is not in a DM, execute the points code.
+        // If this is not in a DM, execute the code.
         if (message.guild) {
             // We'll use the key often enough that simplifying it is worth the trouble.
             const key = `${message.guild.id}-${message.author.id}`;
-
-            // Triggers on new users we haven't seen before.
-            await client.peopleData.ensure(`${message.guild.id}-${message.author.id}`, {
-                user: message.author.id,
-                guild: message.guild.id,
-                points: 0,
-                level: 0,
-                username: message.member.user.tag
-            });
 
             await client.serverData.ensure(`${message.guild.id}`, {
                 guild: message.guild.id,
                 anonChnl: null,
                 logChnl: null,
                 prefix: "",
+                activityLeaderboard: "enabled",
                 disabledModules: []
             });
             await client.serverData.ensure(`botSettings`,{
                 botadmin: ["319391726613823489", "283607841779089409"]
             });
 
-            if (message.content.length >= 7 && !message.content.startsWith(client.config.prefix)) {
-                const oldP = await client.peopleData.get(`${key}.points`)
-                let newP = oldP + 1
-                await client.peopleData.set(`${key}.points`, newP);
-            }
+            let activitypoints = client.activityLeaderboard.get(`${message.guild.id}`)
+            if(activitypoints === "enabled"){
+                // Triggers on new users we haven't seen before.
+                await client.peopleData.ensure(`${message.guild.id}-${message.author.id}`, {
+                    user: message.author.id,
+                    guild: message.guild.id,
+                    points: 0,
+                    level: 0,
+                    username: message.member.user.tag
+                });
 
+                if (message.content.length >= 7 && !message.content.startsWith(client.config.prefix)) {
+                    const oldP = await client.peopleData.get(`${key}.points`)
+                    let newP = oldP + 1
+                    await client.peopleData.set(`${key}.points`, newP);
+                }
 
-            // Calculate the user's current level
-            const curLevel = Math.floor(0.1 * Math.sqrt(await client.peopleData.get(`${key}.points`)));
+                
+                // Calculate the user's current level
+                const curLevel = Math.floor(0.1 * Math.sqrt(await client.peopleData.get(`${key}.points`)));
 
-            // Act upon level up by sending a message and updating the user's level in enmap.
-            if (await client.peopleData.get(`${key}.level`) < curLevel) {
-                const botChannel = message.guild.channels.cache.find(channel => channel.name === "bot").id;
-                if (!botChannel) return;
-                client.channels.cache.get(botChannel).send({content:`<@${message.author.id}> leveled up to level **${curLevel}**! :)`});
-                await client.peopleData.set(`${key}.level`, curLevel);
-            }
-            if (await client.peopleData.get(`${key}.level`) > curLevel) {
-                const botChannel = message.guild.channels.cache.find(channel => channel.name === "bot").id;
-                if (!botChannel) return;
-                client.channels.cache.get(botChannel).send({content:`<@${message.author.id}> leveled down to level **${curLevel}** :(`});
-                await client.peopleData.set(`${key}.level`, curLevel);
-            }
-            if (await client.peopleData.get(`${key}.level`) === 3) {
-                const rankRole = message.guild.roles.cache.find(role => role.name === "active")
-                if (!rankRole){}
-                else{
-                    message.member.roles.add(rankRole).catch(console.error)
+                // Act upon level up by sending a message and updating the user's level in enmap.
+                if (await client.peopleData.get(`${key}.level`) < curLevel) {
+                    const botChannel = message.guild.channels.cache.find(channel => channel.name === "bot").id;
+                    if (!botChannel) return;
+                    client.channels.cache.get(botChannel).send({content:`<@${message.author.id}> leveled up to level **${curLevel}**! :)`});
+                    await client.peopleData.set(`${key}.level`, curLevel);
+                }
+                if (await client.peopleData.get(`${key}.level`) > curLevel) {
+                    const botChannel = message.guild.channels.cache.find(channel => channel.name === "bot").id;
+                    if (!botChannel) return;
+                    client.channels.cache.get(botChannel).send({content:`<@${message.author.id}> leveled down to level **${curLevel}** :(`});
+                    await client.peopleData.set(`${key}.level`, curLevel);
+                }
+                if (await client.peopleData.get(`${key}.level`) === 3) {
+                    const rankRole = message.guild.roles.cache.find(role => role.name === "active")
+                    if (!rankRole){}
+                    else{
+                        message.member.roles.add(rankRole).catch(console.error)
+                    }
                 }
             }
         }
