@@ -6,7 +6,7 @@ exports.run = (client, message, args) => {
       if (client.aliases.has(commandName)){
         commandName = client.commands.get(client.aliases.get(commandName)).config.name;
       } else {
-        return message.channel.send({content:"That command does not exist"});
+        return message.channel.send("I DUNNO WHAT COMMAND YOU WANNA RELOAD D:")
       }
     }
     // the path is relative to the *current folder*, so just ./filename.js
@@ -15,7 +15,7 @@ exports.run = (client, message, args) => {
     client.commands.delete(commandName);
     const props = require(`./${commandName}.js`);
     client.commands.set(commandName, props);
-    message.channel.send({content:`The command ${commandName} has been reloaded`});
+    message.react('☑️')
 }
 
 exports.config = {

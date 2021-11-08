@@ -22,7 +22,8 @@ module.exports = {
                 guild: message.guild.id,
                 anonChnl: null,
                 logChnl: null,
-                prefix: "r!",
+                prefix: "",
+                disabledModules: []
             });
             await client.serverData.ensure(`botSettings`,{
                 botadmin: ["319391726613823489", "283607841779089409"]
@@ -75,9 +76,14 @@ module.exports = {
         // If that command doesn't exist, silently exit and do nothing
         if (!cmd) return;
 
+        //grab our cache of disabled modules for this server
+        let disabledModules = client.disabledModules.get(`${message.guild.id}`)
+
         // Check perm level and run the command
         if (client.botadmin.includes(`${message.author.id}`)){
             cmd.run(client, message, args);
+        } else if (disabledModules.includes(cmd.config.category.toLowerCase())){
+            return message.channel.send("That module has been disabled! Ask a server admin to enable it :3")
         } else if (cmd.config.permLevel === "User"){
             cmd.run(client, message, args);
         } else if (cmd.config.permLevel === "modAssist"){

@@ -79,7 +79,12 @@ const init = async() => {
             console.log(response);
     });
 
-    client.botadmin = (await client.serverData.get(`botSettings.botadmin`))
+    client.disabledModules = new Map();
+    let guilds = await client.serverData.keys
+    for (g of guilds) {
+        client.disabledModules.set(g, await client.serverData.get(`${g}.disabledModules`))
+    }
+    client.botadmin = await client.serverData.get(`botSettings.botadmin`)
 } 
 
 init();
