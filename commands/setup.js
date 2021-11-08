@@ -24,7 +24,7 @@ exports.run = async(client, message, args) => {
     }
 
     //birthday setup
-    if(arg1 === "bd-config"){
+    else if(arg1 === "bd-config"){
         //set the role
         if (arg2 === "role") {
             if (!message.mentions.roles.first()) return message.channel.send({content:"Please create the role manually and then set it here"});
@@ -39,7 +39,7 @@ exports.run = async(client, message, args) => {
     }
 
     //tick listener setup
-    if (arg1 === "bgs"){
+    else if (arg1 === "bgs"){
         //create metadata
         let channel = message.mentions.channels.first();
         if (!channel) return message.reply({content:"You silly goose that's not how you do it"});
@@ -57,7 +57,7 @@ exports.run = async(client, message, args) => {
     }
 
     //audit log setup
-    if (arg1 === "logger"){
+    else if (arg1 === "logger"){
         //grb channel metadata
         let channel = message.mentions.channels.first();
         if (!channel) return message.reply({content:"You silly goose that's not how you do it"});
@@ -76,7 +76,7 @@ exports.run = async(client, message, args) => {
     }
 
     //ticket channel setup
-    if (arg1 === "ticket"){        
+    else if (arg1 === "ticket"){        
         let channel = message.mentions.channels.first();
         if (!channel) return message.reply({content:"You silly goose that's not how you do it"});
         let embed = new MessageEmbed()
@@ -88,6 +88,16 @@ exports.run = async(client, message, args) => {
         await client.serverData.set(`${message.guild.id}.ticket`, sent.id);
         message.channel.send({content:"Ticket system setup done!"})
     }
+
+    //per server prefixes
+    else if (arg1 === "prefix"){
+        if(!arg2)return message.channel.send("You know I need a prefix to work, right?")
+        client.prefixes.set(`${message.guild.id}`, arg2)//update our local cache
+        client.serverData.set(`${message.guild.id}`, arg2)//update mongo
+        message.channel.send(`Done! New server prefix is ${arg2}`)
+    }
+
+    else {message.channel.send("Lord help me D:")}
 }
 
 exports.config = {

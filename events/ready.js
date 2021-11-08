@@ -6,8 +6,9 @@ module.exports = {
         client.user.setPresence({
             status: 'online',
             activities: [{
-                name: "qt help | v6",
-                type: "LISTENING"
+                name: "you | qt help | v6.66",
+                type: "WATCHING",
+                url: "https://www.youtube.com/watch?v=bxqLsrlakK8"
             }]
         });
 

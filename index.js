@@ -80,9 +80,12 @@ const init = async() => {
     });
 
     client.disabledModules = new Map();
+    client.prefixes = new Map();
     let guilds = await client.serverData.keys
     for (g of guilds) {
         client.disabledModules.set(g, await client.serverData.get(`${g}.disabledModules`))
+        client.prefixes.set(g, await client.serverData.get(`${g}.prefix`))
+
     }
     client.botadmin = await client.serverData.get(`botSettings.botadmin`)
 } 
