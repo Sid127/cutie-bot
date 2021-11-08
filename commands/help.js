@@ -62,11 +62,10 @@ exports.run = (client, message, args) => {
 			// if (level < client.levelCache[command.config.permLevel])
 			// 	return;
 			message.channel.send(Formatters.codeBlock('asciidoc',
-				`= ${command.config.name} = \n` +
+				`== ${command.config.name} == \n` +
 				`${command.config.description}\n` +
 				`usage   :: ${command.config.name} ${command.config.usage.join(`\n           ${command.config.name} `)}\n` +
-				`aliases :: ${command.config.aliases.join(", ") || "no aliases"}\n` +
-				`= ${command.config.name} =`));
+				`aliases :: ${command.config.aliases.join(", ") || "no aliases"}\n`));
 		}
 	}
 };

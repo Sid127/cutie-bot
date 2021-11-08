@@ -5,9 +5,9 @@ exports.run = async(client, message, args) => {
     const user = message.mentions.users.first();
     if (!user) return message.reply({content:"You must mention someone!"});
 
-    const pointsToDed = parseInt(args[1], 10);
+    const pointsToDed = parseInt(amount, 10);
     if (!pointsToDed)
-        return message.reply({content:"You didn't tell me how many points to give... :("})
+        return message.reply({content:"You didn't tell me how many points to remove... :("})
 
     // Ensure there is a points entry for this user.
     await client.peopleData.ensure(`${message.guild.id}-${user.id}`, {

@@ -1,7 +1,7 @@
 exports.run = async(client, message, args) => {
     const { Client, MessageEmbed } = require('discord.js');
     // Get a filtered list (for this guild only), and convert to an array while we're at it.
-    var filtered = await client.peopleData.filter(p => p.guild === message.guild.id);
+    var filtered = await client.peopleData.filter(p => p.guild === message.guild.id && p.points);
 
     // Sort it to get the top results... well... at the top. Y'know.
     var sorted = filtered.sort((a, b) => b[1]['points'] - a[1]['points']);
@@ -21,13 +21,7 @@ exports.run = async(client, message, args) => {
     for (const data of top10) {
         embed.addField(`${data[1]['username']}`, `${data[1]['points']} points (level ${data[1]['level']})`);
     }
-    try {
-        var leaderboard = await message.channel.send({embeds: [embed] });
-        await leaderboard.react("⬅️");
-        await leaderboard.react("➡️");
-    } catch (error) {
-        console.error(error);
-    }
+    message.channel.send({embeds: [embed] })
 }
 
 exports.config = {

@@ -55,5 +55,5 @@ exports.config = {
 	name: "blacklist",
 	category: "Modmin",
 	description: "Hide a role from the bot frontend",
-	usage: ["", "add roles <@roles>", "add pfx <role prefixes>", "clear pfx <role prefixes>"]
+	usage: ["[add || clear] roles <@roles>", "[add || clear pfx <role prefixes>"]
 };

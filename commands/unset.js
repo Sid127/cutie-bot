@@ -19,6 +19,6 @@ exports.config = {
 	permLevel: "serverAdmin",
 	name: "unset",
 	category: "Modmin",
-	description: "Removes anonymous/logging channel",
-	usage: ["anon", "logger"]
+	description: "Removes anonymous/logging/BGS channel",
+	usage: ["anon || logger || bgs"]
 };
