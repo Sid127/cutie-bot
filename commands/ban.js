@@ -31,16 +31,12 @@ exports.run = (client, message, args) => {
   });
 };
 
-exports.conf = {
-	enabled: true,
+exports.config = {
 	guildOnly: true,
 	aliases: [],
-	permLevel: "serverAdmin"
-};
-
-exports.help = {
+	permLevel: "serverAdmin",
 	name: "ban",
 	category: "Modmin",
 	description: "Bans a user",
-	usage: "ban [@user] <reason>"
+	usage: ["[<@user>] (<reason>)"]
 };

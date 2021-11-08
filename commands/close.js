@@ -45,16 +45,12 @@ exports.run = (client, message, args) => {
     message.channel.send({content:`This channel has been archived for staff to check for any rule-breaking. Once it has been checked, the staff is expected to manually close the channel using ${client.config.prefix}close mod`})
 }
 
-exports.conf = {
-	enabled: true,
+exports.config = {
 	guildOnly: false,
 	aliases: [],
-	permLevel: "User"
-};
-
-exports.help = {
+	permLevel: "User",
 	name: "close",
 	category: "Miscellaneous",
 	description: "Closes a ticket channel",
-	usage: "close"
+	usage: []
 };

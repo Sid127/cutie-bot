@@ -28,16 +28,12 @@ exports.run = async(client, message, args) => {
     message.channel.send({content:`${user.tag} has received ${pointsToAdd} points and now stands at ${userPoints} points.`});
 }
 
-exports.conf = {
-	enabled: true,
+exports.config = {
 	guildOnly: true,
 	aliases: ["reward"],
-	permLevel: "modAssist"
-};
-
-exports.help = {
+	permLevel: "modAssist",
 	name: "give",
 	category: "Modmin",
 	description: "Reward points to a user",
-	usage: "give [@user] [number of points]"
+	usage: ["[<@user>] [<number of points>]"]
 };

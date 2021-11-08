@@ -10,16 +10,12 @@ exports.run = (client, message) => {
   message.channel.send({content:`${mmbr.displayName}, color removed.`}).catch(console.error)
 }
 
-exports.conf = {
-	enabled: true,
+exports.config = {
 	guildOnly: true,
 	aliases: ["removecol"],
-	permLevel: "User"
-};
-
-exports.help = {
+	permLevel: "User",
 	name: "cleancol",
 	category: "Colors",
 	description: "Remove your current color",
-	usage: "cleancol"
+	usage: []
 };

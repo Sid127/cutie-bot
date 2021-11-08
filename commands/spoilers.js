@@ -3,16 +3,12 @@ exports.run = (client, message, args) => {
 		`Please add the relevant trigger warning outside of the spoilers as well, so people can avoid any specific trigger(s).`);
 }
 
-exports.conf = {
-	enabled: true,
+exports.config = {
 	guildOnly: true,
 	aliases: [],
-	permLevel: "User"
-};
-
-exports.help = {
+	permLevel: "User",
 	name: "spoilers",
 	category: "Miscellaneous",
 	description: "Teach a user how to use spoilers",
-	usage: "spoilers"
+	usage: []
 };

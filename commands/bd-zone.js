@@ -14,16 +14,12 @@ exports.run = async(client, message, args) => {
     }
 }
 
-exports.conf = {
-	enabled: true,
+exports.config = {
 	guildOnly: true,
 	aliases: [],
-    permLevel: "User"
-};
-
-exports.help = {
+    permLevel: "User",
 	name: "bd-zone",
 	category: "Birthdays",
 	description: "Add/change your recorded timezone",
-	usage: "bd-zone [tz-database timezone]\nExample: bd-zone Asia/Calcutta"
+	usage: ["[<tz-database timezone>]"]
 };

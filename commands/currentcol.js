@@ -10,16 +10,12 @@ exports.run = (client, message, [mention]) => {
 	}
 }
 
-exports.conf = {
-	enabled: true,
+exports.config = {
 	guildOnly: true,
 	aliases: [],
-	permLevel: "User"
-};
-
-exports.help = {
+	permLevel: "User",
 	name: "currentcol",
 	category: "Colors",
 	description: "Send your (or another user's) current colors hex code",
-	usage: "currentcol <@User>"
+	usage: ["(@user)"]
 };

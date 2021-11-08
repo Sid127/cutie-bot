@@ -21,16 +21,12 @@ exports.run = async (client, message) => {
 	message.channel.send({embeds:[embed]});
 }
 
-exports.conf = {
-	enabled: true,
+exports.config = {
 	guildOnly: true,
 	aliases: ["server"],
-	permLevel: "User"
-};
-
-exports.help = {
+	permLevel: "User",
 	name: "serverinfo",
 	category: "Miscellaneous",
 	description: "Get server info",
-	usage: "serverinfo"
+	usage: []
 };

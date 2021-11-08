@@ -14,19 +14,19 @@ exports.run = (client, message, args) => {
 
 		// loop through the commands, checking that it's a guild only one and check if the user perms are enough to use the command (or is bot admin)
 		client.commands.forEach(command => {
-			if (command.conf.guildOnly &&
-				(userAllowedCmds.includes(command.conf.permLevel) ||
-				(client.botadmin.includes(`${message.author.id}`) && command.conf.permLevel !== "User"))) {
+			if (command.config.guildOnly &&
+				(userAllowedCmds.includes(command.config.permLevel) ||
+				(client.botadmin.includes(`${message.author.id}`) && command.config.permLevel !== "User"))) {
 				// check for the longest name
-				longestName = Math.max(longestName, command.help.name.length);
+				longestName = Math.max(longestName, command.config.name.length);
 
 				// add the command to the categories object, with the key, if that exists just add the command to the array under it
-				if (!Object.keys(categories).includes(command.help.category)) {
-					categories[command.help.category] = [];
+				if (!Object.keys(categories).includes(command.config.category)) {
+					categories[command.config.category] = [];
 				}
 
 				// add the command to the category
-				categories[command.help.category].push(command.help);
+				categories[command.config.category].push(command.config);
 			}
 		});
 
@@ -55,30 +55,30 @@ exports.run = (client, message, args) => {
 		let command = args;
 		if (client.commands.has(command)) {
 			command = client.commands.get(command);
-			// if (level < client.levelCache[command.conf.permLevel])
+		} else if (client.aliases.has(command)){
+			command = client.commands.get(client.aliases.get(command));
+		}
+		if(command){
+			// if (level < client.levelCache[command.config.permLevel])
 			// 	return;
 			message.channel.send(Formatters.codeBlock('asciidoc',
-				`= ${command.help.name} = \n` +
-				`${command.help.description}\n` +
-				`usage:: ${command.help.usage}\n` +
-				`aliases:: ${command.conf.aliases.join(", ")}\n` +
-				`= ${command.help.name} =`));
+				`= ${command.config.name} = \n` +
+				`${command.config.description}\n` +
+				`usage   :: ${command.config.name} ${command.config.usage.join(`\n           ${command.config.name} `)}\n` +
+				`aliases :: ${command.config.aliases.join(", ") || "no aliases"}\n` +
+				`= ${command.config.name} =`));
 		}
 	}
 };
 
-exports.conf = {
-	enabled: true,
+exports.config = {
 	guildOnly: true,
 	aliases: ["h", "halp","helpme"],
-	permLevel: "User"
-};
-
-exports.help = {
+	permLevel: "User",
 	name: "help",
 	category: "Miscellaneous",
 	description: "Displays all available commands for a user's permission level.",
-	usage: "help <command>"
+	usage: ["(<command>)"]
 };
 
 // helper function for sorting

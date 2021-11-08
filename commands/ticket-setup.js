@@ -14,16 +14,12 @@ exports.run = async(client, message) => {
     message.channel.send({content:"Ticket system setup done!"})
 }
 
-exports.conf = {
-	enabled: true,
+exports.config = {
 	guildOnly: true,
 	aliases: [],
-	permLevel: "serverAdmin"
-};
-
-exports.help = {
+	permLevel: "serverAdmin",
 	name: "ticket-setup",
 	category: "Modmin",
 	description: "Setup Ticket channels",
-	usage: "ticket-setup [#channel]"
+	usage: ["[<#channel>]"]
 };

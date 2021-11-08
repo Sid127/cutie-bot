@@ -48,16 +48,12 @@ exports.run = async(client, message, args) => {
     }
 }
 
-exports.conf = {
-	enabled: true,
+exports.config = {
 	guildOnly: true,
 	aliases: [],
-	permLevel: "serverAdmin"
-};
-
-exports.help = {
+	permLevel: "serverAdmin",
 	name: "blacklist",
 	category: "Modmin",
 	description: "Hide a role from the bot frontend",
-	usage: "blacklist add roles <@roles>\nblacklist add pfx <roleprefixes>\nblacklist clear pfx <role prefixes>\nblacklist"
+	usage: ["", "add roles <@roles>", "add pfx <role prefixes>", "clear pfx <role prefixes>"]
 };

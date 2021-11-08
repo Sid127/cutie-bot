@@ -1,9 +1,13 @@
 exports.run = (client, message, args) => {
     if(!args || args.length < 1) return message.channel.send({content:"Must provide a command name to reload."});
-    const commandName = args;
+    var commandName = args;
     // Check if the command exists and is valid
     if(!client.commands.has(commandName)) {
-      return message.channel.send({content:"That command does not exist"});
+      if (client.aliases.has(commandName)){
+        commandName = client.commands.get(client.aliases.get(commandName)).config.name;
+      } else {
+        return message.channel.send({content:"That command does not exist"});
+      }
     }
     // the path is relative to the *current folder*, so just ./filename.js
     delete require.cache[require.resolve(`./${commandName}.js`)];
@@ -14,16 +18,12 @@ exports.run = (client, message, args) => {
     message.channel.send({content:`The command ${commandName} has been reloaded`});
 }
 
-exports.conf = {
-	enabled: true,
+exports.config = {
 	guildOnly: true,
 	aliases: [],
-	permLevel: "botAdmin"
-};
-
-exports.help = {
+	permLevel: "botAdmin",
 	name: "reload",
 	category: "Modmin",
 	description: "Reload a command to incorporate new changes",
-	usage: "reload [command name]"
+	usage: ["[<command name>]"]
 };

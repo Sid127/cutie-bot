@@ -8,16 +8,12 @@ exports.run = (client, message, args) => {
   message.channel.send({content:breathe_gif[gif]});
 }
 
-exports.conf = {
-	enabled: true,
+exports.config = {
 	guildOnly: true,
 	aliases: [],
-	permLevel: "User"
-};
-
-exports.help = {
+	permLevel: "User",
 	name: "breathe",
 	category: "Miscellaneous",
 	description: "Sends a gif to breathe along to",
-	usage: "breathe"
+	usage: []
 };

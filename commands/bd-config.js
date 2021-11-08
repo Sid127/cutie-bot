@@ -14,16 +14,12 @@ exports.run = async(client, message, args) => {
     }
 }
 
-exports.conf = {
-	enabled: true,
+exports.config = {
 	guildOnly: true,
 	aliases: [],
-	permLevel: "serverAdmin"
-};
-
-exports.help = {
+	permLevel: "serverAdmin",
 	name: "bd-config",
 	category: "Modmin",
 	description: "Set up birthday stuff",
-	usage: "bd-config role [@birthday role]\nbd-config channel [#birthday channel]"
+	usage: ["role [@birthday role]", "channel [#birthday channel]"]
 };

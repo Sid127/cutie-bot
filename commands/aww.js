@@ -6,16 +6,12 @@ exports.run = (clients, message, args) => {
 	    })
 }
 
-exports.conf = {
-	enabled: true,
+exports.config = {
 	guildOnly: true,
 	aliases: [],
-	permLevel: "User"
-};
-
-exports.help = {
+	permLevel: "User",
 	name: "aww",
 	category: "Miscellaneous",
 	description: "Sends random media from r/aww",
-	usage: "aww"
+	usage: []
 };

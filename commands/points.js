@@ -13,16 +13,12 @@ exports.run = async(client, message, [mention]) => {
     }
 }
 
-exports.conf = {
-	enabled: true,
+exports.config = {
 	guildOnly: true,
 	aliases: [],
-	permLevel: "User"
-};
-
-exports.help = {
+	permLevel: "User",
 	name: "points",
 	category: "Miscellaneous",
 	description: "Check a user's points. If no user is mentioned, check yours",
-	usage: "points <@user>"
+	usage: ["(<@user>)"]
 };

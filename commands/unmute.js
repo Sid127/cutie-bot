@@ -10,16 +10,12 @@ exports.run = (client, message) => {
     message.channel.send({content:`Unmuted.`});
 };
 
-exports.conf = {
-	enabled: true,
+exports.config = {
 	guildOnly: true,
 	aliases: [],
-	permLevel: "modAssist"
-};
-
-exports.help = {
+	permLevel: "modAssist",
 	name: "unmute",
 	category: "Modmin",
 	description: "Unmute a user",
-	usage: "unmute [@user]"
+	usage: ["[<@user>]"]
 };

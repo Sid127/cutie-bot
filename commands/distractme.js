@@ -17,16 +17,12 @@ exports.run = (client, message, args) => {
   message.channel.send({content:distraction[vid]});
 }
 
-exports.conf = {
-	enabled: true,
+exports.config = {
 	guildOnly: true,
 	aliases: ["distract me"],
-	permLevel: "User"
-};
-
-exports.help = {
+	permLevel: "User",
 	name: "distractme",
 	category: "Miscellaneous",
 	description: "Send a cute animal video to help you distract yourself",
-	usage: "distractme"
+	usage: []
 };

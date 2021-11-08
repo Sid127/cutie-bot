@@ -19,16 +19,12 @@ exports.run = async(client, message, args) => {
     });
 }
 
-exports.conf = {
-	enabled: true,
+exports.config = {
 	guildOnly: true,
 	aliases: ["purge"],
-	permLevel: "modAssist"
-};
-
-exports.help = {
+	permLevel: "modAssist",
 	name: "clear",
 	category: "Modmin",
 	description: "Bulk delete messages",
-	usage: "clear [number of messages to delete]"
+	usage: ["[<number of messages to delete>]"]
 };

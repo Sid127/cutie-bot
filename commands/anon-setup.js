@@ -21,16 +21,12 @@ ${setChannel}`)
     client.channels.cache.get(confessChnl).send({embeds: [embed]})
 }
 
-exports.conf = {
-	enabled: true,
+exports.config = {
 	guildOnly: true,
 	aliases: [],
-	permLevel: "serverAdmin"
-};
-
-exports.help = {
+	permLevel: "serverAdmin",
 	name: "anon-setup",
 	category: "Modmin",
 	description: "Set up a channel for anonymous messaging",
-	usage: "anon-setup [#channel]"
+	usage: ["[<#channel>]"]
 };

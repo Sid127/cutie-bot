@@ -6,16 +6,12 @@ exports.run = async(client, message, args, level) => { // eslint-disable-line no
 	process.exit(1);
 };
 
-exports.conf = {
-	enabled: true,
+exports.config = {
 	guildOnly: true,
 	aliases: [],
-	permLevel: "serverAdmin"
-};
-
-exports.help = {
+	permLevel: "serverAdmin",
 	name: "reboot",
 	category: "Modmin",
 	description: "Reboot the bot",
-	usage: "reboot"
+	usage: []
 };

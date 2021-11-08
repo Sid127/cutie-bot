@@ -13,16 +13,12 @@ exports.run = (client, message, args) => {
 	}, timeout)
 }
 
-exports.conf = {
-	enabled: true,
+exports.config = {
 	guildOnly: true,
 	aliases: ["mimic", "utter"],
-	permLevel: "modAssist"
-};
-
-exports.help = {
+	permLevel: "modAssist",
 	name: "say",
 	category: "Modmin",
 	description: "Send a message in another channel as Cutie",
-	usage: "say [#channel] [message]"
+	usage: "[<#channel>] [<message>]"
 };

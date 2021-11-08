@@ -13,16 +13,12 @@ exports.run = async(client, message, args, level) => {
     }
 }
 
-exports.conf = {
-	enabled: true,
+exports.config = {
 	guildOnly: true,
 	aliases: [],
-    permLevel: "User"
-};
-
-exports.help = {
+    permLevel: "User",
 	name: "bd-when",
 	category: "Birthdays",
 	description: "Finds a user's birthday. If no user is specified, finds your birthday",
-	usage: "bd-when <user>"
+	usage: ["(@user)"]
 };

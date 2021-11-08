@@ -31,16 +31,13 @@ exports.run = (client, message, args) => {
     }
   }
 
-  exports.conf = {
+  exports.config = {
     enabled: true,
     guildOnly: true,
     aliases: ["colourme"],
-    permLevel: "User"
-  };
-  
-  exports.help = {
+    permLevel: "User",
     name: "colorme",
     category: "Colors",
     description: "Set your color with a hex code",
-    usage: "colorme ff6961"
+    usage: ["[<hex code>]"]
   };

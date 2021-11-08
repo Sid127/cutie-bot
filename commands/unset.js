@@ -13,16 +13,12 @@ exports.run = async(client, message, args) => {
     }
 }
 
-exports.conf = {
-	enabled: true,
+exports.config = {
 	guildOnly: true,
 	aliases: [],
-	permLevel: "serverAdmin"
-};
-
-exports.help = {
+	permLevel: "serverAdmin",
 	name: "unset",
 	category: "Modmin",
 	description: "Removes anonymous/logging channel",
-	usage: "unset anon\nunset logger"
+	usage: ["anon", "logger"]
 };

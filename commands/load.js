@@ -11,16 +11,13 @@ exports.run = (client, message, args) => {
     message.channel.send({content:`The command ${commandName} has been loaded`});
   }
 
-exports.conf = {
+exports.config = {
     enabled: true,
     guildOnly: true,
     aliases: [],
-    permLevel: "botAdmin"
-};
-
-exports.help = {
+    permLevel: "botAdmin",
     name: "load",
     category: "Modmin",
     description: "Load a command to incorporate new changes",
-    usage: "load [command name]"
+    usage: ["[<command name>]"]
 };

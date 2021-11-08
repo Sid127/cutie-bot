@@ -18,16 +18,12 @@ exports.run = async(client, message, args) => { // eslint-disable-line no-unused
     } else {}
 }
 
-exports.conf = {
-	enabled: true,
+exports.config = {
 	guildOnly: true,
 	aliases: ["recruit", "sacrifice"],
-	permLevel: "serverAdmin"
-};
-
-exports.help = {
+	permLevel: "serverAdmin",
 	name: "verify",
 	category: "Modmin",
 	description: "Verifies a user",
-	usage: "verify [@user]"
+	usage: ["[<@user>]"]
 };

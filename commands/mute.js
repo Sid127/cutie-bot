@@ -1,6 +1,9 @@
 exports.run = (client, message) => {
     let muteRole = message.guild.roles.cache.find(role => role.name === "Muted");
 
+	if (!muteRole)
+		return message.reply(`You'll need to manually set up a "Muted" role for this to work... ask a bot admin for help`)
+
     if (message.mentions.members.size === 0)
         return message.reply({content:"please mention a user to mute"});
 
@@ -10,16 +13,12 @@ exports.run = (client, message) => {
     message.channel.send({content:`Muted.`});
 };
 
-exports.conf = {
-	enabled: true,
+exports.config = {
 	guildOnly: true,
 	aliases: [],
-	permLevel: "modAssist"
-};
-
-exports.help = {
+	permLevel: "modAssist",
 	name: "mute",
 	category: "Modmin",
 	description: "Mute a user",
-	usage: "mute [@user]"
+	usage: ["[<@user>]"]
 };

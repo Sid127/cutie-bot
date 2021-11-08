@@ -5,16 +5,12 @@ exports.run = async(client, message, args, level) => {
 	message.channel.send({content:member.user.avatarURL()});
 };
 
-exports.conf = {
-	enabled: true,
+exports.config = {
 	guildOnly: true,
 	aliases: ["avatar"],
-	permLevel: "User"
-};
-
-exports.help = {
+	permLevel: "User",
 	name: "pfp",
 	category: "Miscellaneous",
 	description: "Get a user's profile picture. If no user is mentioned, get yours",
-	usage: "pfp <@user>"
+	usage: ["(<@user>)"]
 };

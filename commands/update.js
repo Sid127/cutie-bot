@@ -23,16 +23,12 @@ exports.run = async(client, message, args) => { // eslint-disable-line no-unused
     }
 };
 
-exports.conf = {
-	enabled: true,
+exports.config = {
 	guildOnly: true,
 	aliases: [],
-	permLevel: "botAdmin"
-};
-
-exports.help = {
+	permLevel: "botAdmin",
 	name: "update",
 	category: "Modmin",
 	description: "Updates the bot",
-	usage: "update"
+	usage: []
 };

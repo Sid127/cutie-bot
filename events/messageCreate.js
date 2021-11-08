@@ -78,15 +78,15 @@ module.exports = {
         // Check perm level and run the command
         if (client.botadmin.includes(`${message.author.id}`)){
             cmd.run(client, message, args);
-        } else if (cmd.conf.permLevel === "User"){
+        } else if (cmd.config.permLevel === "User"){
             cmd.run(client, message, args);
-        } else if (cmd.conf.permLevel === "modAssist"){
+        } else if (cmd.config.permLevel === "modAssist"){
             if (!message.member.permissions.has('VIEW_AUDIT_LOG')){
                 return message.reply({content:"you can't use this command."});
             } else {
                 cmd.run(client, message, args);
             }
-        } else if (cmd.conf.permLevel === "serverAdmin"){
+        } else if (cmd.config.permLevel === "serverAdmin"){
             if (!message.member.permissions.has('ADMINISTRATOR'))
                 return message.reply({content:"you can't use this command."});
             else {

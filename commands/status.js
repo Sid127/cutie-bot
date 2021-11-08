@@ -15,16 +15,12 @@ exports.run = (client, message) => {
 
 }
 
-exports.conf = {
-	enabled: true,
+exports.config = {
 	guildOnly: true,
 	aliases: ["ping"],
-	permLevel: "User"
-};
-
-exports.help = {
+	permLevel: "User",
 	name: "status",
 	category: "Miscellaneous",
 	description: "Check if the bot is online",
-	usage: "status"
+	usage: []
 };

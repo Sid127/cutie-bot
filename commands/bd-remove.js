@@ -3,16 +3,12 @@ exports.run = async(client, message) => {
     message.channel.send({content:"I no longer know your birthday :("})
 }
 
-exports.conf = {
-	enabled: true,
+exports.config = {
 	guildOnly: true,
 	aliases: ["bd-rm"],
-	permLevel: "User"
-};
-
-exports.help = {
+	permLevel: "User",
 	name: "bd-remove",
 	category: "Birthdays",
 	description: "Removes your birthday from the bot",
-	usage: "bd-remove"
+	usage: []
 };

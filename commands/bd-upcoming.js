@@ -18,16 +18,12 @@ exports.run = async(client, message) => {
     message.channel.send({content:recup})
 }
 
-exports.conf = {
-	enabled: true,
+exports.config = {
 	guildOnly: true,
 	aliases: [],
-    permLevel: "User"
-};
-
-exports.help = {
+    permLevel: "User",
 	name: "bd-upcoming",
 	category: "Birthdays",
 	description: "Displays upcoming and recent birthdays",
-	usage: "bd-upcoming"
+	usage: []
 };

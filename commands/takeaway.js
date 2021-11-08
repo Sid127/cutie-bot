@@ -27,16 +27,12 @@ exports.run = async(client, message, args) => {
     message.channel.send({content:`${user.tag} has lost ${pointsToDed} points and now stands at ${userPoints} points.`});
 }
 
-exports.conf = {
-	enabled: true,
+exports.config = {
 	guildOnly: true,
 	aliases: ["deduct"],
-	permLevel: "modAssist"
-};
-
-exports.help = {
+	permLevel: "modAssist",
 	name: "takeaway",
 	category: "Modmin",
 	description: "Remove points from a user",
-	usage: "takeaway [@user] [points]"
+	usage: ["[<@user>] [<points>]"]
 };

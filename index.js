@@ -48,13 +48,13 @@ client.aliases = new Map();
 loadCommand = (commandName) => {
     try {
         const props = require(`./commands/${commandName}`);
-        console.log(`Loading Command: ${props.help.name}`);
+        console.log(`Loading Command: ${props.config.name}`);
         if (props.init) {
             props.init(client);
         }
-        client.commands.set(props.help.name, props);
-        props.conf.aliases.forEach(alias => {
-            client.aliases.set(alias, props.help.name);
+        client.commands.set(props.config.name, props);
+        props.config.aliases.forEach(alias => {
+            client.aliases.set(alias, props.config.name);
         });
         return false;
     } catch (e) {

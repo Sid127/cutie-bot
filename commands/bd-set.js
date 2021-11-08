@@ -30,16 +30,12 @@ exports.run = async(client, message, args) => {
     }
 }
 
-exports.conf = {
-	enabled: true,
+exports.config = {
 	guildOnly: true,
 	aliases: ["bd-add"],
-    permLevel: "User"
-};
-
-exports.help = {
+    permLevel: "User",
 	name: "bd-set",
 	category: "Birthdays",
 	description: "Adds your birthday information. Timezone is optional, defaults to UTC",
-	usage: "bd-set [date-Mon], <tz-database timezone>\nExample: bd-set 17-Aug Asia/Calcutta"
+	usage: ["[<date-Mon>] (<tz-database timezone>)"]
 };

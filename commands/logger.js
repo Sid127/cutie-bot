@@ -17,16 +17,12 @@ exports.run = async(client, message) => {
     message.channel.send({embeds:[embed]})
 }
 
-exports.conf = {
-	enabled: true,
+exports.config = {
 	guildOnly: true,
 	aliases: [],
-	permLevel: "serverAdmin"
-};
-
-exports.help = {
+	permLevel: "serverAdmin",
 	name: "logger",
 	category: "Modmin",
 	description: "Sets up an audit log in a specified channel",
-	usage: "logger [#channel]"
+	usage: ["[<#channel>]"]
 };

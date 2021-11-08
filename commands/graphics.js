@@ -13,16 +13,12 @@ exports.run = (client, message, args) => {
   message.channel.send({content:graphics_img[img]});
 }
 
-exports.conf = {
-	enabled: true,
+exports.config = {
 	guildOnly: true,
 	aliases: [],
-	permLevel: "User"
-};
-
-exports.help = {
+	permLevel: "User",
 	name: "graphics",
 	category: "Miscellaneous",
 	description: "Send a graphic with coping tips",
-	usage: "graphics"
+	usage: []
 };

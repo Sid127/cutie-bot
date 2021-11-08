@@ -22,16 +22,12 @@ exports.run = async(client, message, args) => {
     } else {}
 }
 
-exports.conf = {
-	enabled: true,
+exports.config = {
 	guildOnly: false,
 	aliases: [],
-	permLevel: "User"
-};
-
-exports.help = {
+	permLevel: "User",
 	name: "anon",
 	category: "Miscellaneous",
 	description: "Sends an anonymous message - DM command only",
-	usage: "Check the anon channel for usage info"
+	usage: ["Check the anon channel for usage info"]
 };

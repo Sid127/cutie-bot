@@ -30,16 +30,12 @@ exports.run = async(client, message, args) => {
     }
 }
 
-exports.conf = {
-	enabled: true,
+exports.config = {
 	guildOnly: true,
 	aliases: ["ranks"],
-	permLevel: "User"
-};
-
-exports.help = {
+	permLevel: "User",
 	name: "leaderboard",
 	category: "Miscellaneous",
 	description: "Shows the current leaderboard",
-	usage: "leaderboard"
+	usage: []
 };

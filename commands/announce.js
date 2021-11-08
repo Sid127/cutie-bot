@@ -26,16 +26,12 @@ exports.run = (client, message, args) => {
   }
 }
 
-exports.conf = {
-	enabled: true,
+exports.config = {
 	guildOnly: true,
 	aliases: ["megaphone", "decree"],
-	permLevel: "serverAdmin"
-};
-
-exports.help = {
+	permLevel: "serverAdmin",
 	name: "announce",
 	category: "Modmin",
 	description: "Sends an announcement to a specified channel",
-	usage: "announce <@everyone> [#channel] [announcement]"
+	usage: [`("@everyone") [<#channel>] [<announcement>]`]
 };
