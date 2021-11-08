@@ -25,7 +25,7 @@ exports.conf = {
 };
 
 exports.help = {
-	name: "distract me",
+	name: "distractme",
 	category: "Miscellaneous",
 	description: "Send a cute animal video to help you distract yourself",
 	usage: "distractme"

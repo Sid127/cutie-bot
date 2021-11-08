@@ -3,7 +3,7 @@ module.exports = {
   async execute(reaction, user, client) {
     const Discord = require("discord.js");
     const ticCatStub = await client.serverData.get(`${reaction.message.guild.id}.ticket`)
-    const ticCat = client.channels.cache.find(c => c.id === ticCatStub).parentID
+    const ticCat = client.channels.cache.find(c => c.id === ticCatStub).parentId
 
     if(reaction.message.channel.type === 'DM') return;
     if(user.partial) await user.fetch();
