@@ -28,7 +28,7 @@ exports.config = {
 	aliases: [],
 	permLevel: "botAdmin",
 	name: "update",
-	category: "Modmin",
+	category: "Console",
 	description: "Updates the bot",
 	usage: []
 };

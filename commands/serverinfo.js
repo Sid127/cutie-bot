@@ -26,7 +26,7 @@ exports.config = {
 	aliases: ["server"],
 	permLevel: "User",
 	name: "serverinfo",
-	category: "Miscellaneous",
+	category: "Metadata",
 	description: "Get server info",
 	usage: []
 };

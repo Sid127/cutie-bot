@@ -10,7 +10,7 @@ exports.config = {
 	aliases: ["avatar"],
 	permLevel: "User",
 	name: "pfp",
-	category: "Miscellaneous",
+	category: "Metadata",
 	description: "Get a user's profile picture. If no user is mentioned, get yours",
 	usage: ["(<@user>)"]
 };

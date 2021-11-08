@@ -95,7 +95,7 @@ exports.config = {
 	aliases: [],
 	permLevel: "serverAdmin",
 	name: "setup",
-	category: "Modmin",
+	category: "Management",
 	description: "Set up various bot modules",
 	usage: ["[anon || bd-config channel || bgs || logger || ticket] [<#channel>]", "bd-config role [<@birthday role>]"]
 };

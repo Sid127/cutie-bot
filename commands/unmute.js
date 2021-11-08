@@ -15,7 +15,7 @@ exports.config = {
 	aliases: [],
 	permLevel: "modAssist",
 	name: "unmute",
-	category: "Modmin",
+	category: "Moderation",
 	description: "Unmute a user",
 	usage: ["[<@user>]"]
 };

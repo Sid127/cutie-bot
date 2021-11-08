@@ -23,7 +23,7 @@ exports.config = {
 	aliases: [],
 	permLevel: "botAdmin",
 	name: "reload",
-	category: "Modmin",
+	category: "Console",
 	description: "Reload a command to incorporate new changes",
 	usage: ["[<command name>]"]
 };

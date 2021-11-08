@@ -11,7 +11,7 @@ exports.config = {
 	aliases: [],
 	permLevel: "User",
 	name: "aww",
-	category: "Miscellaneous",
-	description: "Sends random media from r/aww",
+	category: "Support",
+	description: "Sends random media from r/aww to act as a distraction",
 	usage: []
 };

@@ -32,7 +32,7 @@ exports.config = {
 	aliases: ["deduct"],
 	permLevel: "modAssist",
 	name: "takeaway",
-	category: "Modmin",
+	category: "Points",
 	description: "Remove points from a user",
 	usage: ["[<@user>] [<points>]"]
 };

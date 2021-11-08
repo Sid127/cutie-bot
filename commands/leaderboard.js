@@ -29,7 +29,7 @@ exports.config = {
 	aliases: ["ranks"],
 	permLevel: "User",
 	name: "leaderboard",
-	category: "Miscellaneous",
+	category: "Points",
 	description: "Shows the current leaderboard",
 	usage: []
 };

@@ -17,7 +17,7 @@ exports.config = {
     aliases: [],
     permLevel: "botAdmin",
     name: "load",
-    category: "Modmin",
+    category: "Console",
     description: "Load a command to incorporate new changes",
     usage: ["[<command name>]"]
 };

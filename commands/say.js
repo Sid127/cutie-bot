@@ -18,7 +18,7 @@ exports.config = {
 	aliases: ["mimic", "utter"],
 	permLevel: "modAssist",
 	name: "say",
-	category: "Modmin",
-	description: "Send a message in another channel as Cutie",
+	category: "Metadata",
+	description: "Make me say things",
 	usage: "[<#channel>] [<message>]"
 };

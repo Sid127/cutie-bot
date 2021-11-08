@@ -31,7 +31,7 @@ exports.config = {
 	aliases: ["megaphone", "decree"],
 	permLevel: "serverAdmin",
 	name: "announce",
-	category: "Modmin",
+	category: "Management",
 	description: "Sends an announcement to a specified channel",
 	usage: [`("@everyone") [<#channel>] [<announcement>]`]
 };

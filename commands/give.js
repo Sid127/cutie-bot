@@ -33,7 +33,7 @@ exports.config = {
 	aliases: ["reward"],
 	permLevel: "modAssist",
 	name: "give",
-	category: "Modmin",
+	category: "Points",
 	description: "Reward points to a user",
 	usage: ["[<@user>] [<number of points>]"]
 };

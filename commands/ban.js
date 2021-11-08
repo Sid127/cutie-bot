@@ -36,7 +36,7 @@ exports.config = {
 	aliases: [],
 	permLevel: "serverAdmin",
 	name: "ban",
-	category: "Modmin",
+	category: "Moderation",
 	description: "Bans a user",
 	usage: ["[<@user>] (<reason>)"]
 };

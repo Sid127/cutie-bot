@@ -13,7 +13,7 @@ exports.config = {
 	aliases: [],
 	permLevel: "User",
 	name: "breathe",
-	category: "Miscellaneous",
+	category: "Support",
 	description: "Sends a gif to breathe along to",
 	usage: []
 };

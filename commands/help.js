@@ -1,5 +1,5 @@
-exports.run = (client, message, args) => {
-	const { Formatters } = require("discord.js");
+exports.run = async (client, message, args) => {
+	const { Util, Formatters } = require("discord.js");
 	// If no specific command is called, show all filtered commands.
 	if (args.trim().length == 0) {
 		// variables for different things used
@@ -37,7 +37,7 @@ exports.run = (client, message, args) => {
 		// create the blocks for each category and add that to output
 		for (catKey of Object.keys(categories).sort()) {
 			// add the category header to the output
-			output += `= ${catKey} =\n`;
+			output += `\u200b\n== ${catKey} ==\n`;
 
 			// sort the list by name
 			categories[catKey].sort(dynamicSort("name"));
@@ -46,9 +46,10 @@ exports.run = (client, message, args) => {
 			for (cmd of categories[catKey]) {
 				output += `${cmd.name.padEnd(longestName, " ")} :: ${cmd.description}\n`
 			}
-
-			message.channel.send(Formatters.codeBlock('asciidoc', output));
-			output=""
+		}
+		let splitOutput = Util.splitMessage(output, {maxLength: 2000, char: "\u200b"});
+		for (let chunk of splitOutput) {
+			await message.channel.send(Formatters.codeBlock("asciidoc", chunk.trim()));
 		}
 	} else {
 		// Show individual command's help.
@@ -64,8 +65,8 @@ exports.run = (client, message, args) => {
 			message.channel.send(Formatters.codeBlock('asciidoc',
 				`== ${command.config.name} == \n` +
 				`${command.config.description}\n` +
-				`usage   :: ${command.config.name} ${command.config.usage.join(`\n           ${command.config.name} `)}\n` +
-				`aliases :: ${command.config.aliases.join(", ") || "no aliases"}\n`));
+				`usage   :: ${command.config.name} ${command.config.usage.join(`\n${" ".repeat(11) + command.config.name} `)}\n` +
+				`aliases :: ${command.config.aliases.join(", ") || "no aliases"}`));
 		}
 	}
 };
@@ -75,7 +76,7 @@ exports.config = {
 	aliases: ["h", "halp","helpme"],
 	permLevel: "User",
 	name: "help",
-	category: "Miscellaneous",
+	category: "Metadata",
 	description: "Displays all available commands for a user's permission level.",
 	usage: ["(<command>)"]
 };

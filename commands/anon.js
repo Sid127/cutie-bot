@@ -27,7 +27,7 @@ exports.config = {
 	aliases: [],
 	permLevel: "User",
 	name: "anon",
-	category: "Miscellaneous",
+	category: "Confession",
 	description: "Sends an anonymous message - DM command only",
 	usage: ["Check the anon channel for usage info"]
 };

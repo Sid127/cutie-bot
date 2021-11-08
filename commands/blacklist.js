@@ -53,7 +53,7 @@ exports.config = {
 	aliases: [],
 	permLevel: "serverAdmin",
 	name: "blacklist",
-	category: "Modmin",
+	category: "Management",
 	description: "Hide a role from the bot frontend",
 	usage: ["[add || clear] roles <@roles>", "[add || clear pfx <role prefixes>"]
 };

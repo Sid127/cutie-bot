@@ -18,7 +18,7 @@ exports.config = {
 	aliases: [],
 	permLevel: "User",
 	name: "graphics",
-	category: "Miscellaneous",
+	category: "Support",
 	description: "Send a graphic with coping tips",
 	usage: []
 };

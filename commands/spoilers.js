@@ -8,7 +8,7 @@ exports.config = {
 	aliases: [],
 	permLevel: "User",
 	name: "spoilers",
-	category: "Miscellaneous",
+	category: "Support",
 	description: "Teach a user how to use spoilers",
 	usage: []
 };

@@ -23,7 +23,7 @@ exports.config = {
 	aliases: ["recruit", "sacrifice"],
 	permLevel: "serverAdmin",
 	name: "verify",
-	category: "Modmin",
+	category: "Moderation",
 	description: "Verifies a user",
 	usage: ["[<@user>]"]
 };

@@ -20,7 +20,7 @@ exports.config = {
 	aliases: ["ping"],
 	permLevel: "User",
 	name: "status",
-	category: "Miscellaneous",
+	category: "Metadata",
 	description: "Check if the bot is online",
 	usage: []
 };

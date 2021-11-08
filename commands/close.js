@@ -50,7 +50,7 @@ exports.config = {
 	aliases: [],
 	permLevel: "User",
 	name: "close",
-	category: "Miscellaneous",
+	category: "Tickets",
 	description: "Closes a ticket channel",
 	usage: []
 };

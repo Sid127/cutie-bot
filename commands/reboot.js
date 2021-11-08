@@ -11,7 +11,7 @@ exports.config = {
 	aliases: [],
 	permLevel: "serverAdmin",
 	name: "reboot",
-	category: "Modmin",
+	category: "Console",
 	description: "Reboot the bot",
 	usage: []
 };

@@ -20,7 +20,7 @@ exports.config = {
 	aliases: [],
 	permLevel: "User",
 	name: "points",
-	category: "Miscellaneous",
+	category: "Points",
 	description: "Check a user's points. If no user is mentioned, check yours",
 	usage: ["(<@user>)"]
 };

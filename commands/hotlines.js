@@ -7,7 +7,7 @@ exports.config = {
 	aliases: [],
 	permLevel: "User",
 	name: "hotlines",
-	category: "Miscellaneous",
+	category: "Support",
 	description: "Send a list of hotlines worldwide",
 	usage: []
 };

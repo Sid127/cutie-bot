@@ -24,7 +24,7 @@ exports.config = {
 	aliases: ["purge"],
 	permLevel: "modAssist",
 	name: "clear",
-	category: "Modmin",
+	category: "Moderation",
 	description: "Bulk delete messages",
 	usage: ["[<number of messages to delete>]"]
 };

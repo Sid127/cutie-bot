@@ -38,7 +38,7 @@ exports.config = {
 	aliases: ["user"],
 	permLevel: "User",
 	name: "userinfo",
-	category: "Miscellaneous",
+	category: "Metadata",
 	description: "Show user information. If no user is mentioned, show yours",
 	usage: ["(<@user>)"]
 };
