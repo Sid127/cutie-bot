@@ -53,9 +53,10 @@ module.exports = {
             }
             if (await client.peopleData.get(`${key}.level`) === 3) {
                 const rankRole = message.guild.roles.cache.find(role => role.name === "active")
-                if (!rankRole) return;
-
-                message.member.roles.add(rankRole).catch(console.error)
+                if (!rankRole){}
+                else{
+                    message.member.roles.add(rankRole).catch(console.error)
+                }
             }
         }
 
