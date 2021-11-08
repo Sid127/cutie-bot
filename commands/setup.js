@@ -92,9 +92,19 @@ exports.run = async(client, message, args) => {
     //per server prefixes
     else if (arg1 === "prefix"){
         if(!arg2)return message.channel.send("You know I need a prefix to work, right?")
-        client.prefixes.set(`${message.guild.id}`, arg2)//update our local cache
-        client.serverData.set(`${message.guild.id}`, arg2)//update mongo
-        message.channel.send(`Done! New server prefix is ${arg2}`)
+        if(arg2 === client.config.prefix){
+            client.prefixes.set(`${message.guild.id}`, "")//update our local cache
+            await client.serverData.set(`${message.guild.id}.prefix`, "")//update mongo
+            let nick = message.guild.me.displayName.slice(0, message.guild.me.displayName.indexOf("["))
+            message.guild.me.setNickname(`${nick}`)
+            message.channel.send(`Done! New server prefix is \`${arg2}\``)
+        } else {
+            client.prefixes.set(`${message.guild.id}`, arg2)//update our local cache
+            await client.serverData.set(`${message.guild.id}.prefix`, arg2)//update mongo
+            let nick = message.guild.me.displayName.slice(0, message.guild.me.displayName.indexOf("["))
+            message.guild.me.setNickname(`${message.guild.me.displayName} [${arg2}]`)
+            message.channel.send(`Done! New server prefix is \`${arg2}\``)
+        }
     }
 
     else {message.channel.send("Lord help me D:")}
