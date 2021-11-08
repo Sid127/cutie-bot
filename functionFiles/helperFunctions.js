@@ -1,3 +1,15 @@
+// function for calculating distance in 3d space
+module.exports.distanceCalc = (point1, point2, decimalPoints = 2) => {
+	return Math.sqrt(Math.pow((point1.x - point2.x), 2) +
+		Math.pow((point1.y - point2.y), 2) +
+		Math.pow((point1.z - point2.z), 2)).toFixed(decimalPoints);
+}
+
+// function to return the string with a capital first letter
+module.exports.capitalizeString = (string) => {
+	return string && string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 // modular function to get data from mongodb
 module.exports.mongoGet = async (client, dbKey, valueKeys) => {
 	returnMap = new Map()
