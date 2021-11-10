@@ -66,13 +66,13 @@ module.exports = {
         }
 
         //define prefix
-        client.prefixes.get(`${message.guild.id}`) === "" ? prefix = client.config.prefix : prefix = client.prefixes.get(`${message.guild.id}`)
+        client.prefixes.get(`${message.guild.id}`) === "" ? client.prefix = client.config.prefix : client.prefix = client.prefixes.get(`${message.guild.id}`)
 
         // Ignore messages not starting with the prefix
-        if (!message.content.toLowerCase().trim().startsWith(prefix)) return;
+        if (!message.content.toLowerCase().trim().startsWith(client.prefix)) return;
 		
 		// Define command and the rest of the text in the message
-		let [command, ...args] = message.content.slice(prefix.length).trim().split(/ +/g);
+		let [command, ...args] = message.content.slice(client.prefix.length).trim().split(/ +/g);
 		// From command slice out prefix length and force lowercase while just joining args together to a string with spaces (since split by them)
 		command = command.toLowerCase();
 		args = args.join(" ").trim();

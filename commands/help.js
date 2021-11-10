@@ -1,5 +1,7 @@
 exports.run = async (client, message, args) => {
 	const { Util, Formatters } = require("discord.js");
+	const { capitalizeString, dynamicSort } = require("../functionFiles/helperFunctions.js");
+
 	// If no specific command is called, show all filtered commands.
 	if (args.trim().length == 0) {
 		// variables for different things used
@@ -32,7 +34,7 @@ exports.run = async (client, message, args) => {
 
 		// create the "header" for the message
 		let output = (`== Command List ==\n` +
-			`[Use ${client.config.prefix}helpme <command> for details]\n\n`);
+			`[Use ${client.prefix}helpme <command> for details]\n\n`);
 
 		// create the blocks for each category and add that to output
 		for (catKey of Object.keys(categories).sort()) {
@@ -68,7 +70,7 @@ exports.run = async (client, message, args) => {
 			// if (level < client.levelCache[command.config.permLevel])
 			// 	return;
 			message.channel.send(Formatters.codeBlock('asciidoc',
-				`== ${command.config.name} == \n` +
+				`== ${capitalizeString(command.config.name)} == \n` +
 				`${command.config.description}\n` +
 				`usage   :: ${command.config.name} ${command.config.usage.join(`\n${" ".repeat(11) + command.config.name} `)}\n` +
 				`aliases :: ${command.config.aliases.join(", ") || "no aliases"}`));
@@ -85,21 +87,3 @@ exports.config = {
 	description: "Displays all available commands for a user's permission level.",
 	usage: ["(<command>)"]
 };
-
-// helper function for sorting
-function dynamicSort(property) {
-    var sortOrder = 1;
-
-    if (property[0] === "-") {
-        sortOrder = -1;
-        property = property.substr(1);
-    }
-
-    return function (a,b) {
-        if (sortOrder == -1){
-            return b[property].localeCompare(a[property]);
-        } else {
-            return a[property].localeCompare(b[property]);
-        }
-    }
-}

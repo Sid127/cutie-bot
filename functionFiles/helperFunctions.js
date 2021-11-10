@@ -10,6 +10,24 @@ module.exports.capitalizeString = (string) => {
 	return string && string.charAt(0).toUpperCase() + string.slice(1);
 }
 
+// helper function for sorting
+module.exports.dynamicSort = (property) => {
+    var sortOrder = 1;
+
+    if (property[0] === "-") {
+        sortOrder = -1;
+        property = property.substr(1);
+    }
+
+    return function (a,b) {
+        if (sortOrder == -1){
+            return b[property].localeCompare(a[property]);
+        } else {
+            return a[property].localeCompare(b[property]);
+        }
+    }
+}
+
 // modular function to get data from mongodb
 module.exports.mongoGet = async (client, dbKey, valueKeys) => {
 	returnMap = new Map()
