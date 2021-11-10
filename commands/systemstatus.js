@@ -29,10 +29,8 @@ exports.run = async(client, message, args) => {
 
 	// send the temp message and do the API call to EBGS for the faction data and the tick data
 	let tempMessage = await message.channel.send("Retrieving data...");
-	let [systemData, tickData] = await Promise.all([
-		asyncEBGS("/systems", {name: args}),
-		asyncEBGS("/ticks")
-	]);
+	let systemData = await asyncEBGS("/systems", {name: args})
+	let tickData = client.cache.tick
 
 	// check if the api call did return some data
 	if (!systemData.data || systemData.data.docs.length === 0) {
@@ -40,7 +38,7 @@ exports.run = async(client, message, args) => {
 	}
 
 	// variable to set moment parsed date value
-	let lastTick = tickData.data[0] ? moment(tickData.data[0].time) : undefined
+	let lastTick = tickData ? moment(tickData.time) : undefined
 	let updatedWhen = moment(systemData.data.docs[0].updated_at);
 	let updatedString = `${updatedWhen.fromNow()}${updatedWhen.isBefore(lastTick) ? " (Stale data)" : ""}`;
 

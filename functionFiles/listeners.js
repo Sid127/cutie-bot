@@ -17,8 +17,15 @@ tickListener = async (client) => {
     var tickData = tempData.data
 
     //check to see if tick id changed, and if it has, push new data to mongo and send an update message
-    let oldID = await client.serverData.get(`tick.id`);
+    let oldID = client.cache.tick.id
     if(oldID !== tickData[0]._id){
+        //update out local cache
+        client.cache.tick.id = tickData[0]._id
+        client.cache.tick.time = tickData[0].time
+        client.cache.tick.updatedAt = tickData[0].updated_at
+        client.cache.tick.v = tickData[0].__v
+
+        //update mongo while we're at it too
         await client.serverData.set(`tick.id`, tickData[0]._id)
         await client.serverData.set(`tick.time`, tickData[0].time)
         await client.serverData.set(`tick.updatedAt`, tickData[0].updated_at)

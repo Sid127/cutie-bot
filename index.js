@@ -79,16 +79,23 @@ const init = async() => {
             console.log(response);
     });
 
-    client.disabledModules = new Map();
-    client.prefixes = new Map();
-    client.activityLeaderboard = new Map();
-    let guilds = await client.serverData.keys
-    for (g of guilds) {
-        client.disabledModules.set(g, await client.serverData.get(`${g}.disabledModules`))
-        client.prefixes.set(g, await client.serverData.get(`${g}.prefix`))
-        client.activityLeaderboard.set(g, await client.serverData.get(`${g}.activityLeaderboard`))
+    client.cache = new Object();
+    let keys = await client.serverData.keys
+    for (key of keys) {
+        if(!["botSettings", "tick"].includes(key)){
+            client.cache[key] = {
+                disabledModules: [],
+                prefix: "",
+                activityLeaderboard: ""
+            }
+            client.cache[key]["disabledModules"] = await client.serverData.get(`${key}.disabledModules`)
+            client.cache[key]["prefix"] = await client.serverData.get(`${key}.prefix`)
+            client.cache[key]["activityLeaderboard"] = await client.serverData.get(`${key}.activityLeaderboard`)
+        }
+        client.cache.botSettings = await client.serverData.get(`botSettings`)
+        client.cache.tick = await client.serverData.get(`tick`)
     }
-    client.botadmin = await client.serverData.get(`botSettings.botadmin`)
+    console.log("Local cache created")
 } 
 
 init();

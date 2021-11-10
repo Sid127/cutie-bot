@@ -21,8 +21,7 @@ module.exports = {
                 botadmin: ["319391726613823489", "283607841779089409"]
             });
 
-            let activitypoints = client.activityLeaderboard.get(`${message.guild.id}`)
-            if(activitypoints === "enabled"){
+            if(client.cache[message.guild.id].activityLeaderboard === "enabled"){
                 // Triggers on new users we haven't seen before.
                 await client.peopleData.ensure(`${message.guild.id}-${message.author.id}`, {
                     user: message.author.id,
@@ -66,7 +65,7 @@ module.exports = {
         }
 
         //define prefix
-        client.prefixes.get(`${message.guild.id}`) === "" ? client.prefix = client.config.prefix : client.prefix = client.prefixes.get(`${message.guild.id}`)
+        client.cache[message.guild.id].prefix === "" ? client.prefix = client.config.prefix : client.prefix = client.cache[message.guild.id].prefix
 
         // Ignore messages not starting with the prefix
         if (!message.content.toLowerCase().trim().startsWith(client.prefix)) return;
@@ -84,10 +83,10 @@ module.exports = {
         if (!cmd) return;
 
         //grab our cache of disabled modules for this server
-        let disabledModules = client.disabledModules.get(`${message.guild.id}`)
+        let disabledModules = client.cache[message.guild.id].disabledModules
 
         // Check perm level and run the command
-        if (client.botadmin.includes(`${message.author.id}`)){
+        if (client.cache.botSettings.botadmin.includes(`${message.author.id}`)){
             cmd.run(client, message, args);
         } else if (disabledModules.includes(cmd.config.category.toLowerCase())){
             return message.channel.send("That module has been disabled! Ask a server admin to enable it :3")

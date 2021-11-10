@@ -93,13 +93,13 @@ exports.run = async(client, message, args) => {
     else if (arg1 === "prefix"){
         if(!arg2)return message.channel.send("You know I need a prefix to work, right?")
         if(arg2 === client.config.prefix){
-            client.prefixes.set(`${message.guild.id}`, "")//update our local cache
+            client.cache[message.guild.id].prefix = "" //update our local cache
             await client.serverData.set(`${message.guild.id}.prefix`, "")//update mongo
             let nick = message.guild.me.displayName.slice(0, message.guild.me.displayName.indexOf("["))
             message.guild.me.setNickname(`${nick}`)
             message.channel.send(`Done! New server prefix is \`${arg2}\``)
         } else {
-            client.prefixes.set(`${message.guild.id}`, arg2)//update our local cache
+            client.cache[message.guild.id].prefix = arg2 //update our local cache
             await client.serverData.set(`${message.guild.id}.prefix`, arg2)//update mongo
             let nick = message.guild.me.displayName.slice(0, message.guild.me.displayName.indexOf("["))
             message.guild.me.setNickname(`${message.guild.me.displayName} [${arg2}]`)
@@ -109,11 +109,11 @@ exports.run = async(client, message, args) => {
 
     else if (arg1 === "activitypoints"){
         if(arg2 === "disabled"){
-            client.activityLeaderboard.set(`${message.guild.id}`, arg2)//update our local cache
+            client.cache[message.guild.id].activityLeaderboard = arg2//update our local cache
             await client.serverData.set(`${message.guild.id}.activityLeaderboard`, arg2)//update mongo
             message.channel.send("Activity based points system disabled")
         } else if (arg2 === "enabled"){
-            client.activityLeaderboard.set(`${message.guild.id}`, arg2)//update our local cache
+            client.cache[message.guild.id].activityLeaderboard = arg2//update our local cache
             await client.serverData.set(`${message.guild.id}.activityLeaderboard`, arg2)//update mongo
             message.channel.send("Activity based points system disabled")
         }

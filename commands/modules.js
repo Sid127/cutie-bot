@@ -31,11 +31,11 @@ exports.run = async(client, message, args) => {
         if(!module) return message.channel.send("What in tarnation...")
         if(["metadata", "management", "moderation"].includes(module.toLowerCase())) return message.channel.send("You monster... :(")
         //grab our cache in a variable
-        let disabledModules = client.disabledModules.get(`${message.guild.id}`)
+        let disabledModules = client.cache[message.guild.id].disabledModules
         //push disabled module to mongo
         if(!disabledModules.includes(module.toLowerCase())){
             disabledModules.push(module.toLowerCase())//push the newly disabled module into the variable
-            client.disabledModules.set(`${message.guild.id}`, disabledModules) //update our cache
+            client.cache[message.guild.id].disabledModules = disabledModules
             client.serverData.set(`${message.guild.id}.disabledModules`, disabledModules) //update mongo
             message.channel.send(`${module} module disabled`) //confirmation
         } else {message.channel.send("Yeah that one's already disabled")}

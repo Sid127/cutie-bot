@@ -18,7 +18,7 @@ exports.run = async (client, message, args) => {
 		client.commands.forEach(command => {
 			if (command.config.guildOnly &&
 				(userAllowedCmds.includes(command.config.permLevel) ||
-				(client.botadmin.includes(`${message.author.id}`) && command.config.permLevel !== "User"))) {
+				(client.cache.botSettings.botadmin.includes(`${message.author.id}`) && command.config.permLevel !== "User"))) {
 				// check for the longest name
 				longestName = Math.max(longestName, command.config.name.length);
 
@@ -39,7 +39,7 @@ exports.run = async (client, message, args) => {
 		// create the blocks for each category and add that to output
 		for (catKey of Object.keys(categories).sort()) {
 			//grab our cache of disabled modules for this server
-			let disabledModules = client.disabledModules.get(`${message.guild.id}`)
+			let disabledModules = client.cache[message.guild.id].disabledModules
 			//check for disabled modules
 			if (!disabledModules.includes(catKey.toLowerCase())){
 				// add the category header to the output

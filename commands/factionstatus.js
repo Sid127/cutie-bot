@@ -29,13 +29,11 @@ exports.run = async(client, message, args) => {
 
 	// send the temp message and do the API call to EBGS for the faction data and the tick data
 	let tempMessage = await message.channel.send("Retrieving data...");
-	let [factionData, tickData] = await Promise.all([
-		asyncEBGS("/factions", {name: args}),
-		asyncEBGS("/ticks")
-	]);
+	let factionData = await asyncEBGS("/factions", {name: args})
+	let tickData = client.cache.tick
 
 	// variable to set moment parsed date value
-	let lastTick = tickData.data[0] ? moment(tickData.data[0].time) : undefined
+	let lastTick = tickData ? moment(tickData.time) : undefined
 
 	// check if the api call did return some data
 	if (!factionData.data || factionData.data.docs.length === 0) {
