@@ -91,6 +91,7 @@ const init = async() => {
             client.cache[key]["disabledModules"] = await client.serverData.get(`${key}.disabledModules`)
             client.cache[key]["prefix"] = await client.serverData.get(`${key}.prefix`)
             client.cache[key]["activityLeaderboard"] = await client.serverData.get(`${key}.activityLeaderboard`)
+            client.cache[key]["homeSys"] = await client.serverData.get(`${key}.home.homeSys`) || undefined
         }
         client.cache.botSettings = await client.serverData.get(`botSettings`)
         client.cache.tick = await client.serverData.get(`tick`)

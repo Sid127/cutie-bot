@@ -1,17 +1,17 @@
 // function for calculating distance in 3d space
-module.exports.distanceCalc = (point1, point2, decimalPoints = 2) => {
+const distanceCalc = (point1, point2, decimalPoints = 2) => {
 	return Math.sqrt(Math.pow((point1.x - point2.x), 2) +
 		Math.pow((point1.y - point2.y), 2) +
 		Math.pow((point1.z - point2.z), 2)).toFixed(decimalPoints);
 }
 
 // function to return the string with a capital first letter
-module.exports.capitalizeString = (string) => {
+const capitalizeString = (string) => {
 	return string && string.charAt(0).toUpperCase() + string.slice(1);
 }
 
 // helper function for sorting
-module.exports.dynamicSort = (property) => {
+const dynamicSort = (property) => {
     var sortOrder = 1;
 
     if (property[0] === "-") {
@@ -29,7 +29,7 @@ module.exports.dynamicSort = (property) => {
 }
 
 // modular function to get data from mongodb
-module.exports.mongoGet = async (client, dbKey, valueKeys) => {
+const mongoGet = async (client, dbKey, valueKeys) => {
 	returnMap = new Map()
 	if (dbKey.includes("-")){
 		for (k of valueKeys){
@@ -45,7 +45,7 @@ module.exports.mongoGet = async (client, dbKey, valueKeys) => {
 }
 
 // function to return a collection/map of whitelisted roles a user has
-module.exports.blacklistChck = async(blacklistMap, mmbrRolesCache) => {
+const blacklistChck = async(blacklistMap, mmbrRolesCache) => {
 	prefixes = blacklistMap.get('blacklistPfx')
 	roles = blacklistMap.get('hiddenRoles')
 
@@ -63,3 +63,16 @@ module.exports.blacklistChck = async(blacklistMap, mmbrRolesCache) => {
 		return mmbrRolesCache.filter(r => r.id !== r.guild.id && (roles && !roles.includes(r.id)) && !r.name.match(`${matchString}.*`))
 	}
 }
+
+const checkForStations = (serviceSystem, serviceName, homeCoords, serviceCoords) => {
+	if(serviceSystem !== undefined){
+		for(station of serviceSystem.data.stations) {
+			if(station.otherServices.includes(serviceName)){
+				return retStation = `${station.name}, ${station.distanceToArrival.toFixed(1)} Ls, ${distanceCalc(homeCoords.data.coords, serviceCoords.data.coords, 2)} Ly`
+			}
+		}
+		if(!retStation) return false
+	}
+}
+
+module.exports = {distanceCalc, capitalizeString, dynamicSort, mongoGet, blacklistChck, checkForStations}

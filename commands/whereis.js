@@ -7,11 +7,6 @@ const { asyncEDSM } = require("../functionFiles/APICalls.js");
 const { distanceCalc } = require("../functionFiles/helperFunctions.js");
 
 exports.run = async(client, message, args) => { // eslint-disable-line no-unused-vars
-	// hardcoded home systems for specific servers
-	const homeSystems = {
-		"824492751378186260": "LP 128-32",			// Rainbow Alliance of Systems
-		"745185902870921256": "Sagittarius A*"		// CutieLand test server
-	}
 
 	// check if arguments is empty, in that case return with an "problem" message
 	if (args.trim().length === 0) {
@@ -24,7 +19,7 @@ exports.run = async(client, message, args) => { // eslint-disable-line no-unused
 	// do send a temp message to tell something's going on, and do an EDSM api call to get commander data and home system data
 	let tempMessage = await message.channel.send("Retrieving data...");
 	let cmdrData = await asyncEDSM("/api-logs-v1/get-position", {"showCoordinates": 1, "commanderName": cmdrName});
-	let homeSysData = await asyncEDSM("/api-v1/system", {"showCoordinates": 1, "systemName": homeSystems[message.guild.id] || "Sol"});
+	let homeSysData = await asyncEDSM("/api-v1/system", {"showCoordinates": 1, "systemName": client.cache[message.guild.id].homeSys || "Sol"});
 
 	// check if commander API call message status ok
 	if (cmdrData.status === "ok") {
