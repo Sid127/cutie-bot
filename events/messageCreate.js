@@ -15,7 +15,8 @@ module.exports = {
                 logChnl: null,
                 prefix: "",
                 activityLeaderboard: "enabled",
-                disabledModules: []
+                disabledModules: [],
+                customCommands: {}
             });
             await client.serverData.ensure(`botSettings`,{
                 botadmin: ["319391726613823489", "283607841779089409"]
@@ -75,6 +76,9 @@ module.exports = {
 		// From command slice out prefix length and force lowercase while just joining args together to a string with spaces (since split by them)
 		command = command.toLowerCase();
 		args = args.join(" ").trim();
+
+        // if command is a server custom command, send the response
+        if(Object.keys(client.cache[message.guild.id].cc).includes(command)) return message.channel.send(client.cache[message.guild.id].cc[command])
 
         // Grab the command data from the client.commands Map
         const cmd = client.commands.get(command) || client.commands.get(client.aliases.get(command));
