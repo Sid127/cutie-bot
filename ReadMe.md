@@ -12,13 +12,14 @@ Feel free to fork the repo and modify code according to your requirements.
 {
     "token": "<yourToken>",
     "prefix": "<yourPrefix>",
+    "mongoURL": "<mongoAuthUrl"
 }
 ```
 
 - Run the following command
 
 ```
-npm install
+npm ci
 ```
 
 - Run this final command to get the bot online
@@ -26,3 +27,18 @@ npm install
 ```
 node index.js
 ```
+
+Cutie has an ever expanding feature set, but the current modules include:
+- Birthdays
+- Color roles (like Hex)
+- Confessions (like Juzo)
+- Custom Commands
+- Moderation Commands
+- A points system that can be changed from activity based to reward based.
+- Support commands to assist with self-help
+- Elite Dangerous companion commands
+- An Elite Dangerous tick listener
+- Autorole on member join
+- Custom welcome message
+- Per server prefixes
+- Ticket channels
