@@ -11,7 +11,7 @@ exports.run = (client, message) => {
 • Servers    :: ${client.guilds.cache.size.toLocaleString()}
 • Users      :: ${client.users.cache.size.toLocaleString()}
 • Github     :: https://github.com/Sid127/cutie-bot
-= Cutie was created by Sid <3 =`));
+= Cutie was queer coded by Sid <3 =`));
 
 }
 
