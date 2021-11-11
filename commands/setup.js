@@ -183,7 +183,7 @@ exports.run = async(client, message, args) => {
                         return tempMessage.edit("I can't find a Mat Trader in the encoded trader system you told me about")
                     }
                     await client.serverData.set(`${message.guild.id}.home.encTrd`, encTrd)
-                }
+                } else {await client.serverData.set(`${message.guild.id}.home.encTrd`, "")}
 
                 if(manufacturedTrader !== undefined){
                     let manfTrd = checkForStations(manufacturedTrader, "Material Trader", homeCoords, manufacturedTraderCoords)
@@ -191,7 +191,7 @@ exports.run = async(client, message, args) => {
                         return tempMessage.edit("I can't find a Mat Trader in the manufactured trader system you told me about")
                     }
                     await client.serverData.set(`${message.guild.id}.home.manfTrd`, manfTrd)
-                }
+                } else {await client.serverData.set(`${message.guild.id}.home.manfTrd`, "")}
 
                 if(rawTrader !== undefined){
                     let rawTrd = checkForStations(rawTrader, "Material Trader", homeCoords, rawTraderCoords)
@@ -199,7 +199,7 @@ exports.run = async(client, message, args) => {
                         return tempMessage.edit("I can't find a Mat Trader in the raw trader system you told me about")
                     }
                     await client.serverData.set(`${message.guild.id}.home.rawTrd`, rawTrd)
-                }
+                } else {await client.serverData.set(`${message.guild.id}.home.rawTrd`, "")}
 
                 if(guardianBroker !== undefined){
                     let grdBrk = checkForStations(guardianBroker, "Technology Broker", homeCoords, guardianBrokerCoords)
@@ -207,7 +207,7 @@ exports.run = async(client, message, args) => {
                         return tempMessage.edit("I can't find a Guardian Tech Broker in the system you told me about")
                     }
                     await client.serverData.set(`${message.guild.id}.home.grdBrk`, grdBrk)
-                }
+                } else {await client.serverData.set(`${message.guild.id}.home.grdBrk`, "")}
 
                 if(humanBroker !== undefined){
                     let hmnBrk = checkForStations(humanBroker, "Technology Broker", homeCoords, humanBrokerCoords)
@@ -215,15 +215,15 @@ exports.run = async(client, message, args) => {
                         return tempMessage.edit("I can't find a Mat Trader in the encoded trader system you told me about")
                     }
                     await client.serverData.set(`${message.guild.id}.home.hmnBrk`, hmnBrk)
-                }
+                } else {await client.serverData.set(`${message.guild.id}.home.hmnBrk`, "")}
 
                 if(IFactor !== undefined){
-                    let iF = checkForStations(IFactor, "Interstellar Factors", homeCoords, IFactorCoords)
+                    let iF = checkForStations(IFactor, "Interstellar Factors Contact", homeCoords, IFactorCoords)
                     if (iF === false){
                         return tempMessage.edit("I can't find an Interstellar Factor in the system you told me about")
                     }
                     await client.serverData.set(`${message.guild.id}.home.iF`, iF)
-                }
+                } else {await client.serverData.set(`${message.guild.id}.home.iF`, "")}
 
                 if(fcVendor !== undefined){
                     let fcv = checkForStations(fcVendor, "Tuning", homeCoords, fcVendorCoords)
@@ -231,7 +231,7 @@ exports.run = async(client, message, args) => {
                         return tempMessage.edit("I can't find an FC Vendor in the system you told me about")
                     }
                     await client.serverData.set(`${message.guild.id}.home.fcv`, fcv)
-                }
+                } else {await client.serverData.set(`${message.guild.id}.home.fcv`, "")}
 
                 if(fcAdmin !== undefined){
                     let fca = checkForStations(fcAdmin, "Tuning", homeCoords, fcAdminCoords)
@@ -239,7 +239,7 @@ exports.run = async(client, message, args) => {
                         return tempMessage.edit("I can't find an FC Administrator in the system you told me about")
                     }
                     await client.serverData.set(`${message.guild.id}.home.fca`, fca)
-                }
+                } else {await client.serverData.set(`${message.guild.id}.home.fca`, "")}
 
                 tempMessage.edit("All Done!")
             }
