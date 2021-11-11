@@ -243,7 +243,7 @@ exports.run = async(client, message, args) => {
 
                 tempMessage.edit("All Done!")
             }
-        }
+        } break;
         case 'prestige' : { //leaderboard award role
             if (!arg2[0]) return message.channel.send("I really dunno what you want")
             
@@ -278,6 +278,28 @@ exports.run = async(client, message, args) => {
             await client.serverData.set(`${message.guild.id}.verifyRole`, roles)
             message.channel.send(`Verified member role${message.mentions.roles.length === 1 ? "" : "s"} set`)
         } break;
+        case 'welcome' : {//welcome message
+            if (!arg2[0]) return message.channel.send("Okay, welcome how?")
+            if (arg2[0] === "off"){
+                await client.serverData.set(`${message.guild.id}.welcome`, null)
+                return message.channel.send("Okay, I'll stay shut from now")
+            } else if (arg2[0] === "show"){
+                let chnl = await client.serverData.get(`${message.guild.id}.welcomeChnl`)
+                let msg = await client.serverData.get(`${message.guild.id}.welcome`)
+
+                if(!chnl) return message.channel.send("Welcome messages are currently off")
+                message.channel.send(`Welcome messages are on and set to <#${chnl}>. Here's how I'll welcome someone:\n\n${msg}`)
+            } else {
+                arg2 = arg2.join(" ")
+                let [channel, ...welcomeMsg] = arg2.split(" ")
+                if (!message.mentions.channels.first().id) return message.channel.send("Where do I say things again?")
+                welcomeMsg = welcomeMsg.join(" ")
+    
+                await client.serverData.set(`${message.guild.id}.welcomeChnl`, message.mentions.channels.first().id)
+                await client.serverData.set(`${message.guild.id}.welcome`, welcomeMsg)
+                message.channel.send("I know what to say when people join now :D")
+            }
+        } break;
         default : message.channel.send("Lord help me D:")
     }
 }
@@ -288,6 +310,6 @@ exports.config = {
 	permLevel: "serverAdmin",
 	name: "setup",
 	category: "Management",
-	description: "Set up various bot modules",
-	usage: ["[anon || bd-config channel || bgs || logger || ticket] [<#channel>]", "bd-config role [<@birthday role>]", "prefix [<prefix>]", "activitypoints [enabled || disabled]", "home", "prestige [<level>] [<@role>]", "autorole [<@roles>]", "verifiedrole (agegate) [<@roles>]"]
+	description: "Set up various bot modules. For the welcome module, {user} will mention and {server} will input the server name",
+	usage: ["[anon || bd-config channel || bgs || logger || ticket] [<#channel>]", "bd-config role [<@birthday role>]", "prefix [<prefix>]", "activitypoints [enabled || disabled]", "home", "prestige [<level>] [<@role>]", "autorole [<@roles>]", "verifiedrole (agegate) [<@roles>]", "welcome [<#channel> || show || off] [<welcome message>]"]
 };

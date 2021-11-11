@@ -2,10 +2,13 @@ module.exports = {
     name: "guildMemberAdd",
     async execute(member, client) {
         const { MessageEmbed } = require("discord.js");
-        let roles = await client.serverData.get(`${message.guild.id}.autoRole`)
-        for (role of roles){
-            member.roles.add(role).catch(console.error);
+        let roles = await client.serverData.get(`${member.guild.id}.autoRole`)
+        if (!roles){} else{
+            for (role of roles){
+                member.roles.add(role).catch(console.error);
+            }
         }
+
         const key = `${member.guild.id}`
 
         const embed = new MessageEmbed()
@@ -14,8 +17,19 @@ module.exports = {
             .setTimestamp();
 
         if (await !client.serverData.has(`${key}`)) return;
-        if (await client.serverData.get(`${key}.logChnl`) === null) return;
-        const sendChnl = await client.serverData.get(`${key}.logChnl`)
-        client.channels.cache.get(sendChnl).send({embeds: [embed]}).catch(console.error);
+
+        if (!await client.serverData.get(`${key}.welcomeChnl`)){} else {
+            const sendChnl = await client.serverData.get(`${key}.welcomeChnl`)
+            let welcomeMsg = await client.serverData.get(`${key}.welcome`)
+            welcomeMsg = welcomeMsg.replace("{user}", `<@${member.id}>`).replace("{server}", `${member.guild.name}`)
+
+            client.channels.cache.get(sendChnl).send(welcomeMsg).catch(console.error);
+
+        }
+
+        if (await client.serverData.get(`${key}.logChnl`) === null) {} else {
+            const sendChnl = await client.serverData.get(`${key}.logChnl`)
+            client.channels.cache.get(sendChnl).send({embeds: [embed]}).catch(console.error);
+        }
     }
 }
