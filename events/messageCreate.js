@@ -55,8 +55,8 @@ module.exports = {
                     client.channels.cache.get(botChannel).send({content:`<@${message.author.id}> leveled down to level **${curLevel}** :(`});
                     await client.peopleData.set(`${key}.level`, curLevel);
                 }
-                if (await client.peopleData.get(`${key}.level`) === 3) {
-                    const rankRole = message.guild.roles.cache.find(role => role.name === "active")
+                if (await client.peopleData.get(`${key}.level`) === await client.serverData.get(`${message.guild.id}.prestigeLevel`)) {
+                    const rankRole = await client.serverData.get(`${message.guild.id}.prestigeRole`)
                     if (!rankRole){}
                     else{
                         message.member.roles.add(rankRole).catch(console.error)

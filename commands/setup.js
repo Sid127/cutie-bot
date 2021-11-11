@@ -243,6 +243,40 @@ exports.run = async(client, message, args) => {
 
                 tempMessage.edit("All Done!")
             }
+        }
+        case 'prestige' : { //leaderboard award role
+            if (!arg2[0]) return message.channel.send("I really dunno what you want")
+            
+            //extract our data
+            let [level, role] = arg2[0].split(" ")
+            if(!parseInt(level)) return message.channel.send("I need you to tell me the level as an integer")
+            level = parseInt(level)
+
+            //push to mongo
+            await client.serverData.set(`${message.guild.id}.prestigeLevel`, level)
+            await client.serverData.set(`${message.guild.id}.prestigeRole`, message.mentions.roles.first().id)
+
+            message.channel.send(`Alrighty, ${message.mentions.roles.first().name} role will be awarded when a user reaches level ${level} on the leaderboard`)
+        } break;
+        case 'autorole' : { //role add on member join
+            if(!message.mentions.roles) return message.channel.send("Yeah, what roles?")
+            let roles = message.mentions.roles.map(role => role.id)
+
+            //push to mongo
+            await client.serverData.set(`${message.guild.id}.autoRole`, roles)
+
+            message.channel.send(`Alrighty, ${message.mentions.roles.length === 1 ? "that role" : "those roles"} will be given to a new user`)
+        } break;
+        case 'verifiedrole' : { //roles to give a member on verify command
+            if(!message.mentions.roles) return message.channel.send("Yeah, what roles?")
+            let roles = message.mentions.roles.map(role => role.id)
+            //optional param for age verification role
+            if(arg2[0] === "agegate"){
+                await client.serverData.set(`${message.guild.id}.verify18Role`, roles)
+                return message.channel.send(`Age verification role${message.mentions.roles.length === 1 ? "" : "s"} set`)
+            }
+            await client.serverData.set(`${message.guild.id}.verifyRole`, roles)
+            message.channel.send(`Verified member role${message.mentions.roles.length === 1 ? "" : "s"} set`)
         } break;
         default : message.channel.send("Lord help me D:")
     }
@@ -255,5 +289,5 @@ exports.config = {
 	name: "setup",
 	category: "Management",
 	description: "Set up various bot modules",
-	usage: ["[anon || bd-config channel || bgs || logger || ticket] [<#channel>]", "bd-config role [<@birthday role>]", "prefix [<prefix>]", "activitypoints [enabled || disabled]", "home"]
+	usage: ["[anon || bd-config channel || bgs || logger || ticket] [<#channel>]", "bd-config role [<@birthday role>]", "prefix [<prefix>]", "activitypoints [enabled || disabled]", "home", "prestige [<level>] [<@role>]", "autorole [<@roles>]", "verifiedrole (agegate) [<@roles>]"]
 };
