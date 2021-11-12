@@ -8,7 +8,11 @@ module.exports = {
         message.guild ? (client.cache[message.guild.id].prefix === "" ? client.prefix = client.config.prefix : client.prefix = client.cache[message.guild.id].prefix) : client.prefix = client.config.prefix
 
         // Ignore messages not starting with the prefix
-        if (!message.content.toLowerCase().trim().startsWith(client.prefix)) return;
+        if(message.guild) {if (!message.content.toLowerCase().trim().startsWith(client.prefix)) return;}
+        else {
+            arr = ["GET OFF MY LAWN", "Shoo", "get outta here", "Whaddaya want from me?", "Are you lost?", "<https://www.youtube.com/watch?v=bxqLsrlakK8>"]
+            var snark = Math.floor(Math.random() * arr.length);
+            return message.channel.send(arr[snark])}
 		
 		// Define command and the rest of the text in the message
 		let [command, ...args] = message.content.slice(client.prefix.length).trim().split(/ +/g);
