@@ -4,6 +4,24 @@ module.exports = {
         // Ignore all bots
         if (message.author.bot) return;
 
+        //define prefix
+        message.guild ? (client.cache[message.guild.id].prefix === "" ? client.prefix = client.config.prefix : client.prefix = client.cache[message.guild.id].prefix) : client.prefix = client.config.prefix
+
+        // Ignore messages not starting with the prefix
+        if (!message.content.toLowerCase().trim().startsWith(client.prefix)) return;
+		
+		// Define command and the rest of the text in the message
+		let [command, ...args] = message.content.slice(client.prefix.length).trim().split(/ +/g);
+		// From command slice out prefix length and force lowercase while just joining args together to a string with spaces (since split by them)
+		command = command.toLowerCase();
+		args = args.join(" ").trim();        
+
+        // Grab the command data from the client.commands Map
+        const cmd = client.commands.get(command) || client.commands.get(client.aliases.get(command));
+
+        // If that command doesn't exist, silently exit and do nothing
+        if (!cmd) return;
+
         // If this is not in a DM, execute the code.
         if (message.guild) {
             // We'll use the key often enough that simplifying it is worth the trouble.
@@ -63,38 +81,21 @@ module.exports = {
                         message.member.roles.add(rankRole).catch(console.error)
                     }
                 }
-            }
+            }        
+            //grab our cache of disabled modules for this server
+            let disabledModules = client.cache[message.guild.id].disabledModules
+
+            if (disabledModules.includes(cmd.config.category.toLowerCase()))
+                return message.channel.send("The module for that command has been disabled! Ask a server admin to enable it :3")
+            
+            // if command is a server custom command, send the response
+            if(Object.keys(client.cache[message.guild.id].cc).includes(command)) 
+                return message.channel.send(client.cache[message.guild.id].cc[command])
         }
-
-        //define prefix
-        client.cache[message.guild.id].prefix === "" ? client.prefix = client.config.prefix : client.prefix = client.cache[message.guild.id].prefix
-
-        // Ignore messages not starting with the prefix
-        if (!message.content.toLowerCase().trim().startsWith(client.prefix)) return;
-		
-		// Define command and the rest of the text in the message
-		let [command, ...args] = message.content.slice(client.prefix.length).trim().split(/ +/g);
-		// From command slice out prefix length and force lowercase while just joining args together to a string with spaces (since split by them)
-		command = command.toLowerCase();
-		args = args.join(" ").trim();
-
-        // if command is a server custom command, send the response
-        if(Object.keys(client.cache[message.guild.id].cc).includes(command)) return message.channel.send(client.cache[message.guild.id].cc[command])
-
-        // Grab the command data from the client.commands Map
-        const cmd = client.commands.get(command) || client.commands.get(client.aliases.get(command));
-
-        // If that command doesn't exist, silently exit and do nothing
-        if (!cmd) return;
-
-        //grab our cache of disabled modules for this server
-        let disabledModules = client.cache[message.guild.id].disabledModules
 
         // Check perm level and run the command
         if (client.cache.botSettings.botadmin.includes(`${message.author.id}`)){
             cmd.run(client, message, args);
-        } else if (disabledModules.includes(cmd.config.category.toLowerCase())){
-            return message.channel.send("That module has been disabled! Ask a server admin to enable it :3")
         } else if (cmd.config.permLevel === "User"){
             cmd.run(client, message, args);
         } else if (cmd.config.permLevel === "modAssist"){

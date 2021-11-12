@@ -14,7 +14,9 @@ module.exports = {
 
     if(!ticketid) return;
 
-    client.cache[reaction.message.guild.id].prefix === "" ? client.prefix = client.config.prefix : client.prefix = client.cache[reaction.message.guild.id].prefix
+    if(reaction.message.guild){
+      client.cache[reaction.message.guild.id].prefix === "" ? client.prefix = client.config.prefix : client.prefix = client.cache[reaction.message.guild.id].prefix
+    }
 
     if(reaction.message.channel.id == ticketid && reaction.emoji.name == '🎫') {
         reaction.users.remove(user);
