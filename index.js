@@ -85,22 +85,18 @@ const init = async() => {
 
 
     client.cache = new Object();
-    let keys = await client.serverData.keys
-    for (key of keys) {
+    let tempCache = await client.serverData.getMany(await client.serverData.keys)
+    for (key of Object.keys(tempCache)) {
         if(!["botSettings", "tick"].includes(key)){
-            client.cache[key] = {
-                disabledModules: [],
-                prefix: "",
-                activityLeaderboard: ""
-            }
-            client.cache[key]["disabledModules"] = await client.serverData.get(`${key}.disabledModules`)
-            client.cache[key]["prefix"] = await client.serverData.get(`${key}.prefix`)
-            client.cache[key]["activityLeaderboard"] = await client.serverData.get(`${key}.activityLeaderboard`)
-            client.cache[key]["homeSys"] = await client.serverData.get(`${key}.home.homeSys`) || undefined
-            client.cache[key]["cc"] = await client.serverData.get(`${key}.customCommands`)
+            client.cache[key] = {}
+            client.cache[key]["disabledModules"] = tempCache[key].disabledModules
+            client.cache[key]["prefix"] = tempCache[key].prefix
+            client.cache[key]["activityLeaderboard"] = tempCache[key].activityLeaderboard
+            client.cache[key]["homeSys"] = tempCache[key].home.homeSys
+            client.cache[key]["cc"] = tempCache[key].customCommands
         }
-        client.cache.botSettings = await client.serverData.get(`botSettings`)
-        client.cache.tick = await client.serverData.get(`tick`)
+        client.cache.botSettings = tempCache.botSettings
+        client.cache.tick = tempCache.tick
     }
     console.log("Local cache created")
 } 

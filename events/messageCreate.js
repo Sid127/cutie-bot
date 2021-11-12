@@ -16,7 +16,8 @@ module.exports = {
                 prefix: "",
                 activityLeaderboard: "enabled",
                 disabledModules: [],
-                customCommands: {}
+                customCommands: {},
+                home: {homeSys: undefined}
             });
             await client.serverData.ensure(`botSettings`,{
                 botadmin: ["319391726613823489", "283607841779089409"]
