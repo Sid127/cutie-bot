@@ -45,13 +45,14 @@ for (const file of eventFiles) {
 client.commands = new Map();
 client.aliases = new Map();
 
-loadCommand = (commandName) => {
+loadCommand = (categoryName, commandName) => {
     try {
-        const props = require(`./commands/${commandName}`);
+        const props = require(`./commands/${categoryName}/${commandName}`);
         console.log(`Loading Command: ${props.config.name}`);
         if (props.init) {
             props.init(client);
         }
+        props.config.category = categoryName.replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase());
         client.commands.set(props.config.name, props);
         props.config.aliases.forEach(alias => {
             client.aliases.set(alias, props.config.name);
@@ -70,14 +71,18 @@ const {
 const readdir = promisify(require("fs").readdir);
 
 const init = async() => {
-    const cmdFiles = await readdir("./commands/");
-    cmdFiles.forEach(f => {
-        if (!f.endsWith(".js"))
-            return;
-        const response = loadCommand(f);
-        if (response)
-            console.log(response);
-    });
+    const moduleFolders = await readdir(`./commands/`);
+    moduleFolders.forEach(async (d) => {
+        const cmdFiles = await readdir(`./commands/${d}/`);
+        cmdFiles.forEach(f => {
+            if (!f.endsWith(".js"))
+                return;
+            const response = loadCommand(d, f);
+            if (response)
+                console.log(response);
+        });
+    })
+
 
     client.cache = new Object();
     let keys = await client.serverData.keys
