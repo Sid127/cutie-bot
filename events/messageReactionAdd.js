@@ -24,6 +24,11 @@ module.exports = {
           parent: `${reaction.message.channel.parentId}`,
           type: 'text'
         }).then(channel => {
+            //update ticket channel permissions
+            channel.permissionOverwrites.set([{
+              id: user.id,
+              allow: [Permissions.FLAGS.VIEW_CHANNEL, Permissions.FLAGS.SEND_MESSAGES]
+            }])
             let embed= new Discord.MessageEmbed().setTitle("Welcome to your ticket!").setDescription(`Thanks for trying out our ticket support system. You've opened a ticket, which creates this channel that will last as long as you need it to. When your support conversation is done, please use the command \`${client.prefix} close\` to close the channel.`).setColor(0xffd1dc)
             channel.send({embeds:[embed]})
             channel.lockPermissions()
