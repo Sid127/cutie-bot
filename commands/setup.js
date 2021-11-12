@@ -281,7 +281,7 @@ exports.run = async(client, message, args) => {
         case 'welcome' : {//welcome message
             if (!arg2[0]) return message.channel.send("Okay, welcome how?")
             if (arg2[0] === "off"){
-                await client.serverData.set(`${message.guild.id}.welcome`, null)
+                await client.serverData.set(`${message.guild.id}.welcomeChnl`, null)
                 return message.channel.send("Okay, I'll stay shut from now")
             } else if (arg2[0] === "show"){
                 let chnl = await client.serverData.get(`${message.guild.id}.welcomeChnl`)
