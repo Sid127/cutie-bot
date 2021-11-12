@@ -68,6 +68,7 @@ exports.run = async(client, message, args) => {
             message.channel.send({embeds:[embed]})
         } break;
         case 'ticket' : {//ticket channel setup
+
             let channel = message.mentions.channels.first();
             if (!channel) return message.reply({content:"You silly goose that's not how you do it"});
             let Mbed = new MessageEmbed()
@@ -76,7 +77,7 @@ exports.run = async(client, message, args) => {
             .setColor(0xffd1dc)
             let sent = await channel.send({embeds:[Mbed]});
             sent.react('🎫');
-            await client.serverData.set(`${message.guild.id}.ticket`, sent.id);
+            await client.serverData.set(`${message.guild.id}.ticket`, sent.channel.id);
             message.channel.send({content:"Ticket system setup done!"})
         } break;
         case 'prefix' : {//per server prefixes
