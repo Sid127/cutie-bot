@@ -1,8 +1,13 @@
 exports.run = async(client, message, args) => {
+    const { capitalizeString } = require("../../functionFiles/helperFunctions.js");
     const moment = require("moment-timezone");
     require("moment-duration-format");
 
     let [date, timezone] = args.split(" ")
+    let [dateStub, month] = date.split("-")
+    month = capitalizeString(month.toLowerCase())
+    date = `${dateStub}-${month}`
+
     //create an empty mongo entry for the user that is also server specific
     await client.peopleData.ensure(`${message.guild.id}-${message.author.id}`, {
         guild: message.guild.id,
