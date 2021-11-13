@@ -19,7 +19,7 @@ exports.run = (client, message, args) => {
     // We also need to delete and reload the command from the client.commands Map
     client.commands.delete(commandName);
     const props = require(`../${category}/${commandName}.js`);
-    props.config.category = categoryName.replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase());
+    props.config.category = category.replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase());
     client.commands.set(commandName, props);
     
     message.react('☑️')

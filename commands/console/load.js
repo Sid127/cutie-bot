@@ -1,15 +1,21 @@
-exports.run = (client, message, args) => {
+exports.run = async (client, message, args) => {
     if(!args || args.length < 1) return message.channel.send({content:"Must provide a command name to load."});
-    const commandName = args;
+    let [commandName, category] = args.split(" ");
     const fs = require('fs')
 
-    if(!fs.existsSync(`./${commandName}.js`)) return message.channel.send ({content:"That command hasn't been written yet"})
-
-    // We also need to delete and reload the command from the client.commands Map
-    const props = require(`./${commandName}.js`);
-    client.commands.set(commandName, props);
-    message.react('☑️')
-  }
+    fs.access(`${__dirname}/../${category}/${commandName}.js`, (err) => {
+      if (err) {
+        message.channel.send("That file doesn't exist yet D:")
+      } else {
+        const props = require(`${__dirname}/../${category}/${commandName}.js`);
+        props.config.category = category.replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase());
+        
+        // We also need to load the command into the client.commands Map
+        client.commands.set(commandName, props);
+        message.react('☑️')
+      }
+  });
+}
 
 exports.config = {
     enabled: true,
@@ -18,5 +24,5 @@ exports.config = {
     permLevel: "botAdmin",
     name: "load",
     description: "Load a command to incorporate new changes",
-    usage: ["[<command name>]"]
+    usage: ["[<command name>] [<module name>]"]
 };
