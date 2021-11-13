@@ -54,7 +54,7 @@ exports.run = async (client, message, args) => {
 				}			
 			}			
 		}
-		let splitOutput = Util.splitMessage(output, {maxLength: 2000, char: "\u200b"});
+		let splitOutput = Util.splitMessage(output, {maxLength: 1900, char: "\u200b"});
 		for (let chunk of splitOutput) {
 			await message.channel.send(Formatters.codeBlock("asciidoc", chunk.trim()));
 		}
