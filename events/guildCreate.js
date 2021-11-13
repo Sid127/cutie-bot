@@ -9,7 +9,9 @@ module.exports = {
             activityLeaderboard: "enabled",
             disabledModules: [],
             customCommands: {},
-            home: {homeSys: undefined}
+            home: {homeSys: undefined},
+            hiddenRoles: [],
+            blacklistPfx: []
         });
 
         client.cache[guild.id] = {}

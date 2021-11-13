@@ -31,16 +31,6 @@ module.exports = {
             // We'll use the key often enough that simplifying it is worth the trouble.
             const key = `${message.guild.id}-${message.author.id}`;
 
-            await client.serverData.ensure(`${message.guild.id}`, {
-                guild: message.guild.id,
-                anonChnl: null,
-                logChnl: null,
-                prefix: "",
-                activityLeaderboard: "enabled",
-                disabledModules: [],
-                customCommands: {},
-                home: {homeSys: undefined}
-            });
             await client.serverData.ensure(`botSettings`,{
                 botadmin: ["319391726613823489", "283607841779089409"]
             });

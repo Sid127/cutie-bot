@@ -7,4 +7,4 @@ log.log
 err.log
 out.log
 
-commands/migrate.js
+commands/console/ensure.js
