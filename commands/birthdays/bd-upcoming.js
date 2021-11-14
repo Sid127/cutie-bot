@@ -8,13 +8,23 @@ exports.run = async(client, message) => {
     let db = await client.peopleData.filter(p => p.timezone)
     for (ident of db) {
         if(ident[1]['guild'] === message.guild.id){
+            let [dateStub, month] = ident[1]['date'].split("-")
+            month = moment(month, "MMM").format('MM')
+            date = `${moment().year()}-${month}-${dateStub}` //format date to ISO 8601 format
             //strip data to only include birthdays from up to one week before now or 2 weeks away from now
-            diff = moment(ident[1]['date'] + `-${moment().year()}`).diff(moment(), "days")
+            diff = moment(date).diff(moment(), "days")
             if(diff >= -7 && diff <= 14) {
-                recup = recup + `\n\`${ident[1]['date']}\` - ${client.guilds.cache.get(message.guild.id).members.cache.get(ident[1]['username']).user.tag}`
+                guild = client.guilds.cache.get(message.guild.id)
+                member = guild.members.cache.get(ident[1]['username'])
+                if(!member){}else{
+                    recup = recup + `\n\`${ident[1]['date']}\` - ${member.user.tag}`
+                }
             }
         }
     }
+
+    if(recup === `Recent and upcoming birthdays: \n`) return message.channel.send("No recent or upcoming birthdays")
+
     message.channel.send({content:recup})
 }
 
@@ -23,6 +33,6 @@ exports.config = {
 	aliases: [],
     permLevel: "User",
 	name: "bd-upcoming",
-	description: "Displays upcoming and recent birthdays",
+	description: "Displays birthdays from up to one week before now or 2 weeks away from now",
 	usage: []
 };

@@ -3,8 +3,11 @@ exports.run = async(client, message, args) => {
     const moment = require("moment-timezone");
     require("moment-duration-format");
 
+    if(!args) return message.channel.send("Yeah, what?")
+
     let [date, timezone] = args.split(" ")
     let [dateStub, month] = date.split("-")
+    if(!month) return message.channel.send("I have a feeling you forgot a hyphen")
     month = capitalizeString(month.toLowerCase())
     date = `${dateStub}-${month}`
 
