@@ -1,12 +1,11 @@
 exports.run = (client, message, args) => {
 
   const mmbr = message.guild.members.cache.get(message.author.id);
-  if (mmbr == client.user) return;
+  if (mmbr === client.user) return message.channel.send("Not messing with my own color");
 
   let clr = args; if (clr.startsWith('#')) clr = clr.substr(1);
+  if(clr.length > 6) return message.channel.send("Hex codes only have 6 characters in them >:(")
   if (clr === 'random') {
-    clr = Math.floor(Math.random() * (0xFFFFFF + 1));
-  } else if (clr === 'impressed') {
     clr = Math.floor(Math.random() * (0xFFFFFF + 1));
   } else if (isNaN(parseInt(clr, 16)))
       return message.channel.send({content:"Please check your hex code again. Valid hex codes only have digits 0-9 and alphabets a-f"}).catch(console.error);

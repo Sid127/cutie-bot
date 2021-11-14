@@ -2,10 +2,12 @@ exports.run = (client, message, [mention]) => {
 
   if(message.mentions.members.size === 0){
 		color = message.member.roles.cache.find(a => a.name.endsWith(' col'))
+		if(!color) return message.channel.send("You doesn't have a color... yet")
 		return message.channel.send({content:`${message.author.username} has the color ${color.hexColor}`})
 	} else {
 		const colormember = message.mentions.members.first();
 		color = colormember.roles.cache.find(a => a.name.endsWith(' col'))
+		if(!color) return message.channel.send("That person doesn't have a color... yet")
 		return message.channel.send({content:`${colormember.displayName} has the color ${color.hexColor}`})
 	}
 }
