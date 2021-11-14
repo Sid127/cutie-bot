@@ -10,7 +10,7 @@ exports.run = async(client, message, args) => { // eslint-disable-line no-unused
 
 	// check if arguments is empty, in that case return with an "problem" message
 	if (args.trim().length === 0) {
-		return message.reply("Looks like I didn't get any input agruments.");
+		return message.reply("Looks like I didn't get any input arguments.");
 	}
 
 	// add in vars for cmdr name and possible reference system, comma separated
