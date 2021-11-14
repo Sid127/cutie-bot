@@ -74,19 +74,21 @@ bdayChck = async (client) => {
         // user data we're targeting now
         const birthdayFolk = client.guilds.cache.get(sendGuild).members.cache.get(ident[1]['username']);
 
-        // if statement for setting the role
-        if (moment().tz(ident[1]['timezone']).format('DD-MMM') === ident[1]['date']) {
-            // set role and send message
-            if (!birthdayFolk.roles.cache.get(birthdayRole)) {
-                birthdayFolk.roles.add(birthdayRole);
+        if(!birthdayFolk) {} else{
+            // if statement for setting the role
+            if (moment().tz(ident[1]['timezone']).format('DD-MMM') === ident[1]['date']) {
+                // set role and send message
+                if (!birthdayFolk.roles.cache.get(birthdayRole)) {
+                    birthdayFolk.roles.add(birthdayRole);
 
-                // get the channel where to send a message
-                const msgChannel = await client.serverData.get(`${sendGuild}.birthdayChnl`);
-                client.channels.cache.get(msgChannel).send(`Happy Birthday, <@${ident[1]['username']}>`)
-            }
-        } else { // else remove the role
-            if (birthdayFolk.roles.cache.get(birthdayRole)) {
-                birthdayFolk.roles.remove(birthdayRole);
+                    // get the channel where to send a message
+                    const msgChannel = await client.serverData.get(`${sendGuild}.birthdayChnl`);
+                    client.channels.cache.get(msgChannel).send(`Happy Birthday, <@${ident[1]['username']}>`)
+                }
+            } else { // else remove the role
+                if (birthdayFolk.roles.cache.get(birthdayRole)) {
+                    birthdayFolk.roles.remove(birthdayRole);
+                }
             }
         }
     }
