@@ -26,7 +26,7 @@ exports.run = async (client, message) => {
 		.setAuthor(`${member.user.tag} (${member.id})`)
 		.addField("Nickname:", `${(member.nickname !== null && member.nickname !== undefined) ? `Nickname: ${member.nickname}` : "No nickname"}`, true)
 		.addField("Status", `${member.presence ? status[member.presence.status] : "I have no idea D:"}`, true)
-		.addField("Playing", `${member.presence ? `${member.presence.activities.state}` : "Not playing anything."}`, true)
+		.addField("Playing", `${member.presence ? (member.presence.activities.state === undefined ? "Not playing anything... I think" : `${member.presence.activities.state}`) : "Not playing anything."}`, true)
 		.addField("Roles", `${whitelistRoles.map(roles => `\`${roles.name}\``).join(" **|** ") || "No Roles"}`, true)
 		.addField("Joined", `${moment().diff(moment.utc(member.joinedAt), 'days')} Days Ago (Created ${moment.utc(member.user.createdAt).format("MMMM Do YYYY")})`, true)
 
