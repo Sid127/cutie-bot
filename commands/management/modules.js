@@ -43,11 +43,11 @@ exports.run = async(client, message, args) => {
     } else if (param === "enable"){
         if(!module) return message.channel.send("What in tarnation...")
         //grab our cache in a variable
-        let disabledModules = client.disabledModules.get(`${message.guild.id}`)
+        let disabledModules = client.cache[message.guild.id].disabledModules
         //remove enabled module from mongo
         if(disabledModules.includes(module.toLowerCase())){
             disabledModules.splice(disabledModules.indexOf(module.toLowerCase()))//remove the newly enabled module from the variable
-            client.disabledModules.set(`${message.guild.id}`, disabledModules) //update our cache
+            client.cache[message.guild.id].disabledModules = disabledModules
             client.serverData.set(`${message.guild.id}.disabledModules`, disabledModules) //update mongo
             message.channel.send(`${module} module enabled`) //confirmation
         } else {message.channel.send("Mmmmhm why are you trying to enable that one again?")}
