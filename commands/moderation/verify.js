@@ -8,20 +8,22 @@ exports.run = async(client, message, args) => { // eslint-disable-line no-unused
 
     let autorole = await client.serverData.get(`${message.guild.id}.autoRole`)
     for (role of autorole){
-        member.roles.remove(role).catch(console.error);
+        verifyMember.roles.remove(role).catch(console.error);
     }
 
     let verifyroles = await client.serverData.get(`${message.guild.id}.verifyRole`)
     for (role of verifyroles){
-        member.roles.add(role).catch(console.error);
+        verifyMember.roles.add(role).catch(console.error);
     }
 
     if (param === "18") {
         let ageroles = await client.serverData.get(`${message.guild.id}.verify18Role`)
         for (role of ageroles){
-            member.roles.add(role).catch(console.error);
+            verifyMember.roles.add(role).catch(console.error);
         }
     }
+
+    message.channel.send("Member verified :D")
 }
 
 exports.config = {
