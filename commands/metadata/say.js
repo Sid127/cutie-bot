@@ -20,5 +20,5 @@ exports.config = {
 	permLevel: "serverAdmin",
 	name: "say",
 	description: "Make me say things",
-	usage: "[<#channel>] [<message>]"
+	usage: ["[<#channel>] [<message>]"]
 };
