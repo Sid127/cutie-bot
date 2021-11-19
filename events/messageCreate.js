@@ -5,7 +5,7 @@ module.exports = {
         if (message.author.bot) return;
 
         //define prefix
-        client.prefix = client.cache[message.guild.id].prefix || client.config.prefix
+        message.guild ? (client.cache[message.guild.id].prefix === "" ? client.prefix = client.config.prefix : client.prefix = client.cache[message.guild.id].prefix) : client.prefix = client.config.prefix
 
         // Ignore messages not starting with the prefix
         if(message.guild) {if (!message.content.toLowerCase().trim().startsWith(client.prefix)) return;}
