@@ -1,4 +1,11 @@
 exports.run = async (client, message, args) => {
+
+    if(args[0] === "off") {
+        await client.serverData.delete(`${message.guild.id}.birthdayRole`);
+        await client.serverData.delete(`${message.guild.id}.birthdayChnl`);
+        return message.channel.send({content:"Birthday config cleared"})
+    }
+
     //set the role
     if (args[0] === "role") {
         if (!message.mentions.roles.first()) return message.channel.send({content:"Please create the role manually and then set it here"});

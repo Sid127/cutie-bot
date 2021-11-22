@@ -1,5 +1,11 @@
-exports.run = async (client, message) => {
+exports.run = async (client, message, args) => {
     const { MessageEmbed } = require("discord.js")
+
+    if(args[0] === "off") {
+        await client.serverData.set(`${message.guild.id}.anonChnl`, null);
+        return message.channel.send({content:"Anonymous channel unset"})
+    }
+
     // grab the mentioned channel
     let channel = message.mentions.channels.first();
     if (!channel) return message.reply({content:"You silly goose that's not how you do it"});

@@ -21,8 +21,9 @@ exports.config = {
 	name: "setup",
 	description: "Set up various bot modules. For the welcome module, {user} will mention and {server} will input the server name",
 	usage: [
-        "[anon || bd-config channel || bgs || logger || ticket] [<#channel>]",
-        "bd-config role [<@birthday role>]", "prefix [<prefix>]",
+        "[anon || bd-config channel || bgs || logger || ticket] (off) [<#channel>]",
+        "bd-config role [<@birthday role>]",
+        "prefix [<prefix>]",
         "activitypoints [enabled || disabled]", "home", "prestige [<level>] [<@role>]",
         "autorole [<@roles>]",
         "verifiedrole (agegate) [<@roles>]",
