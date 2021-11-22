@@ -1,7 +1,7 @@
 module.exports = {
   name: "messageReactionAdd",
   async execute(reaction, user, client) {
-    const Discord = require("discord.js");
+    const { Permissions, MessageEmbed } = require("discord.js");
 
     if(reaction.message.channel.type === 'DM') return;
     if(user.partial) await user.fetch();
@@ -29,7 +29,7 @@ module.exports = {
               id: user.id,
               allow: [Permissions.FLAGS.VIEW_CHANNEL, Permissions.FLAGS.SEND_MESSAGES]
             }])
-            let embed= new Discord.MessageEmbed().setTitle("Welcome to your ticket!").setDescription(`Thanks for trying out our ticket support system. You've opened a ticket, which creates this channel that will last as long as you need it to. When your support conversation is done, please use the command \`${client.prefix} close\` to close the channel.`).setColor(0xffd1dc)
+            let embed= new MessageEmbed().setTitle("Welcome to your ticket!").setDescription(`Thanks for trying out our ticket support system. You've opened a ticket, which creates this channel that will last as long as you need it to. When your support conversation is done, please use the command \`${client.prefix} close\` to close the channel.`).setColor(0xffd1dc)
             channel.send({embeds:[embed]})
             channel.lockPermissions()
         })
