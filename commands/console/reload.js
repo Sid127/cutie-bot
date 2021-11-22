@@ -1,18 +1,13 @@
 exports.run = (client, message, args) => {
     if(!args || args.length < 1) return message.channel.send({content:"Must provide a command name to reload."});
     var commandName = args;
-
-    let category = client.commands.get(commandName).config.category.toLowerCase()
+    let category = ""
 
     // Check if the command exists and is valid
-    if(!client.commands.has(commandName)) {
-      if (client.aliases.has(commandName)){
-        commandName = client.commands.get(client.aliases.get(commandName)).config.name;
-        let category = client.commands.get(client.aliases.get(commandName)).config.category.toLowerCase()
-      } else {
+    if(!client.commands.has(commandName) && !client.aliases.has(commandName)) 
         return message.channel.send("I DUNNO WHAT COMMAND YOU WANNA RELOAD D:")
-      }
-    }
+
+    client.commands.has(commandName) ? category = client.commands.get(commandName).config.category.toLowerCase() : (category = client.commands.get(client.aliases.get(commandName)).config.category.toLowerCase(), commandName = client.commands.get(client.aliases.get(commandName)).config.name)
 
     // the path is relative to the *current folder*, so just ./filename.js
     delete require.cache[require.resolve(`../${category}/${commandName}.js`)];
