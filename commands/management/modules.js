@@ -10,7 +10,7 @@ exports.run = async(client, message, args) => {
             //grab all category names
             client.commands.forEach(command => {
                 if (!modules.includes(command.config.category)){
-                    modules.push(command.config.category) 
+                    modules.push(command.config.category)
                 }
             });
             message.channel.send(`I have quite a few modules, here's a list of them all:\n\n${modules.sort().join(`\n`)}`)
@@ -20,7 +20,7 @@ exports.run = async(client, message, args) => {
             //grab all commands in the given category
             client.commands.forEach(command => {
                 if (module.toLowerCase() === command.config.category.toLowerCase()){
-                    commands.push(command.config.name) 
+                    commands.push(command.config.name)
                 }
             });
             if (commands.length === 0) return message.channel.send("What. the. hell. do you want from me ;-;")
@@ -31,24 +31,24 @@ exports.run = async(client, message, args) => {
         if(!module) return message.channel.send("What in tarnation...")
         if(["metadata", "management", "moderation"].includes(module.toLowerCase())) return message.channel.send("You monster... :(")
         //grab our cache in a variable
-        let disabledModules = client.cache[message.guild.id].disabledModules
+        let enabledModules = client.cache[message.guild.id].enabledModules
         //push disabled module to mongo
-        if(!disabledModules.includes(module.toLowerCase())){
-            disabledModules.push(module.toLowerCase())//push the newly disabled module into the variable
-            client.cache[message.guild.id].disabledModules = disabledModules
-            client.serverData.set(`${message.guild.id}.disabledModules`, disabledModules) //update mongo
+        if(enabledModules.includes(module.toLowerCase())){
+			enabledModules.splice(enabledModules.indexOf(module.toLowerCase()))//remove the newly enabled module from the variable
+            client.cache[message.guild.id].enabledModules = enabledModules
+            client.serverData.set(`${message.guild.id}.enabledModules`, enabledModules) //update mongo
             message.channel.send(`${module} module disabled`) //confirmation
         } else {message.channel.send("Yeah that one's already disabled")}
     //code to enable modules
     } else if (param === "enable"){
         if(!module) return message.channel.send("What in tarnation...")
         //grab our cache in a variable
-        let disabledModules = client.cache[message.guild.id].disabledModules
-        //remove enabled module from mongo
-        if(disabledModules.includes(module.toLowerCase())){
-            disabledModules.splice(disabledModules.indexOf(module.toLowerCase()))//remove the newly enabled module from the variable
-            client.cache[message.guild.id].disabledModules = disabledModules
-            client.serverData.set(`${message.guild.id}.disabledModules`, disabledModules) //update mongo
+        let enabledModules = client.cache[message.guild.id].enabledModules
+        //add enabled module from mongo
+        if(!enabledModules.includes(module.toLowerCase())){
+			enabledModules.push(module.toLowerCase())//push the newly disabled module into the variable
+            client.cache[message.guild.id].enabledModules = enabledModules
+            client.serverData.set(`${message.guild.id}.enabledModules`, enabledModules) //update mongo
             message.channel.send(`${module} module enabled`) //confirmation
         } else {message.channel.send("Mmmmhm why are you trying to enable that one again?")}
     }

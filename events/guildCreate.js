@@ -7,7 +7,7 @@ module.exports = {
             logChnl: null,
             prefix: "",
             activityLeaderboard: "enabled",
-            disabledModules: [],
+			enabledModules: ["management", "moderation", "metadata", "support"],
             customCommands: {},
             home: {homeSys: undefined},
             hiddenRoles: [],
@@ -15,7 +15,7 @@ module.exports = {
         });
 
         client.cache[guild.id] = {}
-        client.cache[guild.id]["disabledModules"] = []
+        client.cache[guild.id]["enabledModules"] = []
         client.cache[guild.id]["prefix"] = ""
         client.cache[guild.id]["activityLeaderboard"] = "enabled"
         client.cache[guild.id]["homeSys"] = undefined

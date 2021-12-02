@@ -39,20 +39,20 @@ exports.run = async (client, message, args) => {
 		// create the blocks for each category and add that to output
 		for (catKey of Object.keys(categories).sort()) {
 			//grab our cache of disabled modules for this server
-			let disabledModules = client.cache[message.guild.id].disabledModules
+			let enabledModules = client.cache[message.guild.id].enabledModules
 			//check for disabled modules
-			if (!disabledModules.includes(catKey.toLowerCase())){
+			if (enabledModules.includes(catKey.toLowerCase())){
 				// add the category header to the output
 				output += `\u200b\n== ${catKey} ==\n`;
 
 				// sort the list by name
 				categories[catKey].sort(dynamicSort("name"));
-	
+
 				// loop through all the commands under each category, add padding for all to be same length
 				for (cmd of categories[catKey]) {
 					output += `${cmd.name.padEnd(longestName, " ")} :: ${cmd.description}\n`
-				}			
-			}			
+				}
+			}
 		}
 		let splitOutput = Util.splitMessage(output, {maxLength: 1900, char: "\u200b"});
 		for (let chunk of splitOutput) {

@@ -89,7 +89,7 @@ const init = async() => {
     for (key of Object.keys(tempCache)) {
         if(!["botSettings", "tick"].includes(key)){
             client.cache[key] = {}
-            client.cache[key]["disabledModules"] = tempCache[key].disabledModules
+            client.cache[key]["enabledModules"] = tempCache[key].enabledModules
             client.cache[key]["prefix"] = tempCache[key].prefix
             client.cache[key]["activityLeaderboard"] = tempCache[key].activityLeaderboard
             client.cache[key]["homeSys"] = tempCache[key].home.homeSys
@@ -99,7 +99,7 @@ const init = async() => {
         client.cache.tick = tempCache.tick
     }
     console.log("Local cache created")
-} 
+}
 
 init();
 
