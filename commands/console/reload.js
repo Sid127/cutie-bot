@@ -1,10 +1,26 @@
-exports.run = (client, message, args) => {
+exports.run = async (client, message, args) => {
     if(!args || args.length < 1) return message.channel.send({content:"Must provide a command name to reload."});
+	if(args === "cache"){
+		let tempCache = await client.serverData.getMany(await client.serverData.keys)
+		for (key of Object.keys(tempCache)) {
+			if(!["botSettings", "tick"].includes(key)){
+				client.cache[key] = {}
+				client.cache[key]["enabledModules"] = tempCache[key].enabledModules
+				client.cache[key]["prefix"] = tempCache[key].prefix
+				client.cache[key]["activityLeaderboard"] = tempCache[key].activityLeaderboard
+				client.cache[key]["homeSys"] = tempCache[key].home.homeSys
+				client.cache[key]["cc"] = tempCache[key].customCommands
+			}
+			client.cache.botSettings = tempCache.botSettings
+			client.cache.tick = tempCache.tick
+		}
+		return message.channel.send("Local cache updated")
+	}
     var commandName = args;
     let category = ""
 
     // Check if the command exists and is valid
-    if(!client.commands.has(commandName) && !client.aliases.has(commandName)) 
+    if(!client.commands.has(commandName) && !client.aliases.has(commandName))
         return message.channel.send("I DUNNO WHAT COMMAND YOU WANNA RELOAD D:")
 
     client.commands.has(commandName) ? category = client.commands.get(commandName).config.category.toLowerCase() : (category = client.commands.get(client.aliases.get(commandName)).config.category.toLowerCase(), commandName = client.commands.get(client.aliases.get(commandName)).config.name)
@@ -16,7 +32,7 @@ exports.run = (client, message, args) => {
     const props = require(`../${category}/${commandName}.js`);
     props.config.category = category.replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase());
     client.commands.set(commandName, props);
-    
+
     message.react('☑️')
 }
 
