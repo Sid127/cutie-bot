@@ -5,9 +5,12 @@ exports.run = async(client, message, args) => {
 
     if(!args) return message.channel.send("Yeah, what?")
 
-    let [date, timezone] = args.split(" ")
-    let [dateStub, month] = date.split("-")
-    if(!month) return message.channel.send("I have a feeling you forgot a hyphen")
+	args = args.replace("the", "").replace("th", "").replace("of", "")
+
+	args = moment(args).format("DD-MMM")
+	if (args.toLowerCase() === "invalid date") return message.channel.send("I dunno how but something went horribly wrong")
+
+    let [dateStub, month] = args.split("-")
     month = capitalizeString(month.toLowerCase())
     date = `${dateStub}-${month}`
 
@@ -20,9 +23,9 @@ exports.run = async(client, message, args) => {
     });
 
     //handle the actual info
-    if (moment(date, "DD-MMM").format("DD-MMM") !== date) 
+    if (moment(date, "DD-MMM").format("DD-MMM") !== date)
         return message.channel.send({content:"Please tell me your date in the DD-MMM format. Example: 17-Aug"})
-    
+
     if (!timezone) {
         await client.peopleData.set(`${message.guild.id}-${message.author.id}.date`, date)
         await client.peopleData.set(`${message.guild.id}-${message.author.id}.timezone`, "Etc/UTC")
