@@ -34,7 +34,7 @@ exports.run = async(client, message, args) => {
         let enabledModules = client.cache[message.guild.id].enabledModules
         //push disabled module to mongo
         if(enabledModules.includes(module.toLowerCase())){
-			enabledModules.splice(enabledModules.indexOf(module.toLowerCase()))//remove the newly enabled module from the variable
+			enabledModules.splice(enabledModules.indexOf(module.toLowerCase()), 1)//remove the newly enabled module from the variable
             client.cache[message.guild.id].enabledModules = enabledModules
             client.serverData.set(`${message.guild.id}.enabledModules`, enabledModules) //update mongo
             message.channel.send(`${module} module disabled`) //confirmation
