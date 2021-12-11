@@ -7,8 +7,17 @@ exports.run = async(client, message, args) => {
 
 	args = args.replace("the", "").replace("th", "").replace("of", "")
 
+	timezone = args.substr(args.lastIndexOf(" ")+1)
+
+	if(timezone.includes("/")){
+		if(!moment.tz.zone(timezone)){
+			return message.channel.send("That timezone doesn't look right, maybe paste the one from this website? <https://xske.github.io/tz/>")
+		}
+		args = args.substr(0, args.lastIndexOf(" "))
+	} else { delete(timezone) }
+
 	args = moment(args).format("DD-MMM")
-	if (args.toLowerCase() === "invalid date") return message.channel.send("I dunno how but something went horribly wrong")
+	if (args.toLowerCase() === "invalid date") return message.channel.send("I dunno how but something went horribly wrong :(")
 
     let [dateStub, month] = args.split("-")
     month = capitalizeString(month.toLowerCase())
