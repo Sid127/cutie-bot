@@ -4,13 +4,15 @@ exports.run = async(client, message, args, level) => {
     if (message.mentions.members.size > 0) {
         member = message.mentions.members.first();
         date = await client.peopleData.get(`${message.guild.id}-${member.id}.date`)
-        if(!date) return message.channel.send("Are you sure you were born?")
+        if(!date) return message.channel.send("Are you sure they were born?")
+		date = moment(date, "MM-DD").format("Do MMMM")
         message.channel.send({content:`${member.user.tag}'s birthday is on ${date}!`})
     //or just get your own
     } else {
         member = message.member;
         date = await client.peopleData.get(`${message.guild.id}-${member.id}.date`)
         if(!date) return message.channel.send("Are you sure you were born?")
+		date = moment(date, "MM-DD").format("Do MMMM")
         message.channel.send({content:`Your birthday is on ${date}!`})
     }
 }

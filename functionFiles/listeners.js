@@ -62,7 +62,7 @@ tickListener = async (client) => {
 //a function that checks if there's a birthday right now
 bdayChck = async (client) => {
     //grab all data into a map
-    let db = await client.peopleData.filter(p => p.timezone)
+    let db = await client.peopleData.filter(p => p.date)
     for (ident of db) {
         // these two variables are used in both cases
         const sendGuild = ident[1]['guild'];
@@ -76,7 +76,7 @@ bdayChck = async (client) => {
 
         if(!birthdayFolk) {} else{
             // if statement for setting the role
-            if (moment().tz(ident[1]['timezone']).format('DD-MMM') === ident[1]['date']) {
+            if (moment().tz(ident[1]['timezone']).format('MM-DD') === ident[1]['date']) {
                 // set role and send message
                 if (!birthdayFolk.roles.cache.get(birthdayRole)) {
                     birthdayFolk.roles.add(birthdayRole);
