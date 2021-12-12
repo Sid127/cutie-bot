@@ -6,7 +6,6 @@ module.exports = {
         if (!oldMessage.guild) return;
         if (oldMessage.partial) return;
         if (oldMessage.content === null) return;
-        if (oldMessage.embeds[0] != null) return;
         if (oldMessage.content === newMessage.content) return;
 
         const key = `${oldMessage.guild.id}`
