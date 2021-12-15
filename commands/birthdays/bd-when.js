@@ -1,5 +1,7 @@
 exports.run = async(client, message, args, level) => {
-
+	const moment = require("moment-timezone");
+    require("moment-duration-format");
+	
     //if a member is mentioned, get their info
     if (message.mentions.members.size > 0) {
         member = message.mentions.members.first();

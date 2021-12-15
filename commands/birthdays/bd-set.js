@@ -38,7 +38,7 @@ exports.run = async(client, message, args) => {
 	} else { timezone = "Etc/UTC" }
 
 	//convert month to be plugged into an ISO format
-	month = moment(capitalizeString(month, "MMM").format("MM"))
+	month = moment(capitalizeString(month, "MMM")).format("MM")
     birthDate = `${month}-${date}`
 
     //create an empty mongo entry for the user that is also server specific
