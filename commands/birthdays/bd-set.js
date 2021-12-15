@@ -33,12 +33,12 @@ exports.run = async(client, message, args) => {
 	//extract and parse a timezone, defaults to UTC
 	timezone = args.substr(args.lastIndexOf(" ")+1)
 
-	if(timezone.includes("/") && !moment.tz.zone(timezone)){
-		return message.channel.send("That timezone doesn't look right, maybe paste the one from this website? <https://xske.github.io/tz/>")
+	if(!timezone.includes("/") && !moment.tz.zone(timezone)){
+		return message.channel.send("I'm afraid I can't work with that timezone format, maybe paste the one from this website? <https://xske.github.io/tz/>")
 	} else { timezone = "Etc/UTC" }
 
 	//convert month to be plugged into an ISO format
-	month = moment(capitalizeString(month, "MMM")).format("MM")
+	month = moment(capitalizeString(month), "MMM").format("MM")
     birthDate = `${month}-${date}`
 
     //create an empty mongo entry for the user that is also server specific
