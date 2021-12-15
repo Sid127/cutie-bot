@@ -15,6 +15,19 @@ exports.run = async (client, message, args) => {
             await client.serverData.delete(`${message.guild.id}.customCommands.${trigger}`) //update mongo
             message.channel.send(`Custom command ${client.prefix}${trigger} deleted :c`)
         } break;
+		case 'list' : {
+			const { Formatters, Util } = require("discord.js");
+
+		    let output = `= Here's a list of all the custom commands on this server: =\n\n• ${Object.keys(client.cache[message.guild.id].cc).join("\n• ")}`
+
+		    let splitOutput = Util.splitMessage(output, {maxLength: 2000, char: "\u200b"});
+		    for (let chunk of splitOutput) {
+		        await message.channel.send(Formatters.codeBlock("asciidoc", chunk.trim()));
+		    }
+		} break;
+		default : {
+			return message.channel.send("Carbon Copy Protocol initiated :P")
+		}
     }
 }
 
@@ -23,6 +36,6 @@ exports.config = {
 	aliases: ["cc"],
 	permLevel: "modAssist",
 	name: "customcommands",
-	description: "Create/delete a custom command",
-	usage: ["[create || delete] [<trigger>] [<response>]"]
+	description: "Create/delete/list a custom command",
+	usage: ["[create || delete] [<trigger>] [<response>]", "[list]"]
 };
