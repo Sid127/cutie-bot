@@ -33,9 +33,14 @@ exports.run = async(client, message, args) => {
 	//extract and parse a timezone, defaults to UTC
 	timezone = args.substr(args.lastIndexOf(" ")+1)
 
-	if(!timezone.includes("/") && !moment.tz.zone(timezone)){
-		return message.channel.send("I'm afraid I can't work with that timezone format, maybe paste the one from this website? <https://xske.github.io/tz/>")
-	} else { timezone = "Etc/UTC" }
+	if(timezone.includes("/")) {
+		if(!moment.tz.zone(timezone)){
+			return message.channel.send("I'm afraid I can't work with that timezone format, maybe paste the one from this website? <https://xske.github.io/tz/>")
+		}
+	} else {
+		message.channel.send("Invalid or no timezone detected, defaulting to Etc/UTC\nSet a timezone using the bd-zone command")
+		timezone = "Etc/UTC"
+	}
 
 	//convert month to be plugged into an ISO format
 	month = moment(capitalizeString(month), "MMM").format("MM")

@@ -69,10 +69,10 @@ bdayChck = async (client) => {
         const birthdayRole = await client.serverData.get(`${sendGuild}.birthdayRole`);
 
         //don't run this block if we're not in that guild
-        if (!client.guilds.cache.get(sendGuild)) return;
+        if (!client.guilds.cache.get(sendGuild)) continue;
 
         // user data we're targeting now
-        const birthdayFolk = client.guilds.cache.get(sendGuild).members.cache.get(ident[1]['username']);
+        const birthdayFolk = client.guilds.cache.get(sendGuild).members.cache.get(ident[1]['user']);
 
         if(!birthdayFolk) {} else{
             // if statement for setting the role
@@ -83,7 +83,7 @@ bdayChck = async (client) => {
 
                     // get the channel where to send a message
                     const msgChannel = await client.serverData.get(`${sendGuild}.birthdayChnl`);
-                    client.channels.cache.get(msgChannel).send(`Happy Birthday, <@${ident[1]['username']}>`)
+                    client.channels.cache.get(msgChannel).send(`Happy Birthday, <@${ident[1]['user']}>`)
                 }
             } else { // else remove the role
                 if (birthdayFolk.roles.cache.get(birthdayRole)) {
@@ -98,7 +98,7 @@ bdayChck = async (client) => {
 module.exports.chck15 = async (client) => {
     setInterval(async() => {
         bdayChck(client)
-    }, 900000)
+    }, 10000)
 }
 
 //listeners that operate on a 10 minute timer
