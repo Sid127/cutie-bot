@@ -49,7 +49,7 @@ exports.run = async(client, message, args) => {
     //create an empty mongo entry for the user that is also server specific
     await client.peopleData.ensure(`${message.guild.id}-${message.author.id}`, {
         guild: message.guild.id,
-        username: message.author.id,
+        usern: message.author.id,
         date: null,
         timezone: null
     });

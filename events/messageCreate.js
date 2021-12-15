@@ -20,7 +20,6 @@ module.exports = {
                     guild: message.guild.id,
                     points: 0,
                     level: 0,
-                    username: message.member.user.tag
                 });
 
                 if (message.content.length >= 7 && !message.content.startsWith(client.config.prefix)) {

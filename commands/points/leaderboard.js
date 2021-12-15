@@ -19,7 +19,8 @@ exports.run = async(client, message, args) => {
         .setDescription("Our top 10 points leaders!")
         .setColor(0xffd1dc);
     for (const data of top10) {
-        embed.addField(`${data[1]['username']}`, `${data[1]['points']} points (level ${data[1]['level']})`);
+		member = guild.members.cache.get(ident[1]['user'])
+        embed.addField(`${member.user.tag}`, `${data[1]['points']} points (level ${data[1]['level']})`);
     }
     message.channel.send({embeds: [embed] })
 }

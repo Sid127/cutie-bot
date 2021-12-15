@@ -13,7 +13,7 @@ exports.run = async(client, message) => {
             diff = moment(date).diff(moment(), "days")
             if(diff >= -7 && diff <= 14) {
                 guild = client.guilds.cache.get(message.guild.id)
-                member = guild.members.cache.get(ident[1]['username'])
+                member = guild.members.cache.get(ident[1]['user'])
                 if(!member){}else{
                     recup = recup + `\n\`${ident[1]['date']}\` - ${member.user.tag}`
                 }
