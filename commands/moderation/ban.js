@@ -17,7 +17,7 @@ exports.run = (client, message, args) => {
 	const log = message.mentions.users.first().tag;
 
   //this is the actual ban
-  banMember.ban(reason.join(" ")).then(member => {
+  banMember.ban({reason: reason.join(" ")}).then(member => {
     message.reply({content:`${member.user.username} was succesfully banned.`});
 
   //and here we log it, if logging channel is set
