@@ -93,7 +93,7 @@ const init = async() => {
             client.cache[key]["prefix"] = tempCache[key].prefix
             client.cache[key]["activityLeaderboard"] = tempCache[key].activityLeaderboard
             client.cache[key]["homeSys"] = tempCache[key].home.homeSys
-            client.cache[key]["cc"] = tempCache[key].customCommands
+            client.cache[key]["cc"] = Object.keys(tempCache[key].customCommands)
         }
         client.cache.botSettings = tempCache.botSettings
         client.cache.tick = tempCache.tick

@@ -28,7 +28,6 @@ module.exports = {
                     await client.peopleData.set(`${key}.points`, newP);
                 }
 
-
                 // Calculate the user's current level
                 const curLevel = Math.floor(0.1 * Math.sqrt(await client.peopleData.get(`${key}.points`)));
 
@@ -67,8 +66,9 @@ module.exports = {
             args = args.join(" ").trim();
 
             // if command is a server custom command, send the response
-            if(Object.keys(client.cache[message.guild.id].cc).includes(command))
-                return message.channel.send(client.cache[message.guild.id].cc[command])
+			console.log(client.cache[message.guild.id].cc.includes(command))
+            if(client.cache[message.guild.id].cc.includes(command))
+                return message.channel.send(await client.serverData.get(`${message.guild.id}.customCommands.${command}`))
 
             // Grab the command data from the client.commands Map
             let cmd = client.commands.get(command) || client.commands.get(client.aliases.get(command));
