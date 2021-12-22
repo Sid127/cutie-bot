@@ -33,14 +33,14 @@ module.exports = {
 
                 // Act upon level up by sending a message and updating the user's level in enmap.
                 if (await client.peopleData.get(`${key}.level`) < curLevel) {
-					const botChannel = message.guild.channels.cache.find(channel => channel.name === "bot").id;
+					const botChannel = await client.serverData.get(`${message.guild.id}.lvlUpChnl`)
                     if (!botChannel) {} else{
 						client.channels.cache.get(botChannel).send({content:`<@${message.author.id}> leveled up to level **${curLevel}**! :)`});
 						await client.peopleData.set(`${key}.level`, curLevel);
 					}
                 }
                 if (await client.peopleData.get(`${key}.level`) > curLevel) {
-					const botChannel = message.guild.channels.cache.find(channel => channel.name === "bot").id;
+					const botChannel = await client.serverData.get(`${message.guild.id}.lvlUpChnl`)
                     if (!botChannel) {} else{
 						client.channels.cache.get(botChannel).send({content:`<@${message.author.id}> leveled down to level **${curLevel}** :(`});
 						await client.peopleData.set(`${key}.level`, curLevel);
