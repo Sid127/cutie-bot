@@ -68,7 +68,6 @@ module.exports = {
             args = args.join(" ").trim();
 
             // if command is a server custom command, send the response
-			console.log(client.cache[message.guild.id].cc.includes(command))
             if(client.cache[message.guild.id].cc.includes(command))
                 return message.channel.send(await client.serverData.get(`${message.guild.id}.customCommands.${command}`))
 
