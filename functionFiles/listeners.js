@@ -31,7 +31,9 @@ tickListener = async (client) => {
         await client.serverData.set(`tick.updatedAt`, tickData[0].updated_at)
         await client.serverData.set(`tick.v`, tickData[0].__v)
 
-        let ticktime = moment.utc(tickData[0].time).format('MMMM Do YYYY, h:mm a')
+		let year = parseInt(moment.utc(tickData[0].time).format(`YYYY`))+1286
+        let ticktime = moment.utc(tickData[0].time).format(`MMMM Do ${year}, h:mm a`)
+		console.log(ticktime)
 
         //create the embed beforehand
         const embed = {
@@ -39,7 +41,7 @@ tickListener = async (client) => {
             "color": 4751592,
             "fields": [{
                     "name": "Latest Tick Was At:",
-                    "value": `${ticktime} UTC`
+                    "value": `${ticktime} GMT`
                 }
             ]
         };
@@ -98,7 +100,7 @@ bdayChck = async (client) => {
 module.exports.chck15 = async (client) => {
     setInterval(async() => {
         bdayChck(client)
-    }, 10000)
+    }, 900000)
 }
 
 //listeners that operate on a 10 minute timer
