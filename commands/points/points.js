@@ -11,7 +11,7 @@ exports.run = async(client, message, [mention]) => {
         const point = await client.peopleData.get(`${key}.points`);
         if (point === null) return message.channel.send("Nothing to see here, move on")
         const lvl = await client.peopleData.get(`${key}.level`);
-        return await message.channel.send({content:`${keyMember.displayName} currently has ${point})} points, and is level ${lvl}!`});
+        return await message.channel.send({content:`${keyMember.displayName} currently has ${point} points, and is level ${lvl}!`});
     }
 }
 
