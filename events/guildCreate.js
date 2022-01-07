@@ -11,7 +11,8 @@ module.exports = {
             customCommands: {},
             home: {homeSys: undefined},
             hiddenRoles: [],
-            blacklistPfx: []
+            blacklistPfx: [],
+			reactionRoles: {}
         });
 
         client.cache[guild.id] = {}
@@ -20,5 +21,6 @@ module.exports = {
         client.cache[guild.id]["activityLeaderboard"] = "enabled"
         client.cache[guild.id]["homeSys"] = undefined
         client.cache[guild.id]["cc"] = {}
+		client.cache[guild.id]["reactionRoles"] = []
     }
 }
