@@ -10,7 +10,7 @@ exports.run = async (client, message, args) => {
             message.channel.send(`Custom command ${client.prefix}${trigger} created!`)
         } break;
         case 'delete' : {
-            if(!Object.keys(client.cache[message.guild.id].cc).includes(trigger))return message.channel.send("Nothing has been deleted you unsalted stick of butter")
+            if(!client.cache[message.guild.id].cc.includes(trigger))return message.channel.send("Nothing has been deleted you unsalted stick of butter")
             client.cache[message.guild.id].cc.splice(client.cache[message.guild.id].cc.indexOf(trigger), 1) //update cache
             await client.serverData.delete(`${message.guild.id}.customCommands.${trigger}`) //update mongo
             message.channel.send(`Custom command ${client.prefix}${trigger} deleted :c`)
