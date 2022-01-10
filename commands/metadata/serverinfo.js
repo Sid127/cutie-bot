@@ -15,7 +15,7 @@ exports.run = async (client, message) => {
             .addField("Roles Count", `${message.guild.roles.cache.size}`, true)
 			.addField("Text Channels", `${message.guild.channels.cache.filter((c) => c.type === "GUILD_TEXT").size}`, true)
 			.addField("Voice Channels", `${message.guild.channels.cache.filter((c) => c.type === "GUILD_VOICE").size}`, true)
-			.addField("Created On", `${moment.utc(message.guild.createdAt).format("MMMM Do YYYY")}`, true)
+			.addField("Created On", `<t:${moment(message.guild.createdAt).unix()}>, <t:${moment(message.guild.createdAt).unix()}:R>`, true)
 
 
 	message.channel.send({embeds:[embed]});

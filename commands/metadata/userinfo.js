@@ -28,7 +28,7 @@ exports.run = async (client, message) => {
 		.addField("Status", `${member.presence ? status[member.presence.status] : "I have no idea D:"}`, true)
 		.addField("Playing", `${member.presence ? (member.presence.activities.state === undefined ? "Not playing anything... I think" : `${member.presence.activities.state}`) : "Not playing anything."}`, true)
 		.addField("Roles", `${whitelistRoles.map(roles => `\`${roles.name}\``).join(" **|** ") || "No Roles"}`, true)
-		.addField("Joined", `${moment().diff(moment.utc(member.joinedAt), 'days')} Days Ago (Created ${moment.utc(member.user.createdAt).format("MMMM Do YYYY")})`, true)
+		.addField("Joined", `<t:${moment(member.joinedAt).unix()}>, ${moment().diff(moment.utc(member.joinedAt), 'days')} Days Ago\n(Created <t:${moment(member.user.createdAt).unix()}>, ${moment().diff(moment.utc(member.user.createdAt), 'days')} Days Ago)`, true)
 
 		message.channel.send({embeds:[embed]});
 }
