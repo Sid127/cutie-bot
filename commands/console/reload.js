@@ -11,6 +11,8 @@ exports.run = async (client, message, args) => {
 				client.cache[key]["homeSys"] = tempCache[key].home.homeSys
 				client.cache[key]["cc"] = tempCache[key].customCommands
 				client.cache[key]["reactionRoles"] = Object.keys(tempCache[key].reactionRoles)
+				client.cache[key]["reactionRoles"]["mode"] = tempCache[key].reactionRoles.mode
+
 			}
 			client.cache.botSettings = tempCache.botSettings
 			client.cache.tick = tempCache.tick

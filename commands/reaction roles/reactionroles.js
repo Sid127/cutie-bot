@@ -35,7 +35,8 @@ exports.run = async(client, message, args) => {
         descriptors = description.split("\n")
 		let limit = 0
 		let mongoObj = {
-			"header": header
+			"header": header,
+			"mode": "multi"
 			}
 		let embed = new MessageEmbed()
 	        .setColor('RANDOM')
@@ -68,7 +69,7 @@ exports.run = async(client, message, args) => {
 
 		//attempt adding all reactions
 		for (key of Object.keys(mongoObj)){
-			if(key !== "header"){
+			if(!["header", "mode"].includes(key)){
 				try{
 					await reactionMessage.react(key)
 				} catch(err){
@@ -83,6 +84,19 @@ exports.run = async(client, message, args) => {
 		await client.serverData.set(`${message.guild.id}.reactionRoles.${message.channel.id}/${reactionMessage.id}`, mongoObj)
 		client.cache[message.guild.id]["reactionRoles"].push(`${message.channel.id}/${reactionMessage.id}`)
     }
+
+	if (param === "setmode") {
+		let [id, mode] = arguments.join(" ").split(" ")
+		if (mode === "multi") {
+			await client.serverData.set(`${message.guild.id}.reactionRoles.${id}.mode`, "multi")
+			return message.react('☑️')
+		}
+		if (mode === "single") {
+			await client.serverData.set(`${message.guild.id}.reactionRoles.${id}.mode`, "single")
+			return message.react('☑️')
+		}
+		return message.channel.send(`Either "single" or "multi," nothing else"`)
+	}
 }
 
 exports.config = {
@@ -91,5 +105,5 @@ exports.config = {
 	permLevel: "serverAdmin",
 	name: "reactionroles",
 	description: "Creat, Edit, and Delete reaction based role assigners.",
-	usage: ["create (heading) | (emoji - role description : role) *one per line*", "delete (identifier)", "list"]
+	usage: ["create (heading) | (emoji - role description : role) *one per line*", "delete (identifier)", "list", "setmode (identifier) (multi | single)"]
 };
