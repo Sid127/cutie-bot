@@ -4,8 +4,28 @@ exports.run = async(client, message, args) => {
 
 	//code to delete a reaction role
 	if (param === "delete") {
-		await client.serverData.set(`${message.guild.id}.reactionRoles.${reactionMessage.id}`, mongoObj)
-		client.cache[message.guild.id][reactionRoles].splice(indexOf(arguments[0]), 1)
+		let reactionMenu = arguments[0]
+		if(!reactionMenu.includes("/")) return message.channel.send("I'll need you to paste the identifier for the menu given to you by the list :P")
+		let [chnl, msg] = reactionMenu.split("/")
+		try{
+			await message.guild.channels.cache.get(chnl).messages.fetch(msg).then(msg => {msg.delete()}) //fetch and delete the reaction menu
+		} catch {
+			return message.channel.send("I'm not sure you pasted the identifier correctly, mind re-checking that?")
+		}
+		await client.serverData.delete(`${message.guild.id}.reactionRoles.${reactionMenu}`)//remove it from mongo
+		client.cache[message.guild.id]["reactionRoles"].splice(client.cache[message.guild.id]["reactionRoles"].indexOf(reactionMenu), 1)//remove it from local cache
+		message.react('☑️')
+	}
+
+	if (param === "list") {
+		let embed = new MessageEmbed()
+			.setColor('RANDOM')
+			.setTitle("List of active reaction role menus")
+		for (menu of client.cache[message.guild.id]["reactionRoles"]){
+			header = await client.serverData.get(`${message.guild.id}.reactionRoles.${menu}.header`)
+			embed.addField(header, menu)
+		}
+		message.channel.send({embeds: [embed]})
 	}
 
 	// code to create a reactionrole
@@ -14,7 +34,9 @@ exports.run = async(client, message, args) => {
         let [header, description] = arguments.join(" ").split("|")
         descriptors = description.split("\n")
 		let limit = 0
-		let mongoObj = {}
+		let mongoObj = {
+			"header": header
+			}
 		let embed = new MessageEmbed()
 	        .setColor('RANDOM')
 			.setTitle(header)
@@ -40,25 +62,26 @@ exports.run = async(client, message, args) => {
 			// also parse stuff to be put into the embed
 			line.includes(":") ? embedDescription = `${embedDescription} ${line.slice(0, line.indexOf(':'))}\n` : embedDescription = `${embedDescription} ${line}\n`
         }
-		console.log(mongoObj)
 		// put parsed text into embed
 		embed.setDescription(embedDescription)
 		let reactionMessage = await message.channel.send({embeds: [embed]})
 
 		//attempt adding all reactions
 		for (key of Object.keys(mongoObj)){
-			try{
-				await reactionMessage.react(key)
-			} catch(err){
-				message.channel.send(`I seem to be having trouble reacting with ${key}, could you try using a different emoji for that one?`)
-				reactionMessage.reactions.removeAll()
-				break;
+			if(key !== "header"){
+				try{
+					await reactionMessage.react(key)
+				} catch(err){
+					message.channel.send(`I seem to be having trouble reacting with ${key}, could you try using a different emoji for that one?`)
+					reactionMessage.reactions.removeAll()
+					break;
+				}
 			}
 		}
 
 		//finally, push to mongo and update local cache
-		await client.serverData.set(`${message.guild.id}.reactionRoles.${reactionMessage.id}`, mongoObj)
-		client.cache[message.guild.id]["reactionRoles"].push(reactionMessage.id)
+		await client.serverData.set(`${message.guild.id}.reactionRoles.${message.channel.id}/${reactionMessage.id}`, mongoObj)
+		client.cache[message.guild.id]["reactionRoles"].push(`${message.channel.id}/${reactionMessage.id}`)
     }
 }
 
@@ -68,5 +91,5 @@ exports.config = {
 	permLevel: "serverAdmin",
 	name: "reactionroles",
 	description: "Creat, Edit, and Delete reaction based role assigners.",
-	usage: ["create (heading) | (emoji - role description : role) *one per line*", "delete"]
+	usage: ["create (heading) | (emoji - role description : role) *one per line*", "delete (identifier)", "list"]
 };

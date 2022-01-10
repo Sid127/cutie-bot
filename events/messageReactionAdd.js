@@ -11,8 +11,10 @@ module.exports = {
     if(user.bot) return;
 	let mmbr = await reaction.message.guild.members.cache.get(user.id)
 
-	if(client.cache[reaction.message.guild.id].reactionRoles.includes(reaction.message.id)){
-		let reactions = await client.serverData.get(`${reaction.message.guild.id}.reactionRoles.${reaction.message.id}`)
+	let reactionMenu = `${reaction.message.channel.id}/${reaction.message.id}`
+
+	if(client.cache[reaction.message.guild.id].reactionRoles.includes(reactionMenu)){
+		let reactions = await client.serverData.get(`${reaction.message.guild.id}.reactionRoles.${reactionMenu}`)
 		if (Object.keys(reactions).includes(reaction.emoji.name)){
 			role = reaction.message.guild.roles.cache.get(reactions[reaction.emoji.name])
 			mmbr.roles.add(role).catch(console.error);
