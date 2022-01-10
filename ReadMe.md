@@ -42,3 +42,4 @@ Cutie has an ever expanding feature set, but the current modules include:
 - Custom welcome message
 - Per server prefixes
 - Ticket channels
+- Reaction Roles
