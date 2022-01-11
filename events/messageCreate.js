@@ -22,7 +22,7 @@ module.exports = {
                     level: 0,
                 });
 
-                if (message.content.length >= 7 && !message.content.startsWith(client.config.prefix)) {
+                if (message.content.length >= 7 && !message.content.startsWith(client.config.prefix) || !message.content.startsWith(client.cache[message.guild.id].prefix)) {
                     const oldP = await client.peopleData.get(`${key}.points`)
                     let newP = oldP + 1
                     await client.peopleData.set(`${key}.points`, newP);
