@@ -73,25 +73,25 @@ exports.run = async(client, message, args) => {
 					`At stake :: ${conflict.stake ? conflict.stake : "Nothing"}\n` +
 					`Days won :: ${conflict.days_won}\n`;
 
-					// if we have got here with the speial tag, get the info of the enemy as well
-					if (specialTag) {
-						let enemyData = await asyncEBGS("/factions", {name: conflict.opponent_name});
+					// get the info of the enemy as well
+					//if (specialTag) {
+					let enemyData = await asyncEBGS("/factions", {name: conflict.opponent_name});
 
-						// if no enemy data...
-						if (enemyData.data.docs.length === 0) {
-							tempOutput += ` * No enemy data *\n`;
-						} else {
-							// find the system and the conflict
-							let enemySystem = enemyData.data.docs[0].faction_presence.find(elem => elem.system_name === system.system_name);
-							if (enemySystem) {
-								let enemyConflict = enemySystem.conflicts.find(elem => elem.opponent_name === factionData.data.docs[0].name);
+					// if no enemy data...
+					if (enemyData.data.docs.length === 0) {
+						tempOutput += ` * No enemy data *\n`;
+					} else {
+						// find the system and the conflict
+						let enemySystem = enemyData.data.docs[0].faction_presence.find(elem => elem.system_name === system.system_name);
+						if (enemySystem) {
+							let enemyConflict = enemySystem.conflicts.find(elem => elem.opponent_name === factionData.data.docs[0].name);
 
-								tempOutput += ` * Enemy data *\n` +
-								`At stake :: ${enemyConflict.stake ? enemyConflict.stake : "Nothing"}\n` +
-								`Days won :: ${enemyConflict.days_won}\n`
-							}
+							tempOutput += ` * Enemy data *\n` +
+							`At stake :: ${enemyConflict.stake ? enemyConflict.stake : "Nothing"}\n` +
+							`Days won :: ${enemyConflict.days_won}\n`
 						}
 					}
+					//}
 				}
 			}
 		}
