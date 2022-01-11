@@ -54,14 +54,14 @@ exports.run = async(client, message, args) => {
 
 				// add data to an object to be pushed to mongo
             	const emoji = match[1];
-				if(line.includes(':')){
-					roleStub = line.slice(line.indexOf(':'))
+				if(line.includes(';')){
+					roleStub = line.slice(line.lastIndexOf(';'))
 					role = roleStub.slice(roleStub.indexOf('&')+1, roleStub.indexOf('>'))
 					mongoObj[emoji] = role
 				}
             }
 			// also parse stuff to be put into the embed
-			line.includes(":") ? embedDescription = `${embedDescription} ${line.slice(0, line.indexOf(':'))}\n` : embedDescription = `${embedDescription} ${line}\n`
+			line.includes(";") ? embedDescription = `${embedDescription} ${line.slice(0, line.lastIndexOf(';'))}\n` : embedDescription = `${embedDescription} ${line}\n`
         }
 		// put parsed text into embed
 		embed.setDescription(embedDescription)
@@ -105,5 +105,5 @@ exports.config = {
 	permLevel: "serverAdmin",
 	name: "reactionroles",
 	description: "Creat, Edit, and Delete reaction based role assigners.",
-	usage: ["create (heading) | (emoji - role description : role) *one per line*", "delete (identifier)", "list", "setmode (identifier) (multi | single)"]
+	usage: ["create (heading) | (emoji - role description ; role) *one per line*", "delete (identifier)", "list", "setmode (identifier) (multi | single)"]
 };
