@@ -105,5 +105,5 @@ exports.config = {
 	permLevel: "serverAdmin",
 	name: "reactionroles",
 	description: "Creat, Edit, and Delete reaction based role assigners.",
-	usage: ["create (heading) | (emoji - role description ; role) *one per line*", "delete (identifier)", "list", "setmode (identifier) (multi | single)"]
+	usage: ["create [<heading>] | [<emoji - role description ; role>] *one per line*", "delete [<identifier>]", "list", "setmode [<identifier>] [multi | single]"]
 };
