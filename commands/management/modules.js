@@ -1,6 +1,7 @@
 exports.run = async(client, message, args) => {
     //create the variables we'll use
-    let [param, module] = args.split(" ")
+    let [param, ...module] = args.split(" ")
+	module = module.join(" ")
 
     if(!args) return message.channel.send("Sometimes I wonder if you know what you're doing")
     //display a list of all available modules
