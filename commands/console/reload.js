@@ -2,21 +2,19 @@ exports.run = async (client, message, args) => {
     if(!args || args.length < 1) return message.channel.send({content:"Must provide a command name to reload."});
 	if(args === "cache"){
 		let tempCache = await client.serverData.getMany(await client.serverData.keys)
-		for (key of Object.keys(tempCache)) {
-			if(!["botSettings", "tick"].includes(key)){
-				client.cache[key] = {}
-				client.cache[key]["enabledModules"] = tempCache[key].enabledModules
-				client.cache[key]["prefix"] = tempCache[key].prefix
-				client.cache[key]["activityLeaderboard"] = tempCache[key].activityLeaderboard
-				client.cache[key]["homeSys"] = tempCache[key].home.homeSys
-				client.cache[key]["cc"] = tempCache[key].customCommands
+	    for (key of Object.keys(tempCache)) {
+	        if(!["botSettings", "tick"].includes(key)){
+	            client.cache[key] = {}
+	            client.cache[key]["enabledModules"] = tempCache[key].enabledModules
+	            client.cache[key]["prefix"] = tempCache[key].prefix
+	            client.cache[key]["activityLeaderboard"] = tempCache[key].activityLeaderboard
+	            client.cache[key]["homeSys"] = tempCache[key].home.homeSys
+	            client.cache[key]["cc"] = Object.keys(tempCache[key].customCommands)
 				client.cache[key]["reactionRoles"] = Object.keys(tempCache[key].reactionRoles)
-				client.cache[key]["reactionRoles"]["mode"] = tempCache[key].reactionRoles.mode
-
-			}
-			client.cache.botSettings = tempCache.botSettings
-			client.cache.tick = tempCache.tick
-		}
+	        }
+	        client.cache.botSettings = tempCache.botSettings
+	        client.cache.tick = tempCache.tick
+	    }
 		return message.channel.send("Local cache updated")
 	}
     var commandName = args;
