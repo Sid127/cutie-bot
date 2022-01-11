@@ -1,18 +1,18 @@
-exports.run = (client, message) => {
-    let muteRole = message.guild.roles.cache.find(role => role.name === "Muted");
+exports.run = (client, message, args) => {
 
     if (message.mentions.members.size === 0)
         return message.reply({content:"please mention a user to unmute"});
 
     const muteMember = message.mentions.members.first();
 
-    muteMember.roles.remove(muteRole).catch(console.error);
+	//remove the timeout
+    muteMember.timeout(null, args).catch(console.error);
     message.channel.send({content:`Unmuted.`});
 };
 
 exports.config = {
 	guildOnly: true,
-	aliases: [],
+	aliases: ["untimeout"],
 	permLevel: "modAssist",
 	name: "unmute",
 	description: "Unmute a user",

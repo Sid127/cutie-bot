@@ -1,23 +1,24 @@
-exports.run = (client, message) => {
-    let muteRole = message.guild.roles.cache.find(role => role.name === "Muted");
-
-	if (!muteRole)
-		return message.reply(`You'll need to manually set up a "Muted" role for this to work... ask a bot admin for help`)
+exports.run = (client, message, args) => {
 
     if (message.mentions.members.size === 0)
         return message.reply({content:"please mention a user to mute"});
 
     const muteMember = message.mentions.members.first();
 
-    muteMember.roles.add(muteRole).catch(console.error);
-    message.channel.send({content:`Muted.`});
+	//prevent self-moderation
+	if (muteMember.permissions.has('VIEW_AUDIT_LOG') || muteMember.permissions.has('ADMINISTRATOR')) return message.channel.send("I'm not muting them! They're powerful D:")
+
+	//apply timeout
+    muteMember.timeout(604800000, args).catch(console.error);
+	client.users.cache.get(muteMember.id).send("You've been put on a timeout! Use my modmail feature (if set up) or contact a moderator to settle this.")
+    message.channel.send({content:`Muted for a week, don't forget to unmute!`});
 };
 
 exports.config = {
 	guildOnly: true,
-	aliases: [],
+	aliases: ["timeout"],
 	permLevel: "modAssist",
 	name: "mute",
-	description: "Mute a user",
-	usage: ["[<@user>]"]
+	description: "Timeout a user",
+	usage: ["[<@user>] (reason)"]
 };

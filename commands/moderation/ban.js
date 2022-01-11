@@ -16,6 +16,9 @@ exports.run = (client, message, args) => {
   const banMember = message.mentions.members.first();
 	const log = message.mentions.users.first().tag;
 
+  //prevent self-moderation
+  if (banMember.permissions.has('VIEW_AUDIT_LOG') || banMember.permissions.has('ADMINISTRATOR')) return message.channel.send("I'm not banning them! They're powerful D:")
+
   //this is the actual ban
   banMember.ban({reason: reason.join(" ")}).then(member => {
     message.reply({content:`${member.user.username} was succesfully banned.`});

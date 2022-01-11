@@ -16,6 +16,9 @@ exports.run = (client, message, args) => {
   const kickMember = message.mentions.members.first();
 	const log = message.mentions.users.first().tag;
 
+  //prevent self-moderation
+  if (kickMember.permissions.has('VIEW_AUDIT_LOG') || kickMember.permissions.has('ADMINISTRATOR')) return message.channel.send("I'm not kicking them! They're powerful D:")
+
   //the actual kick
   kickMember.kick(reason.join(" ")).then(member => {
     message.reply({content:`${member.user.username} was succesfully kicked.`});
