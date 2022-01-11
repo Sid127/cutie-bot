@@ -10,13 +10,15 @@ exports.run = async (client, message, args) => {
 		let userAllowedCmds = [];
 
 		// check what perms the user has and add to userAllowedCmds
-		if (message.member.permissions.has('SEND_MESSAGES')) userAllowedCmds.push("User");
-		if (message.member.permissions.has('VIEW_AUDIT_LOG')) userAllowedCmds.push("modAssist", "User");
-		if (message.member.permissions.has('ADMINISTRATOR')) userAllowedCmds.push("serverAdmin", "modAssist", "User");
+		if(message.guild) {
+			if (message.member.permissions.has('SEND_MESSAGES')) userAllowedCmds.push("User");
+			if (message.member.permissions.has('VIEW_AUDIT_LOG')) userAllowedCmds.push("modAssist", "User");
+			if (message.member.permissions.has('ADMINISTRATOR')) userAllowedCmds.push("serverAdmin", "modAssist", "User");
+		}
 
 		// loop through the commands, checking that it's a guild only one and check if the user perms are enough to use the command (or is bot admin)
 		client.commands.forEach(command => {
-			if (command.config.guildOnly &&
+			if (message.guild && command.config.guildOnly &&
 				(userAllowedCmds.includes(command.config.permLevel) ||
 				(client.cache.botSettings.botadmin.includes(`${message.author.id}`) && command.config.permLevel !== "User"))) {
 				// check for the longest name
@@ -29,6 +31,19 @@ exports.run = async (client, message, args) => {
 
 				// add the command to the category
 				categories[command.config.category].push(command.config);
+			} else { // for DMs
+				if (["Support", "Confession"].includes(command.config.category) || command.config.name === "help") {
+					// check for the longest name
+					longestName = Math.max(longestName, command.config.name.length);
+
+					// add the command to the categories object, with the key, if that exists just add the command to the array under it
+					if (!Object.keys(categories).includes(command.config.category)) {
+						categories[command.config.category] = [];
+					}
+
+					// add the command to the category
+					categories[command.config.category].push(command.config);
+				}
 			}
 		});
 
@@ -38,10 +53,19 @@ exports.run = async (client, message, args) => {
 
 		// create the blocks for each category and add that to output
 		for (catKey of Object.keys(categories).sort()) {
-			//grab our cache of disabled modules for this server
-			let enabledModules = client.cache[message.guild.id].enabledModules
 			//check for disabled modules
-			if (enabledModules.includes(catKey.toLowerCase())){
+			if (message.guild && client.cache[message.guild.id].enabledModules.includes(catKey.toLowerCase())){
+				// add the category header to the output
+				output += `\u200b\n== ${catKey} ==\n`;
+
+				// sort the list by name
+				categories[catKey].sort(dynamicSort("name"));
+
+				// loop through all the commands under each category, add padding for all to be same length
+				for (cmd of categories[catKey]) {
+					output += `${cmd.name.padEnd(longestName, " ")} :: ${cmd.description}\n`
+				}
+			} else { // for DMs
 				// add the category header to the output
 				output += `\u200b\n== ${catKey} ==\n`;
 

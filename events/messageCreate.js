@@ -99,6 +99,15 @@ module.exports = {
         // If that command doesn't exist, silently exit and do nothing
         if (!cmd) return;
 
+		//handle DMs
+		if(!message.guild){
+			if(["Confession", "Support"].includes(cmd.config.category) || command === "help") {
+				cmd.run(client, message, args)
+				return
+			}
+			return
+		}
+
         // Check perm level and run the command
         if (client.cache.botSettings.botadmin.includes(`${message.author.id}`)){
             cmd.run(client, message, args);
