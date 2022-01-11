@@ -44,7 +44,7 @@ exports.run = async(client, message, args) => {
 		let embedDescription = ""
 
 		// derived through arcane magic. Imperfect. DO NOT TOUCH
-        const emojiRegex = /(<a?:.+:(\d+)>|[\p{Emoji}\u200d]+).*/gu
+        const emojiRegex = /(<a?:.+:(\d+)>|[\p{Extended_Pictographic}\u200d]+).*/gu
 
 		//parse emoji and role data
         for (line of descriptors) {
