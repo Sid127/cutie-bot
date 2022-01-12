@@ -1,7 +1,5 @@
 exports.run = async (client, message, args) => {
     let [action, trigger, ...response] = args.split(" ")
-	const { dynamicSort } = require("../../functionFiles/helperFunctions.js");
-
 
     switch (action) {
         case 'create' : {
@@ -22,7 +20,7 @@ exports.run = async (client, message, args) => {
 		case 'list' : {
 			const { Formatters, Util } = require("discord.js");
 
-		    let output = `= Here's a list of all the custom commands on this server: =\n\n ${dynamicSort(client.cache[message.guild.id].cc).join("\n ")}`
+		    let output = `= Here's a list of all the custom commands on this server: =\n\n ${client.cache[message.guild.id].cc.sort().join("\n ")}`
 
 		    let splitOutput = Util.splitMessage(output, {maxLength: 2000, char: "\u200b"});
 		    for (let chunk of splitOutput) {
