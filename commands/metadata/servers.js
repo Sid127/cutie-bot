@@ -1,18 +1,30 @@
 exports.run = async (client, message, args) => {
-    const { MessageEmbed } = require("discord.js")
+	const { Util, Formatters } = require("discord.js");
 
-    let tempMessage = await message.channel.send("Hang tight, crunching latest data...");
+	// variables for different things used
+	let longestName = 0;
+	let guilds = {};
 
-    const embed = new MessageEmbed()
-        .setTitle("Bot Info")
-        .setAuthor(client.user.username, client.user.avatarURL)
-        .setDescription("Here's the current data on all the server's I'm in:")
-        .setColor('RANDOM');
+	client.guilds.cache.forEach(guild => {
+		// check for the longest name
+		longestName = Math.max(longestName, guild.name.length);
+		// add guild to list
+		guilds[guild.name] = `${guild.id} :: ${guild.memberCount} members`;
+	});
 
-    for (guild of client.guilds.cache){
-        embed.addField(`${guild[1].name} (${guild[1].id})`, `${guild[1].memberCount} members`, true)
-    }
-    tempMessage.edit({embeds: [embed]})
+	// create the "header" for the message
+	let output = (`== Server List ==\n` +
+		`Here's a list of all the servers I'm in:\n * ${Object.keys(guilds).length} servers served *\n\n`);
+
+	// loop through all the guilds, add padding for all to be same length
+	for (g of Object.keys(guilds).sort()) {
+		output += `${g.padEnd(longestName, " ")} :: ${guilds[g]}\n`
+	}
+
+	let splitOutput = Util.splitMessage(output, {maxLength: 1900, char: "\u200b"});
+	for (let chunk of splitOutput) {
+		await message.channel.send(Formatters.codeBlock("asciidoc", chunk.trim()));
+	}
 }
 
 exports.config = {
