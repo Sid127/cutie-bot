@@ -6,7 +6,7 @@ module.exports = {
             anonChnl: null,
             logChnl: null,
             prefix: "",
-            activityLeaderboard: "enabled",
+            activityLeaderboard: "disabled",
 			enabledModules: ["management", "moderation", "metadata", "support"],
             customCommands: {},
             home: {homeSys: undefined},
@@ -16,11 +16,11 @@ module.exports = {
         });
 
         client.cache[guild.id] = {}
-        client.cache[guild.id]["enabledModules"] = []
+        client.cache[guild.id]["enabledModules"] = ["management", "moderation", "metadata", "support"]
         client.cache[guild.id]["prefix"] = ""
-        client.cache[guild.id]["activityLeaderboard"] = "enabled"
+        client.cache[guild.id]["activityLeaderboard"] = "disabled"
         client.cache[guild.id]["homeSys"] = undefined
-        client.cache[guild.id]["cc"] = {}
-		client.cache[guild.id]["reactionRoles"] = []
+        client.cache[guild.id]["cc"] = []
+        client.cache[guild.id]["reactionRoles"] = []
     }
 }
