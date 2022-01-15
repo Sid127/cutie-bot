@@ -39,7 +39,7 @@ exports.run = async (client, message, args) => {
 
 exports.config = {
 	guildOnly: true,
-	aliases: [],
+	aliases: ["rl"],
 	permLevel: "botAdmin",
 	name: "reload",
 	description: "Reload a command to incorporate new changes",

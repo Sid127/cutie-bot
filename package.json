@@ -3,7 +3,8 @@
     "version": "7.0.0",
     "main": "index.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "start": "node index.js",
+        "start-prod": "pm2 start ecosystem.config.js"
     },
     "keywords": [],
     "author": "\"Siddharth Pranjale \\ <sidpranjale127@protonmail.com\\> (https://github.com/Sid127)",
@@ -20,7 +21,7 @@
     "dependencies": {
         "@joshdb/core": "^1.2.7",
         "@joshdb/mongo": "^1.1.6",
-        "discord.js": "^13.5.1",
+        "discord.js": "^13.6.0",
         "moment-duration-format": "^2.3.2",
         "moment-timezone": "^0.5.34",
         "random-puppy": "^1.1.0"

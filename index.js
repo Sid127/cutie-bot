@@ -48,7 +48,7 @@ client.aliases = new Map();
 loadCommand = (categoryName, commandName) => {
     try {
         const props = require(`./commands/${categoryName}/${commandName}`);
-        console.log(`Loading Command: ${props.config.name}`);
+        //console.log(`Loading Command: ${props.config.name}`);
         if (props.init) {
             props.init(client);
         }
@@ -71,17 +71,37 @@ const {
 const readdir = promisify(require("fs").readdir);
 
 const init = async() => {
+	// variables for holding number of commands found/loaded
+	let numFound = 0;
+	let numLoaded = 0;
+
+	// read the commands folder and loop through all modules found
     const moduleFolders = await readdir(`./commands/`);
-    moduleFolders.forEach(async (d) => {
+    moduleFolders.forEach(async (d, index) => {
+		// read the module folder, and loop through all commands in there
         const cmdFiles = await readdir(`./commands/${d}/`);
         cmdFiles.forEach(f => {
-            if (!f.endsWith(".js"))
-                return;
+			// check if file doesn't end with .js, not a command so return
+            if (!f.endsWith(".js")) return;
+
+			// add a number to the commands found
+			numFound++;
+
+			// try loading the command
             const response = loadCommand(d, f);
-            if (response)
-                console.log(response);
+
+			// if there's a response, loading failed, log that, if no response, everything fine and increment number of loaded commands
+            response ? console.log(`${response}\n`) : numLoaded++
         });
-    })
+
+		// on last iteration of the forEach
+		if (index === moduleFolders.length - 1) {
+			// at the end log out a message of how many found, and how many loaded
+			console.log(`Found "${numFound}" commands, in "${moduleFolders.length}" modules.\n` +
+			`Loaded "${numLoaded}" commands successfully.\n`);
+		}
+    });
+
 
 
     client.cache = new Object();

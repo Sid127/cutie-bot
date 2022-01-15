@@ -74,6 +74,9 @@ module.exports = {
             // Grab the command data from the client.commands Map
             let cmd = client.commands.get(command) || client.commands.get(client.aliases.get(command));
 
+			// if no command found, return
+			if (!cmd) return;
+
             //grab our cache of disabled modules for this server
             let enabledModules = client.cache[message.guild.id].enabledModules
 
