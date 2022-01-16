@@ -31,7 +31,8 @@ exports.run = async(client, message, args) => {
 	// code to create a reactionrole
     if (param === "create") {
 		// inital variables
-        let [header, description] = arguments.join(" ").split("|")
+        let [header, description, channel] = arguments.join(" ").split("|")
+		channel === undefined ? channel = message.channel.id : channel = message.mentions.channels.first().id
         descriptors = description.split("\n")
 		let limit = 0
 		let mongoObj = {
@@ -65,7 +66,7 @@ exports.run = async(client, message, args) => {
         }
 		// put parsed text into embed
 		embed.setDescription(embedDescription)
-		let reactionMessage = await message.channel.send({embeds: [embed]})
+		let reactionMessage = await client.channels.cache.get(channel).send({embeds: [embed]})
 
 		//attempt adding all reactions
 		for (key of Object.keys(mongoObj)){
@@ -81,8 +82,8 @@ exports.run = async(client, message, args) => {
 		}
 
 		//finally, push to mongo and update local cache
-		await client.serverData.set(`${message.guild.id}.reactionRoles.${message.channel.id}/${reactionMessage.id}`, mongoObj)
-		client.cache[message.guild.id]["reactionRoles"].push(`${message.channel.id}/${reactionMessage.id}`)
+		await client.serverData.set(`${message.guild.id}.reactionRoles.${channel}/${reactionMessage.id}`, mongoObj)
+		client.cache[message.guild.id]["reactionRoles"].push(`${channel}/${reactionMessage.id}`)
     }
 
 	if (param === "setmode") {
@@ -105,5 +106,5 @@ exports.config = {
 	permLevel: "serverAdmin",
 	name: "reactionroles",
 	description: "Creat, Edit, and Delete reaction based role assigners.",
-	usage: ["create [<heading>] | [<emoji - role description ; role>] *one per line*", "delete [<identifier>]", "list", "setmode [<identifier>] [multi | single]"]
+	usage: ["create [<heading>] | [<emoji - role description ; role>] *one per line* (| #channel)", "delete [<identifier>]", "list", "setmode [<identifier>] [multi | single]"]
 };

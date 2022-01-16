@@ -13,9 +13,11 @@ module.exports = {
 
 		if(client.cache[reaction.message.guild.id].reactionRoles.includes(reactionMenu)){
 			let reactions = await client.serverData.get(`${reaction.message.guild.id}.reactionRoles.${reactionMenu}`)
-			if (Object.keys(reactions).includes(reaction.emoji.name)){
-				role = reaction.message.guild.roles.cache.get(reactions[reaction.emoji.name])
-				mmbr.roles.remove(role).catch(console.error);
+			for (key of Object.keys(reactions)){
+				if(key.match(reaction.emoji.name)){
+					role = reaction.message.guild.roles.cache.get(reactions[key.match(reaction.emoji.name).input])
+					mmbr.roles.remove(role).catch(console.error);
+				}
 			}
 		}
 	}
