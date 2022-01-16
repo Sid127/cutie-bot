@@ -1,26 +1,27 @@
 exports.run = async(client, message, args) => { // eslint-disable-line no-unused-vars
-    const { spawn } = require("child_process");
+    const { exec } = require("child_process");
+	const { Formatters } = require("discord.js");
 
-    if (args[0] === 'force') {
-        const forcePull = spawn('git', [`reset --hard HEAD~${parseInt(args[1])}`], {shell:true})
-        const update = spawn(`git`, [`pull origin main`], {shell:true})
-        forcePull.stderr.on("data", data => {
-            message.channel.send({content: "```"+`${data}`+"```"});
-        });
-        update.stderr.on("data", data => {
-            message.channel.send({content: "```"+`${data}`+"```"});
-        });
-    } else if (args[0] === 'npm') {
-        const npm = spawn(`npm`, [`install`], {shell:true})
-        npm.stdout.on("data", data => {
-            message.channel.send({content: "```"+`${data}`+"```"});
-        });
-    } else {
-        const update = spawn(`git`, [`pull origin main`], {shell:true})
-        update.stderr.on("data", data => {
-            message.channel.send({content: "```"+`${data}`+"```"});
+	let [param, count] = args.split(" ")
+
+    if (param === 'force') {
+        exec(`git reset --hard HEAD~${parseInt(count)}`, (err, stdout, stderr) => {
+			message.channel.send(Formatters.codeBlock("bash", stdout));
+            message.channel.send(Formatters.codeBlock("bash", stderr));
         });
     }
+
+	exec(`git pull`, (err, stdout, stderr) => {
+		message.channel.send(Formatters.codeBlock("bash", stdout));
+		message.channel.send(Formatters.codeBlock("bash", stderr));
+	});
+
+	if (param === 'npm') {
+		exec(`npm install`, (err, stdout, stderr) => {
+			message.channel.send(Formatters.codeBlock("bash", stdout));
+			message.channel.send(Formatters.codeBlock("bash", stderr));
+		});
+	}
 };
 
 exports.config = {
