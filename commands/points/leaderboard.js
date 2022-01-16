@@ -15,12 +15,12 @@ exports.run = async(client, message, args) => {
     // Now shake it and show it! (as a nice embed, too!)
     const embed = new MessageEmbed()
         .setTitle("Leaderboard")
-        .setAuthor(client.user)
+        .setAuthor({name: `${client.user.username}`})
         .setDescription("Our top 10 points leaders!")
         .setColor(0xffd1dc);
     for (const data of top10) {
 		member = message.guild.members.cache.get(data[1]['user'])
-        embed.addField(`${member.user.tag}`, `${data[1]['points']} points (level ${data[1]['level']})`);
+        embed.addField(`${member.user.tag}`, `${data[1]['points']} point${data[1]['points'] === 1 ? "" : "s"} (level ${data[1]['level']})`);
     }
     message.channel.send({embeds: [embed] })
 }
