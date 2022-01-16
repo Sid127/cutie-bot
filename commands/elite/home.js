@@ -7,7 +7,7 @@ exports.run = async(client, message) => {
 
     let embed = new MessageEmbed()
         .setTitle(`${homeInfo.homeSys}${homeInfo.homeStation ? `, ${homeInfo.homeStation}` : ""}`)
-        .setAuthor(`${message.guild.name}`)
+        .setAuthor(message.guild)
         .setColor('RANDOM');
 
     //add additional data if required

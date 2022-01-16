@@ -15,7 +15,7 @@ exports.run = async(client, message, args) => {
     // Now shake it and show it! (as a nice embed, too!)
     const embed = new MessageEmbed()
         .setTitle("Leaderboard")
-        .setAuthor(client.user.username, client.user.avatarURL)
+        .setAuthor(client.user)
         .setDescription("Our top 10 points leaders!")
         .setColor(0xffd1dc);
     for (const data of top10) {

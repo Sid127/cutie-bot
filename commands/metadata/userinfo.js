@@ -23,7 +23,7 @@ exports.run = async (client, message) => {
 	let embed = new Discord.MessageEmbed()
 		.setColor('RANDOM')
 		.setThumbnail(`${member.user.avatar != null ? member.user.avatarURL() : "https://discordapp.com/assets/dd4dbc0016779df1378e7812eabaa04d.png"}`)
-		.setAuthor(`${member.user.tag} (${member.id})`)
+		.setAuthor(member.user)
 		.addField("Nickname:", `${(member.nickname !== null && member.nickname !== undefined) ? `Nickname: ${member.nickname}` : "No nickname"}`, true)
 		.addField("Status", `${member.presence ? status[member.presence.status] : "I have no idea D:"}`, true)
 		.addField("Playing", `${member.presence ? (member.presence.activities.state === undefined ? "Not playing anything... I think" : `${member.presence.activities.state}`) : "Not playing anything."}`, true)
