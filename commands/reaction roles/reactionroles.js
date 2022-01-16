@@ -18,6 +18,9 @@ exports.run = async(client, message, args) => {
 	}
 
 	if (param === "list") {
+		if (client.cache[message.guild.id]["reactionRoles"].length === 0){
+			return message.channel.send("https://tenor.com/view/nothingtosee-disperse-casual-explosion-gif-4545906")
+		}
 		let embed = new MessageEmbed()
 			.setColor('RANDOM')
 			.setTitle("List of active reaction role menus")
