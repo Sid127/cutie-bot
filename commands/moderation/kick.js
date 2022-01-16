@@ -1,6 +1,5 @@
-exports.run = (client, message, args) => {
+exports.run = async (client, message, args) => {
   const moment = require("moment-timezone");
-  actionDate = moment().tz('Europe/London').format('DD MMM YYYY hh:mm:ss')
 
   let [mention, ...reason] = args.split(" ")
 
@@ -22,16 +21,15 @@ exports.run = (client, message, args) => {
   //the actual kick
   kickMember.kick(reason.join(" ")).then(member => {
     message.reply({content:`${member.user.username} was succesfully kicked.`});
+  });
 
   //log it, if the logging channel is set
-  const logChannel = message.guild.channels.cache.find(channel => channel.name === "mod-log").id;
+  let logChnl = await client.serverData.get(`${message.guild.id}.ticLog`)
+  if(!logChnl) {logChnl = await client.serverData.get(`${message.guild.id}.logChnl`)}
+  const logChannel = message.guild.channels.cache.find(channel => channel.id === logChnl).id;
   if (!logChannel) return;
-  client.channels.cache.get(logChannel).send(`
-**user:** ${log}
-**action taken:** kick
-**reason for action:** ${reason.join(" ")}
-**date/time and timezone:** ${actionDate} GMT`).catch(console.error);
-  });
+
+  client.channels.cache.get(logChannel).send(`**user:** ${log}\n**action taken:** kick\n**reason for action:** ${reason.join(" ")}\n**date/time:** <t:${moment().unix()}>`).catch(console.error);
 };
 
 exports.config = {

@@ -2,25 +2,21 @@ exports.run = async (client, message) => {
     const { Client, MessageEmbed } = require('discord.js');
 
     if (!message.channel.name.includes("ticket-")) return message.channel.send("You cannot use that here!")
-    message.channel.delete();
+	const embed = new MessageEmbed()
+		.setTitle("**Ticket Closed**")
+		.setColor(0xffd1dc)
+		.setDescription(`\n**Ticket: ${message.channel.name}**\nVerified by: <@${message.author.id}>`)
 
-    let logChannel = message.guild.channels.cache.find(channel => channel.name === "ticket-logs");
-    //create the logging channel if it doesn't exists
-    if (!logChannel) {
-        await message.guild.channels.create(`ticket-logs`, {parent: message.channel.parent.id, type: "text"})
-        let logChannel = message.guild.channels.cache.find(channel => channel.name === "ticket-logs");
+	//determine which channel to log to
+	let logChnl = await client.serverData.get(`${message.guild.id}.ticLog`)
+	if(logChnl === null) {logChnl = await client.serverData.get(`${message.guild.id}.logChnl`)}
+    let logChannel = message.guild.channels.cache.get(logChnl);
 
-        logChannel.permissionOverwrites.set([{
-            id: message.guild.id,
-            deny: [Permissions.FLAGS.VIEW_CHANNEL, Permissions.FLAGS.SEND_MESSAGES]
-        }])
-    }
     //log the close
-    const embed = new MessageEmbed()
-        .setTitle("**Ticket Closed**")
-        .setColor(0xffd1dc)
-        .setDescription(`\n**Ticket: ${message.channel.name}**\nVerified by: <@${message.author.id}>`)
-    logChannel.send({embeds: [embed]});   
+    logChannel.send({embeds: [embed]});
+
+	//close the channel
+	message.channel.delete();
 }
 exports.config = {
 	guildOnly: false,

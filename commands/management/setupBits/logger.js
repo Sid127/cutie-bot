@@ -1,22 +1,43 @@
 exports.run = async (client, message, args) => {
-    const { MessageEmbed } = require("discord.js")
+	let [param, arg] = args.join(" ").split(" ")
+	let loggerChnl = null
+	//grab channel metadata
+	if(message.mentions.channels.first()){
+		let channel = message.mentions.channels.first();
+		loggerChnl = channel.id;
+	}
+	if(param !== "off"){
+		if(!loggerChnl) return message.channel.send("You silly goose that's not how you do it")
+	}
 
-    if(args[0] === "off") {
-        await client.serverData.set(`${message.guild.id}.logChnl`, null);
-        return message.channel.send({content:"Audit log channel unset"})
-    }
+	switch (param) {
+		case 'ticket' : {
+			//push data to mongo
+			await client.serverData.set(`${message.guild.id}.ticLog`, loggerChnl);
 
-    //grb channel metadata
-    let channel = message.mentions.channels.first();
-    if (!channel) return message.reply({content:"You silly goose that's not how you do it"});
-    let loggerChnl = channel.id;
+			//confirm it to the user
+			message.channel.send(`Ticket logs set to <#${loggerChnl}>.`)
+		} break;
+		case 'modlog' : {
+			//push data to mongo
+			await client.serverData.set(`${message.guild.id}.modLog`, loggerChnl);
 
-    //push data to mongo
-    await client.serverData.set(`${message.guild.id}.logChnl`, loggerChnl);
+			//confirm it to the user
+			message.channel.send(`Moderation logs set to <#${loggerChnl}>.`)
+		} break;
+		case 'off' : {
+			let logger = ''
+			arg === 'ticket' ? logger = "ticLog" : (arg === 'modlog' ? logger = "modLog" : (arg === '' ? logger = 'logChnl' : logger = ''))
+			if(!['ticLog', 'modLog', 'logChnl'].includes(logger)) return message.channel.send("What do I doooooooooooo?")
+			await client.serverData.set(`${message.guild.id}.${logger}`, null);
+			return message.channel.send({content:"Okie, log channel unset"})
+		} break;
+		default : {
+			//push data to mongo
+			await client.serverData.set(`${message.guild.id}.logChnl`, loggerChnl);
 
-    //confirm it to the user
-    let embed = new MessageEmbed()
-        .setColor(0xffd1dc)
-        .setDescription(`Logs channel set to <#${channel.id}>.`)
-    message.channel.send({embeds:[embed]})
+			//confirm it to the user
+			message.channel.send(`Audit logs set to <#${loggerChnl}>`)
+		}
+	}
 }
