@@ -12,7 +12,7 @@ exports.run = async (client, message, args) => {
     } else {
         args = args.join(" ")
         let [channel, ...welcomeMsg] = args.split(" ")
-        if (!message.mentions.channels.first().id) return message.channel.send("Where do I say things again?")
+        if (!message.mentions.channels.first()) return message.channel.send("Where do I say things again?")
         welcomeMsg = welcomeMsg.join(" ")
 
         await client.serverData.set(`${message.guild.id}.welcomeChnl`, message.mentions.channels.first().id)
