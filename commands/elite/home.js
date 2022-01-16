@@ -3,7 +3,7 @@ exports.run = async(client, message) => {
 
     //grab data from mongo
     let homeInfo = await client.serverData.get(`${message.guild.id}.home`)
-    if(!homeInfo) return message.channel.send("You know you have to set that up first, right?")
+    if(homeInfo.homeSys === null) return message.channel.send("You know you have to set that up first, right?")
 
     let embed = new MessageEmbed()
         .setTitle(`${homeInfo.homeSys}${homeInfo.homeStation ? `, ${homeInfo.homeStation}` : ""}`)

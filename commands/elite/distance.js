@@ -49,7 +49,10 @@ exports.run = async(client, message, args) => {
 
 // helper function to know if any data is present
 function checkForMissingData(data) {
-	// if length is 0, return false
+	// if there is no data, return true
+	if (!data) return true;
+
+	// if length is 0, return true
 	if (data.length === 0) return true;
 
 	// if no system name nor a cmdr valid response
