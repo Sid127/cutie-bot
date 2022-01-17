@@ -1,6 +1,5 @@
 const Discord = require("discord.js");
 const moment = require("moment-timezone");
-require("moment-duration-format");
 
 const status = {
   online: "Online",

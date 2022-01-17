@@ -1,7 +1,6 @@
 exports.run = async (client, message) => {
 	const Discord = require("discord.js");
 	const moment = require("moment-timezone");
-	require("moment-duration-format");
 
 	let author = await message.guild.fetchOwner()
 

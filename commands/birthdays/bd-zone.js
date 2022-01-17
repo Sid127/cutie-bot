@@ -1,9 +1,8 @@
 exports.run = async(client, message, args) => {
     const moment = require("moment-timezone");
-    require("moment-duration-format");
 
     //help with usage if a timezone isn't given
-    if(args.trim().length === 0) return message.channel.send({content:"Find your timezone here <https://xske.github.io/tz/> and tell me it by passing the command `bd-zone timezone`. Example: `bd-zone Asia/Calcutta"});
+    if(args.trim().length === 0) return message.channel.send({content:"Find your timezone here <https://xske.github.io/tz/> and tell me it by passing the command `bd-zone timezone`. Example: `bd-zone Asia/Calcutta`"});
 
     //check validity of timezone before adding to mongo
     if (moment.tz.zone(args)) {
