@@ -1,5 +1,6 @@
 // module requires
 const moment = require("moment");
+	require('moment-duration-format');
 
 exports.run = (client, message, args) => {
 	// check for empty args
@@ -38,7 +39,7 @@ exports.run = (client, message, args) => {
 
 	let timeSeconds = distanceToSeconds(gravity, distance);
 
-	message.channel.send(`For a distance of \`${Math.floor(distance).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")}\`ls in SuperCruise will take roughly \`${moment.utc(timeSeconds * 1000).format('HH:mm:ss')} (HH:mm:ss)\`` +
+	message.channel.send(`For a distance of \`${Math.floor(distance).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}\` ls in SuperCruise will take roughly \`${moment.duration(timeSeconds*1000).format(" y [years], M [months], D [days], H [hrs], m [mins], s [secs]")}\` ` +
 		`${gravity ? "(between two gravity wells)" : "(from a star out into deep space)"}`);
 }
 
@@ -48,7 +49,7 @@ exports.config = {
 	permLevel: "User",
 	name: "sctime",
 	description: "Calculates rough time for given distance in SuperCruise",
-	usage: ["(g || gravity) [<number>ls || kls || mls]"]
+	usage: ["(g || gravity) [<number>ls || kls || mls || ly]"]
 };
 
 

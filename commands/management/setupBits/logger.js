@@ -27,7 +27,7 @@ exports.run = async (client, message, args) => {
 		} break;
 		case 'off' : {
 			let logger = ''
-			arg === 'ticket' ? logger = "ticLog" : (arg === 'modlog' ? logger = "modLog" : (arg === '' ? logger = 'logChnl' : logger = ''))
+			arg === 'ticket' ? logger = "ticLog" : (arg === 'modlog' ? logger = "modLog" : (!arg ? logger = 'logChnl' : logger = ''))
 			if(!['ticLog', 'modLog', 'logChnl'].includes(logger)) return message.channel.send("What do I doooooooooooo?")
 			await client.serverData.set(`${message.guild.id}.${logger}`, null);
 			return message.channel.send({content:"Okie, log channel unset"})
