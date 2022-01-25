@@ -15,15 +15,15 @@ module.exports = {
             const embed = new MessageEmbed()
                 .setColor(0xffd1dc)
                 .addField(`Message deleted in #${message.channel.name}`, `*An image/video was deleted*`)
-                .addField(`Message Author`, `${message.author}`)
+                .addField(`Message Author`, `${message.author} || 'Unknown D:'`)
                 .setTimestamp();
             const sendChnl = await client.serverData.get(`${key}.logChnl`)
             client.channels.cache.get(sendChnl).send({embeds: [embed]})
         } else if (message.author.bot) {} else {
             const embed = new MessageEmbed()
                 .setColor(0xffd1dc)
-                .addField(`Message deleted in #${message.channel.name}`, `${message.content}`)
-                .addField(`Message Author`, `${message.author}`)
+                .addField(`Message deleted in #${message.channel.name}`, `${message.content || 'Unknown D:'}`)
+                .addField(`Message Author`, `${message.author || 'Unknown D:'}`)
                 .setTimestamp();
             const sendChnl = await client.serverData.get(`${key}.logChnl`)
             client.channels.cache.get(sendChnl).send({embeds: [embed]})
