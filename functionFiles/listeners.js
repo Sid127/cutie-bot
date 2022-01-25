@@ -33,7 +33,6 @@ tickListener = async (client) => {
 
 		let year = parseInt(moment.utc(tickData[0].time).format(`YYYY`))+1286
         let ticktime = moment.utc(tickData[0].time).format(`MMMM Do ${year}, h:mm a`)
-		console.log(ticktime)
 
         //create the embed beforehand
         const embed = {
@@ -66,9 +65,8 @@ bdayChck = async (client) => {
     //grab all data into a map
     let db = await client.peopleData.filter(p => p.date)
     for (ident of db) {
-        // these two variables are used in both cases
+        // these two variables are used in both cases 1/2
         const sendGuild = ident[1]['guild'];
-        const birthdayRole = await client.serverData.get(`${sendGuild}.birthdayRole`);
 
         //don't run this block if we're not in that guild
         if (!client.guilds.cache.get(sendGuild)) continue;
@@ -77,6 +75,9 @@ bdayChck = async (client) => {
         const birthdayFolk = client.guilds.cache.get(sendGuild).members.cache.get(ident[1]['user']);
 
         if(!birthdayFolk) {} else{
+			// these two variables are used in both cases 2/2
+			const birthdayRole = await client.serverData.get(`${sendGuild}.birthdayRole`);
+
             // if statement for setting the role
             if (moment().tz(ident[1]['timezone']).format('MM-DD') === ident[1]['date']) {
                 // set role and send message
@@ -85,7 +86,11 @@ bdayChck = async (client) => {
 
                     // get the channel where to send a message
                     const msgChannel = await client.serverData.get(`${sendGuild}.birthdayChnl`);
-                    client.channels.cache.get(msgChannel).send(`Happy Birthday, <@${ident[1]['user']}>`)
+					try{
+						await client.channels.cache.get(msgChannel).send(`Happy Birthday, <@${ident[1]['user']}>`)
+					} catch (e) {
+						throw new Error(`Error in birthday code, someone didn't set the channel right. Guild ID: ${sendGuild}`)
+					}
                 }
             } else { // else remove the role
                 if (birthdayFolk.roles.cache.get(birthdayRole)) {
