@@ -9,6 +9,7 @@ const client = new Client({ partials: ["MESSAGE", "USER", "REACTION", "CHANNEL"]
 const config = require("./config.json");
 
 client.mongoUrl = config.mongoURL
+client.hardcoded = require("./functionFiles/hardcoded.json")
 
 // We also need to make sure we're attaching the config to the CLIENT so it's accessible everywhere!
 client.config = config;

@@ -10,12 +10,12 @@ module.exports = {
             const key = `${message.guild.id}-${message.author.id}`;
 
             await client.serverData.ensure(`botSettings`,{
-                botadmin: ["319391726613823489", "283607841779089409"]
+                botadmin: client.hardcoded.botAdmin
             });
 
             if(client.cache[message.guild.id].activityLeaderboard === "enabled"){
                 // Triggers on new users we haven't seen before.
-                await client.peopleData.ensure(`${message.guild.id}-${message.author.id}`, {
+                await client.peopleData.ensure(key, {
                     user: message.author.id,
                     guild: message.guild.id,
                     points: 0,
