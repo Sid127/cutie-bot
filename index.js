@@ -53,7 +53,7 @@ loadCommand = (categoryName, commandName) => {
         if (props.init) {
             props.init(client);
         }
-        props.config.category = categoryName.replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase());
+        props.config.category = categoryName;
         client.commands.set(props.config.name, props);
         props.config.aliases.forEach(alias => {
             client.aliases.set(alias, props.config.name);

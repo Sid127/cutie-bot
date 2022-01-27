@@ -80,7 +80,7 @@ module.exports = {
             //grab our cache of disabled modules for this server
             let enabledModules = client.cache[message.guild.id].enabledModules
 
-            if (!enabledModules.includes(cmd.config.category.toLowerCase()))
+            if (!enabledModules.includes(cmd.config.category))
                 return message.channel.send("The module for that command has been disabled! Ask a server admin to enable it :3")
         }
 
@@ -104,7 +104,7 @@ module.exports = {
 
 		//handle DMs
 		if(!message.guild){
-			if(["Confession", "Support"].includes(cmd.config.category) || command === "help") {
+			if(["confession", "support"].includes(cmd.config.category) || command === "help") {
 				cmd.run(client, message, args)
 				return
 			}

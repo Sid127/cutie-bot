@@ -8,8 +8,8 @@ exports.run = async (client, message, args) => {
         message.channel.send("That file doesn't exist yet D:")
       } else {
         const props = require(`${__dirname}/../${category}/${commandName}.js`);
-        props.config.category = category.replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase());
-        
+        props.config.category = category;
+
         // We also need to load the command into the client.commands Map
         client.commands.set(commandName, props);
         message.react('☑️')

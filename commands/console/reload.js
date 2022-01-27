@@ -24,14 +24,14 @@ exports.run = async (client, message, args) => {
     if(!client.commands.has(commandName) && !client.aliases.has(commandName))
         return message.channel.send("I DUNNO WHAT COMMAND YOU WANNA RELOAD D:")
 
-    client.commands.has(commandName) ? category = client.commands.get(commandName).config.category.toLowerCase() : (category = client.commands.get(client.aliases.get(commandName)).config.category.toLowerCase(), commandName = client.commands.get(client.aliases.get(commandName)).config.name)
+    client.commands.has(commandName) ? category = client.commands.get(commandName).config.category : (category = client.commands.get(client.aliases.get(commandName)).config.category, commandName = client.commands.get(client.aliases.get(commandName)).config.name)
 
     // the path is relative to the *current folder*, so just ./filename.js
     delete require.cache[require.resolve(`../${category}/${commandName}.js`)];
     // We also need to delete and reload the command from the client.commands Map
     client.commands.delete(commandName);
     const props = require(`../${category}/${commandName}.js`);
-    props.config.category = category.replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase());
+    props.config.category = category;
     client.commands.set(commandName, props);
 
     message.react('☑️')

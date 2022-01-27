@@ -1,9 +1,10 @@
-exports.run = async (client, message, args) => {
-	const { Util, Formatters } = require("discord.js");
-	const { capitalizeString, dynamicSort } = require("../../functionFiles/helperFunctions.js");
+// module requires
+const { Util, Formatters } = require("discord.js");
+const { capitalizeString, dynamicSort, capitalizeAll } = require("../../functionFiles/helperFunctions.js");
 
+exports.run = async (client, message, args) => {
 	// If no specific command is called, show all filtered commands.
-	if (args.trim().length == 0) {
+	if (args.length == 0) {
 		// variables for different things used
 		let longestName = 0;
 		let categories = {};
@@ -32,7 +33,7 @@ exports.run = async (client, message, args) => {
 				// add the command to the category
 				categories[command.config.category].push(command.config);
 			} else { // for DMs
-				if (["Support", "Confession"].includes(command.config.category) || command.config.name === "help") {
+				if (["support", "confession"].includes(command.config.category) || command.config.name === "help") {
 					// check for the longest name
 					longestName = Math.max(longestName, command.config.name.length);
 
@@ -56,7 +57,7 @@ exports.run = async (client, message, args) => {
 			//check for disabled modules
 			if (message.guild && client.cache[message.guild.id].enabledModules.includes(catKey.toLowerCase())){
 				// add the category header to the output
-				output += `\u200b\n== ${catKey} ==\n`;
+				output += `\u200b\n== ${capitalizeAll(catKey)} ==\n`;
 
 				// sort the list by name
 				categories[catKey].sort(dynamicSort("name"));
@@ -67,7 +68,7 @@ exports.run = async (client, message, args) => {
 				}
 			} else { // for DMs
 				// add the category header to the output
-				output += `\u200b\n== ${catKey} ==\n`;
+				output += `\u200b\n== ${capitalizeAll(catKey)} ==\n`;
 
 				// sort the list by name
 				categories[catKey].sort(dynamicSort("name"));

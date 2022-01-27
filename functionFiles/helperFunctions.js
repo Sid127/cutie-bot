@@ -10,6 +10,10 @@ const capitalizeString = (string) => {
 	return string && string.charAt(0).toUpperCase() + string.slice(1);
 }
 
+const capitalizeAll = (string) => {
+	return string.replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase());
+}
+
 // helper function for sorting
 const dynamicSort = (property) => {
     var sortOrder = 1;
@@ -75,4 +79,4 @@ const checkForStations = (serviceSystem, serviceName, homeCoords, serviceCoords)
 	}
 }
 
-module.exports = {distanceCalc, capitalizeString, dynamicSort, mongoGet, blacklistChck, checkForStations}
+module.exports = {distanceCalc, capitalizeString, capitalizeAll, dynamicSort, mongoGet, blacklistChck, checkForStations}
