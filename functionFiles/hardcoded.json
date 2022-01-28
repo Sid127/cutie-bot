@@ -1,4 +1,18 @@
 {
 	"botAdmin": ["319391726613823489", "283607841779089409"],
-	"logDumpChnl": "935580808842977340"
+	"logDumpChnl": "935580808842977340",
+	"defaultEnabledModules": ["management", "moderation", "metadata", "support"],
+	"ticketEmoji": "🎫",
+	"badRMenuKeys": ["header", "mode"],
+	"badServerDataKeys": ["tick"],
+	"alwaysActiveModules": ["metadata", "management", "moderation"],
+	"DMModules": ["support", "confession"],
+	"defaultCache": {
+		"enabledModules": ["management", "moderation", "metadata", "support"],
+		"prefix": "",
+		"activityLeaderboard": "disabled",
+		"homeSys": null,
+		"cc": [],
+		"reactionRoles": []
+	}
 }

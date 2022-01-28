@@ -21,7 +21,7 @@ exports.run = async (client, message, args) => {
 		client.commands.forEach(command => {
 			if (message.guild && command.config.guildOnly &&
 				(userAllowedCmds.includes(command.config.permLevel) ||
-				(client.cache.botSettings.botadmin.includes(`${message.author.id}`) && command.config.permLevel !== "User"))) {
+				(client.hardcoded.botAdmin.includes(`${message.author.id}`) && command.config.permLevel !== "User"))) {
 				// check for the longest name
 				longestName = Math.max(longestName, command.config.name.length);
 
@@ -33,7 +33,7 @@ exports.run = async (client, message, args) => {
 				// add the command to the category
 				categories[command.config.category].push(command.config);
 			} else { // for DMs
-				if (["support", "confession"].includes(command.config.category) || command.config.name === "help") {
+				if (client.hardcoded.DMModules.includes(command.config.category) || command.config.name === "help") {
 					// check for the longest name
 					longestName = Math.max(longestName, command.config.name.length);
 
@@ -54,19 +54,20 @@ exports.run = async (client, message, args) => {
 
 		// create the blocks for each category and add that to output
 		for (catKey of Object.keys(categories).sort()) {
-			//check for disabled modules
-			if (message.guild && client.cache[message.guild.id].enabledModules.includes(catKey.toLowerCase())){
-				// add the category header to the output
-				output += `\u200b\n== ${capitalizeAll(catKey)} ==\n`;
+			if(!message.guild){
+				{ // for DMs
+				   // add the category header to the output
+				   output += `\u200b\n== ${capitalizeAll(catKey)} ==\n`;
 
-				// sort the list by name
-				categories[catKey].sort(dynamicSort("name"));
+				   // sort the list by name
+				   categories[catKey].sort(dynamicSort("name"));
 
-				// loop through all the commands under each category, add padding for all to be same length
-				for (cmd of categories[catKey]) {
-					output += `${cmd.name.padEnd(longestName, " ")} :: ${cmd.description}\n`
-				}
-			} else { // for DMs
+				   // loop through all the commands under each category, add padding for all to be same length
+				   for (cmd of categories[catKey]) {
+					   output += `${cmd.name.padEnd(longestName, " ")} :: ${cmd.description}\n`
+				   }
+			   }
+		   } else if (client.hardcoded.botAdmin.includes(message.author.id) ? {} : client.cache[message.guild.id].enabledModules.includes(catKey)){ // for guilds
 				// add the category header to the output
 				output += `\u200b\n== ${capitalizeAll(catKey)} ==\n`;
 

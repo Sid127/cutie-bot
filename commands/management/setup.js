@@ -1,8 +1,25 @@
+const moduleList = {
+  "activitypoints": "points",
+  "anon": "confession",
+  "autorole": "management",
+  "bd-config": "birthdays",
+  "bgs": "elite",
+  "home": "elite",
+  "logger": "moderation",
+  "prefix": "management",
+  "prestige": "points",
+  "ticket": "tickets",
+  "verifiedrole": "management",
+  "welcome": "management"
+};
+
 exports.run = async(client, message, args) => {
     if(!args) return message.channel.send("...what on Earth do you want me to do")
     const fs = require('fs')
 
     let [arg1, ...arg2] = args.split(" ")
+
+	if (!client.cache[message.guild.id].enabledModules.includes(moduleList.arg1)) return message.channel.send("That module is disabled, frendo. Enable it first, and then you can set it up")
 
     fs.access(`${__dirname}/setupBits/${arg1}.js`, (err) => {
         if (err) {

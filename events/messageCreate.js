@@ -9,10 +9,6 @@ module.exports = {
             // We'll use the key often enough that simplifying it is worth the trouble.
             const key = `${message.guild.id}-${message.author.id}`;
 
-            await client.serverData.ensure(`botSettings`,{
-                botadmin: client.hardcoded.botAdmin
-            });
-
             if(client.cache[message.guild.id].activityLeaderboard === "enabled"){
                 // Triggers on new users we haven't seen before.
                 await client.peopleData.ensure(key, {
@@ -80,7 +76,7 @@ module.exports = {
             //grab our cache of disabled modules for this server
             let enabledModules = client.cache[message.guild.id].enabledModules
 
-            if (!enabledModules.includes(cmd.config.category))
+            if (!enabledModules.includes(cmd.config.category) && !client.hardcoded.botAdmin.includes(`${message.author.id}`))
                 return message.channel.send("The module for that command has been disabled! Ask a server admin to enable it :3")
         }
 
@@ -104,7 +100,7 @@ module.exports = {
 
 		//handle DMs
 		if(!message.guild){
-			if(["confession", "support"].includes(cmd.config.category) || command === "help") {
+			if(client.hardcoded.DMModules.includes(cmd.config.category) || command === "help") {
 				cmd.run(client, message, args)
 				return
 			}
@@ -112,7 +108,7 @@ module.exports = {
 		}
 
         // Check perm level and run the command
-        if (client.cache.botSettings.botadmin.includes(`${message.author.id}`)){
+        if (client.hardcoded.botAdmin.includes(`${message.author.id}`)){
             cmd.run(client, message, args);
         } else if (cmd.config.permLevel === "User"){
             cmd.run(client, message, args);

@@ -2,8 +2,8 @@ exports.run = async(client, message) => {
     const { Client, MessageEmbed } = require('discord.js');
 
     //grab data from mongo
+	if (client.cache[message.guild.id].homeSys === null) return message.channel.send("You know you have to set that up first, right?")
     let homeInfo = await client.serverData.get(`${message.guild.id}.home`)
-    if(homeInfo.homeSys === null) return message.channel.send("You know you have to set that up first, right?")
 
     let embed = new MessageEmbed()
         .setTitle(`${homeInfo.homeSys}${homeInfo.homeStation ? `, ${homeInfo.homeStation}` : ""}`)

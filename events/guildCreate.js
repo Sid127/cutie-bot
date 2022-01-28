@@ -9,18 +9,12 @@ module.exports = {
             activityLeaderboard: "disabled",
 			enabledModules: ["management", "moderation", "metadata", "support"],
             customCommands: {},
-            home: {homeSys: undefined},
+            home: {homeSys: null},
             hiddenRoles: [],
             blacklistPfx: [],
 			reactionRoles: {}
         });
 
-        client.cache[guild.id] = {}
-        client.cache[guild.id]["enabledModules"] = ["management", "moderation", "metadata", "support"]
-        client.cache[guild.id]["prefix"] = ""
-        client.cache[guild.id]["activityLeaderboard"] = "disabled"
-        client.cache[guild.id]["homeSys"] = undefined
-        client.cache[guild.id]["cc"] = []
-        client.cache[guild.id]["reactionRoles"] = []
+        client.cache[guild.id] = client.hardcoded.defaultCache
     }
 }

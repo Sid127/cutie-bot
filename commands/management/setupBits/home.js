@@ -8,12 +8,12 @@ exports.run = async(client, message, args) => {
         let template = `{\n\t"home": "<system name>",\n\t"station": "<name>",\n\t${['"encodedTrader"', '"manufacturedTrader"', '"rawTrader"', '"guardianBroker"', '"humanBroker"', '"IFactor"', '"fcVendor"','"fcAdmin"'].join(': "<nearest system>",\n\t')}: "<nearest system>"\n} `
         message.channel.send("Copy and paste the template below as the argument for the `setup home` command. Do NOT put it in a code block, and make sure to remove the input hints (<like this, including angle brackets>) even if you aren't providing that system name.\nYes, you may provide just one, all of them, or a mix of some o7")
         message.channel.send(Formatters.codeBlock("json", template))
-    } else { // 
+    } else { //
         let tempMessage = await message.channel.send("Hang tight, this is gonna take a while...");
 
         //initialise mongo side storage
         client.serverData.ensure(`${message.guild.id}.home`, {
-            homeSys: "",
+            homeSys: null,
             homeStation: "",
             encTrd: "",
             manfTrd: "",

@@ -3,7 +3,7 @@ exports.run = async (client, message, args) => {
 	if(args === "cache"){
 		let tempCache = await client.serverData.getMany(await client.serverData.keys)
 	    for (key of Object.keys(tempCache)) {
-	        if(!["botSettings", "tick"].includes(key)){
+	        if(!client.hardcoded.badServerDataKeys.includes(key)){
 	            client.cache[key] = {}
 	            client.cache[key]["enabledModules"] = tempCache[key].enabledModules
 	            client.cache[key]["prefix"] = tempCache[key].prefix
@@ -12,7 +12,6 @@ exports.run = async (client, message, args) => {
 	            client.cache[key]["cc"] = Object.keys(tempCache[key].customCommands)
 				client.cache[key]["reactionRoles"] = Object.keys(tempCache[key].reactionRoles)
 	        }
-	        client.cache.botSettings = tempCache.botSettings
 	        client.cache.tick = tempCache.tick
 	    }
 		return message.channel.send("Local cache updated")

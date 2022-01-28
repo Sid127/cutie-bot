@@ -19,7 +19,7 @@ module.exports = {
 			if(key.match(reaction.emoji.name)){
 				if(await client.serverData.get(`${reaction.message.guild.id}.reactionRoles.${reactionMenu}.mode`) === "single"){
 					for (key of Object.keys(reactions)){
-						if(!key.match(reaction.emoji.name) && !["header", "mode"].includes(key)){
+						if(!key.match(reaction.emoji.name) && !client.hardcoded.badRMenuKeys.includes(key)){
 							await reaction.message.reactions.cache.get(key).users.remove(mmbr).catch(console.error);
 							role = reaction.message.guild.roles.cache.get(reactions[key])
 							mmbr.roles.remove(role).catch(console.error);
@@ -39,7 +39,7 @@ module.exports = {
 	    client.cache[reaction.message.guild.id].prefix === "" ? client.prefix = client.config.prefix : client.prefix = client.cache[reaction.message.guild.id].prefix
 	  }
 
-	  if(reaction.message.channel.id == ticketid && reaction.emoji.name == '🎫') {
+	  if(reaction.message.channel.id == ticketid && reaction.emoji.name == client.hardcoded.ticketEmoji) {
 	      reaction.users.remove(user);
 	      reaction.message.guild.channels.create(`ticket-${user.username}`, {
 	        parent: `${reaction.message.channel.parentId}`,

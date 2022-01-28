@@ -11,7 +11,7 @@ exports.run = async (client, message, args) => {
 	moduleInput = moduleInput.join(" ");
 
 	// global variable for always active modules
-	const alwaysActiveModules = ["metadata", "management", "moderation"];
+	const alwaysActiveModules = client.hardcoded.alwaysActiveModules;
 
     // display a list of all available modules or commands
     if (param === "list") {
