@@ -4,6 +4,11 @@ exports.run = async(client, message) => {
 	//dump the whole file and exit quietly
 	message.channel.send({content: "Here you go chief, the whole log as requested o7:",
 			files: [{
+				attachment: "./out.log",
+				name: "out.log"
+
+			},
+			{
 				attachment: "./err.log",
 				name: "err.log"
 			}]
