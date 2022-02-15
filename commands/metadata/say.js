@@ -4,6 +4,7 @@ exports.run = (client, message, args) => {
 
   let [channel, ...text] = args.split(" ")
 
+  if (!message.mentions.channels.first()) return message.channel.send("Lmao at least tell me where to say stuff")
   var checkChannel = message.mentions.channels.first().id
 
   message.guild.channels.cache.get(checkChannel).sendTyping();
