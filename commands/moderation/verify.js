@@ -29,7 +29,7 @@ exports.run = async(client, message, args) => { // eslint-disable-line no-unused
 exports.config = {
 	guildOnly: true,
 	aliases: ["recruit", "sacrifice"],
-	permLevel: "serverAdmin",
+	permLevel: "modAssist",
 	name: "verify",
 	description: "Verifies a user",
 	usage: ["[<@user>]"]
