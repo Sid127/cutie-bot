@@ -8,20 +8,20 @@ myIntents.add(Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.
 const client = new Client({ partials: ["MESSAGE", "USER", "REACTION", "CHANNEL"], intents: myIntents});
 const config = require("./config.json");
 
-client.mongoUrl = config.mongoURL
-
 // note: some hardcoded stuff remains in places where mongo ensures are performed
 client.hardcoded = require("./functionFiles/hardcoded.json")
 
 // We also need to make sure we're attaching the config to the CLIENT so it's accessible everywhere!
-client.config = config;
+client.config = {prefix: config.prefix};
+
+//initialize mongo connections
 client.serverData = new Josh({
     name: 'Cutie',
     provider,
     providerOptions: {
         collection: "serverdata",
         dbName: "Cutie",
-        url: client.mongoUrl
+        url: config.mongoURL
     }
 });
 client.peopleData = new Josh({
@@ -30,7 +30,7 @@ client.peopleData = new Josh({
     providerOptions: {
         collection: "peopledata",
         dbName: "Cutie",
-        url: client.mongoUrl
+        url: config.mongoURL
     }
 });
 
