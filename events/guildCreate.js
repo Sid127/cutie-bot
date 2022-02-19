@@ -9,7 +9,7 @@ module.exports = {
             activityLeaderboard: "disabled",
 			enabledModules: ["management", "moderation", "metadata", "support"],
             customCommands: {},
-            home: {homeSys: null},
+            home: {system: null},
             hiddenRoles: [],
             blacklistPfx: [],
 			reactionRoles: {}

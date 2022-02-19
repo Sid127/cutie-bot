@@ -7,11 +7,6 @@ const { asyncEBGS } = require("../../functionFiles/APICalls.js");
 const { capitalizeString } = require("../../functionFiles/helperFunctions.js");
 
 exports.run = async(client, message, args) => {
-	// check for empty args
-	if (args.trim().length === 0) {
-		return message.reply("I'd be more helpful if I got a faction name.");
-	}
-
 	// special tag variable creation and check for special tags as the first thing in the args
 	let specialTag = "";
 	if (args.toLowerCase().match("(influence|inf|conflicts|updated|stale).*")) {
@@ -22,15 +17,21 @@ exports.run = async(client, message, args) => {
 		args = args.join(" ").trim();
 	}
 
-	// check for empty args
-	if (specialTag && args.length === 0) {
-		return message.reply("Oh, you gave me a special tag, but still I'd be more helpful if I got a faction name with that still...");
+	// small bit to allow for "home" to be used for data about home system/faction
+	if (args.length === 0 || args.toLowerCase() === "home") {
+		let homeInfo = await client.serverData.get(`${message.guild.id}.home`);
+
+		if (!homeInfo.faction) {
+			return message.reply("I don't know your home faction, please add it via 'setup home' or give me a faction name.");
+		}
+
+		args = homeInfo.faction;
 	}
 
 	// send the temp message and do the API call to EBGS for the faction data and the tick data
 	let tempMessage = await message.channel.send("Retrieving data...");
-	let factionData = await asyncEBGS("/factions", {name: args})
-	let tickData = client.cache.tick
+	let factionData = await asyncEBGS("/factions", {name: args});
+	let tickData = client.cache.tick;
 
 	// variable to set moment parsed date value
 	let lastTick = tickData ? moment(tickData.time) : undefined

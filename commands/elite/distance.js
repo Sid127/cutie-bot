@@ -9,26 +9,29 @@ exports.run = async(client, message, args) => {
 	}
 
 	// split out systems and other data
-	const [input1 = "", input2 = ""] = args.split(", ");
+	const [input1 = "", input2 = ""] = args.split(", ").map(elem => elem.trim());
 
 	// check if either system is empty, if so, reply about it
-	if (input1.trim() === "" || input2.trim() === "") {
+	if (input1 === "" || input2 === "") {
 		return message.reply("Two inputs separated by a comma would be nice.");
 	}
 
 	// send temp message
 	let tempMessage = await message.channel.send("Retrieving data...");
 
+	// get guild home data
+	let homeInfo = await client.serverData.get(`${message.guild.id}.home`);
+
 	// create API calls, and set them in a promise.all() to wait for everything to come back
 	// ternaries for checking if a cmdr data or a system was given
 	let [input1Data, input2Data] = await Promise.all([
 		(input1.toLowerCase().startsWith("cmdr")
 			? asyncEDSM("/api-logs-v1/get-position", {"showCoordinates": 1, "commanderName": input1.slice(4).trim()})
-			: asyncEDSM("/api-v1/system", {"showCoordinates": 1, "systemName": input1})),
+			: asyncEDSM("/api-v1/system", {"showCoordinates": 1, "systemName": (input1.toLowerCase() === "home" ? homeInfo.system : input1)})),
 
 		(input2.toLowerCase().startsWith("cmdr")
 			? asyncEDSM("/api-logs-v1/get-position", {"showCoordinates": 1, "commanderName": input2.slice(4).trim()})
-			: asyncEDSM("/api-v1/system", {"showCoordinates": 1, "systemName": input2}))
+			: asyncEDSM("/api-v1/system", {"showCoordinates": 1, "systemName": (input2.toLowerCase() === "home" ? homeInfo.system : input2)}))
 	]);
 
 	// check for validity of the data got back

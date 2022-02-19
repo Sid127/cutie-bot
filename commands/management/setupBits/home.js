@@ -1,143 +1,147 @@
-exports.run = async(client, message, args) => {
-    const { Formatters } = require("discord.js")
-    const { asyncEDSM } = require("../../../functionFiles/APICalls.js");
-    const { checkForStations } = require('../../../functionFiles/helperFunctions');
+// module requires
+const { Formatters } = require("discord.js");
+const { asyncEDSM } = require("../../../functionFiles/APICalls.js");
+const { checkForStations } = require('../../../functionFiles/helperFunctions');
 
+exports.run = async (client, message, args) => {
+	// create a template variable holding the object to be sent
+	let template = {system: "<system name>", station: "<station name>", faction: "<faction name>",
+	encodedTrader: "<nearest system>", manufacturedTrader: "<nearest system>", rawTrader: "<nearest system>",
+	guardianBroker: "<nearest system>", humanBroker: "<nearest system>", iFactor: "<nearest system>", fcVendor: "<nearest system>", fcAdmin: "<nearest system>"};
 
-    if(args[0] === "template" || !args[0]){ // give a way to provide the template
-        let template = `{\n\t"home": "<system name>",\n\t"station": "<name>",\n\t${['"encodedTrader"', '"manufacturedTrader"', '"rawTrader"', '"guardianBroker"', '"humanBroker"', '"IFactor"', '"fcVendor"','"fcAdmin"'].join(': "<nearest system>",\n\t')}: "<nearest system>"\n} `
-        message.channel.send("Copy and paste the template below as the argument for the `setup home` command. Do NOT put it in a code block, and make sure to remove the input hints (<like this, including angle brackets>) even if you aren't providing that system name.\nYes, you may provide just one, all of them, or a mix of some o7")
-        message.channel.send(Formatters.codeBlock("json", template))
-    } else { //
-        let tempMessage = await message.channel.send("Hang tight, this is gonna take a while...");
-
-        //initialise mongo side storage
-        client.serverData.ensure(`${message.guild.id}.home`, {
-            homeSys: null,
-            homeStation: "",
-            encTrd: "",
-            manfTrd: "",
-            rawTrd: "",
-            grdBrk: "",
-            hmnBrk: "",
-            iF: "",
-            fcv: "",
-            fca: ""
-        })
-
-        if(args.join(" ").match("(<|>|system|name|nearest)")) return tempMessage.edit("I TOLD you to remove the text hints >:(")
-        let data = JSON.parse(args.join(" ").replace(/(\r\n|\n|\r|\t)/gm, "")) // create json
-
-        //make all our station data API calls at once
-        let [home, homeStation, encodedTrader, manufacturedTrader, rawTrader, guardianBroker, humanBroker, IFactor, fcVendor, fcAdmin] = await Promise.all([
-            data.home ? asyncEDSM('/api-system-v1/stations', {"systemName": data.home}) : undefined,
-            data.station ? data.station : undefined,
-            data.encodedTrader ? asyncEDSM('/api-system-v1/stations', {"systemName": data.encodedTrader}) : undefined,
-            data.manufacturedTrader ? asyncEDSM('/api-system-v1/stations', {"systemName": data.manufacturedTrader}) : undefined,
-            data.rawTrader ? asyncEDSM('/api-system-v1/stations', {"systemName": data.rawTrader}) : undefined,
-            data.guardianBroker ? asyncEDSM('/api-system-v1/stations', {"systemName": data.guardianBroker}) : undefined,
-            data.humanBroker ? asyncEDSM('/api-system-v1/stations', {"systemName": data.humanBroker}) : undefined,
-            data.IFactor ? asyncEDSM('/api-system-v1/stations', {"systemName": data.IFactor}) : undefined,
-            data.fcVendor ? asyncEDSM('/api-system-v1/stations', {"systemName": data.fcVendor}) : undefined,
-            data.fcAdmin ? asyncEDSM('/api-system-v1/stations', {"systemName": data.fcAdmin}) : undefined
-        ]);
-
-        //make all our system data API calls at once
-        let [homeCoords, encodedTraderCoords, manufacturedTraderCoords, rawTraderCoords, guardianBrokerCoords, humanBrokerCoords, IFactorCoords, fcVendorCoords, fcAdminCoords] = await Promise.all([
-            data.home ? asyncEDSM('/api-v1/system', {"showCoordinates": 1, "systemName": data.home}) : undefined,
-            data.encodedTrader ? asyncEDSM('/api-v1/system', {"showCoordinates": 1, "systemName": data.encodedTrader}) : undefined,
-            data.manufacturedTrader ? asyncEDSM('/api-v1/system', {"showCoordinates": 1, "systemName": data.manufacturedTrader}) : undefined,
-            data.rawTrader ? asyncEDSM('/api-v1/system', {"showCoordinates": 1, "systemName": data.rawTrader}) : undefined,
-            data.guardianBroker ? asyncEDSM('/api-v1/system', {"showCoordinates": 1, "systemName": data.guardianBroker}) : undefined,
-            data.humanBroker ? asyncEDSM('/api-v1/system', {"showCoordinates": 1, "systemName": data.humanBroker}) : undefined,
-            data.IFactor ? asyncEDSM('/api-v1/system', {"showCoordinates": 1, "systemName": data.IFactor}) : undefined,
-            data.fcVendor ? asyncEDSM('/api-v1/system', {"showCoordinates": 1, "systemName": data.fcVendor}) : undefined,
-            data.fcAdmin ? asyncEDSM('/api-v1/system', {"showCoordinates": 1, "systemName": data.fcAdmin}) : undefined
-        ]);
-
-        tempMessage.edit("System data acquired, verifying things...")
-
-        //require a home system
-        if(client.cache[message.guild.id].homeSys === undefined && home === undefined) return tempMessage.edit("...I should've told you, you can't skip the home system")
-
-        // check if given station is actually in system
-        if(homeStation !== undefined){
-            for(station of home.data.stations){
-                if(station.name.toLowerCase() === homeStation.toLowerCase()) {stationExists = true; break}
-            }
-            if (!stationExists) return tempMessage.edit("Are you sure that station exists in that system?")
-        }
-
-        //push the base info to mongo
-        await client.serverData.set(`${message.guild.id}.home.homeSys`, `${data.home}`)
-        await client.serverData.set(`${message.guild.id}.home.homeStation`, `${homeStation}`)
-        client.cache[message.guild.id].homeSys = data.home
-
-        //check if traders exist in given systems and handle accordingly... we need a way to verify trader types too, later
-        if(encodedTrader !== undefined){
-            let encTrd = checkForStations(encodedTrader, "Material Trader", homeCoords, encodedTraderCoords)
-            if (encTrd === false){
-                return tempMessage.edit("I can't find a Mat Trader in the encoded trader system you told me about")
-            }
-            await client.serverData.set(`${message.guild.id}.home.encTrd`, encTrd)
-        } else {await client.serverData.set(`${message.guild.id}.home.encTrd`, "")}
-
-        if(manufacturedTrader !== undefined){
-            let manfTrd = checkForStations(manufacturedTrader, "Material Trader", homeCoords, manufacturedTraderCoords)
-            if (manfTrd === false){
-                return tempMessage.edit("I can't find a Mat Trader in the manufactured trader system you told me about")
-            }
-            await client.serverData.set(`${message.guild.id}.home.manfTrd`, manfTrd)
-        } else {await client.serverData.set(`${message.guild.id}.home.manfTrd`, "")}
-
-        if(rawTrader !== undefined){
-            let rawTrd = checkForStations(rawTrader, "Material Trader", homeCoords, rawTraderCoords)
-            if (rawTrd === false){
-                return tempMessage.edit("I can't find a Mat Trader in the raw trader system you told me about")
-            }
-            await client.serverData.set(`${message.guild.id}.home.rawTrd`, rawTrd)
-        } else {await client.serverData.set(`${message.guild.id}.home.rawTrd`, "")}
-
-        if(guardianBroker !== undefined){
-            let grdBrk = checkForStations(guardianBroker, "Technology Broker", homeCoords, guardianBrokerCoords)
-            if (grdBrk === false){
-                return tempMessage.edit("I can't find a Guardian Tech Broker in the system you told me about")
-            }
-            await client.serverData.set(`${message.guild.id}.home.grdBrk`, grdBrk)
-        } else {await client.serverData.set(`${message.guild.id}.home.grdBrk`, "")}
-
-        if(humanBroker !== undefined){
-            let hmnBrk = checkForStations(humanBroker, "Technology Broker", homeCoords, humanBrokerCoords)
-            if (hmnBrk === false){
-                return tempMessage.edit("I can't find a Mat Trader in the encoded trader system you told me about")
-            }
-            await client.serverData.set(`${message.guild.id}.home.hmnBrk`, hmnBrk)
-        } else {await client.serverData.set(`${message.guild.id}.home.hmnBrk`, "")}
-
-        if(IFactor !== undefined){
-            let iF = checkForStations(IFactor, "Interstellar Factors Contact", homeCoords, IFactorCoords)
-            if (iF === false){
-                return tempMessage.edit("I can't find an Interstellar Factor in the system you told me about")
-            }
-            await client.serverData.set(`${message.guild.id}.home.iF`, iF)
-        } else {await client.serverData.set(`${message.guild.id}.home.iF`, "")}
-
-        if(fcVendor !== undefined){
-            let fcv = checkForStations(fcVendor, "Tuning", homeCoords, fcVendorCoords)
-            if (fcv === false){
-                return tempMessage.edit("I can't find an FC Vendor in the system you told me about")
-            }
-            await client.serverData.set(`${message.guild.id}.home.fcv`, fcv)
-        } else {await client.serverData.set(`${message.guild.id}.home.fcv`, "")}
-
-        if(fcAdmin !== undefined){
-            let fca = checkForStations(fcAdmin, "Tuning", homeCoords, fcAdminCoords)
-            if (fca === false){
-                return tempMessage.edit("I can't find an FC Administrator in the system you told me about")
-            }
-            await client.serverData.set(`${message.guild.id}.home.fca`, fca)
-        } else {await client.serverData.set(`${message.guild.id}.home.fca`, "")}
-
-        tempMessage.edit("All Done!")
+	// give a way to provide the template
+    if (!args[0] || args[0].toLowerCase() === "template") {
+		// return back the data
+		return message.channel.send({content: `\`setup home list\` to show current data, \`setup home delete|remove\` to delete home data.\n` +
+			`Use this template as an input, removing the <> characters and if you do not fill in some bits, you can remove that line.\n` +
+			`${Formatters.codeBlock("json", JSON.stringify(template, null, "\t"))}`});
     }
+
+	// get the currently stored data and edit it slightly
+	let currentHomeData = await client.serverData.get(`${message.guild.id}.home`);
+	for (let [key, value] of Object.entries(currentHomeData)) {
+		if (typeof(value) === "object" && value) {
+			currentHomeData[key] = value.system;
+		}
+	}
+
+	// check on if we want to remove the home system from use
+	if (args[0].toLowerCase().match("(delete|remove)")) {
+		await client.serverData.set(`${message.guild.id}.home`, {system: null});
+		return message.reply({content: `Home data was removed.\nYou can use \`${client.prefix}setup home list\` to make sure, if it was not, contact my devs.\n\n` +
+			`If this was a mistake, use \`${client.prefix}setup home\`to set it again. I have the old data below:\n` +
+			`${Formatters.codeBlock("json", JSON.stringify(currentHomeData, null, "\t"))}`});
+	}
+
+	// check if we want to list the data we have
+	if (args[0].toLowerCase() === "list") {
+		return message.reply({content: `Current data found:\n${Formatters.codeBlock("json", JSON.stringify(currentHomeData, null, "\t"))}`});
+	}
+
+	// send temp message
+	let tempMessage = await message.channel.send("Hang tight, this is gonna take a while...");
+
+	// check if the .home key data is an object, if not, set empty
+	if (typeof currentHomeData !== "object") {
+		await client.serverData.ensure(`${message.guild.id}.home`, {system: null});
+	}
+
+	// check if we have any of the text hints, if not parse the JSON got as input
+    if (args.join(" ").match("(<|>|name|nearest)")) return tempMessage.edit("I TOLD you to remove the text hints >:(");
+
+    let data = "";
+	try {
+		data = JSON.parse(args.join(" ").replace(/(\r\n|\n|\r|\t)/gm, "")); // create json
+	} catch (err) {
+		return tempMessage.edit(`Couldn't find valid JSON input, please check \`${client.prefix}setup home template\` for input.`);
+	}
+
+	// variable to hold the names of all the special data bits (things found in other systems)
+	// IMPORTANT!!! These need to be in the same order (and same amount) as the bits going into the ...rest variables
+	const serviceNames = [
+		{keyName: "encodedTrader", 		serviceName: "Material Trader", 				fullName: "Encoded Materials Trader"},
+		{keyName: "manufacturedTrader", serviceName: "Material Trader", 				fullName: "Manufactured Materials Trader"},
+		{keyName: "rawTrader", 			serviceName: "Material Trader", 				fullName: "Raw Materials Trader"},
+		{keyName: "guardianBroker",		serviceName: "Technology Broker", 				fullName: "Guardian Tech Broker"},
+		{keyName: "humanBroker", 		serviceName: "Technology Broker", 				fullName: "Human Tech Broker"},
+		{keyName: "iFactor", 			serviceName: "Interstellar Factors Contact", 	fullName: "Interstellar Factor"},
+		{keyName: "fcVendor", 			serviceName: "Tuning", 							fullName: "Fleet Carrier Vendor"},
+		{keyName: "fcAdmin", 			serviceName: "Tuning", 							fullName: "Fleet Carrier Administrator"}
+	];
+
+    // make all our station data API calls at once
+    let [stations, factions, ...restStationData] = await Promise.all([
+        data.station ? asyncEDSM('/api-system-v1/stations', {"systemName": data.system || currentHomeData.system}) : undefined,
+		data.faction ? asyncEDSM('/api-system-v1/factions', {"systemName": data.system || currentHomeData.system}) : undefined,
+        data.encodedTrader ? asyncEDSM('/api-system-v1/stations', {"systemName": data.encodedTrader}) : undefined,
+        data.manufacturedTrader ? asyncEDSM('/api-system-v1/stations', {"systemName": data.manufacturedTrader}) : undefined,
+        data.rawTrader ? asyncEDSM('/api-system-v1/stations', {"systemName": data.rawTrader}) : undefined,
+        data.guardianBroker ? asyncEDSM('/api-system-v1/stations', {"systemName": data.guardianBroker}) : undefined,
+        data.humanBroker ? asyncEDSM('/api-system-v1/stations', {"systemName": data.humanBroker}) : undefined,
+        data.iFactor ? asyncEDSM('/api-system-v1/stations', {"systemName": data.iFactor}) : undefined,
+        data.fcVendor ? asyncEDSM('/api-system-v1/stations', {"systemName": data.fcVendor}) : undefined,
+        data.fcAdmin ? asyncEDSM('/api-system-v1/stations', {"systemName": data.fcAdmin}) : undefined
+    ]);
+
+    // make all our system data API calls at once
+    let [systemCoords, ...restCoordsData] = await Promise.all([
+        data.system ? asyncEDSM('/api-v1/system', {"showCoordinates": 1, "systemName": data.system || currentHomeData.system}) : undefined,
+        data.encodedTrader ? asyncEDSM('/api-v1/system', {"showCoordinates": 1, "systemName": data.encodedTrader}) : undefined,
+        data.manufacturedTrader ? asyncEDSM('/api-v1/system', {"showCoordinates": 1, "systemName": data.manufacturedTrader}) : undefined,
+        data.rawTrader ? asyncEDSM('/api-v1/system', {"showCoordinates": 1, "systemName": data.rawTrader}) : undefined,
+        data.guardianBroker ? asyncEDSM('/api-v1/system', {"showCoordinates": 1, "systemName": data.guardianBroker}) : undefined,
+        data.humanBroker ? asyncEDSM('/api-v1/system', {"showCoordinates": 1, "systemName": data.humanBroker}) : undefined,
+        data.iFactor ? asyncEDSM('/api-v1/system', {"showCoordinates": 1, "systemName": data.iFactor}) : undefined,
+        data.fcVendor ? asyncEDSM('/api-v1/system', {"showCoordinates": 1, "systemName": data.fcVendor}) : undefined,
+        data.fcAdmin ? asyncEDSM('/api-v1/system', {"showCoordinates": 1, "systemName": data.fcAdmin}) : undefined
+    ]);
+
+	tempMessage.edit("System data acquired, verifying things...");
+
+	// variable for what to set
+	let newHomeData = {};
+	let problems = [];
+
+	// if the currently stored data doesn't have a home system set, require it to be set on first run, otherwise return out
+	if (!currentHomeData.system && !data.system) {
+		return tempMessage.edit("...I should've told you I need your home system as well, can't skip this on first run.");
+	}
+
+	// start checking for what's given in
+	if (data.system) { Object.keys(systemCoords.data).length > 0 ? newHomeData.system = systemCoords.data.name : problems.push("Home system") }
+
+	// special check for home station and faction
+	if (data.station && Object.keys(stations.data).length > 0 && stations.data.stations.length > 0) {
+		let found = stations.data.stations.filter(elem => elem.name.toLowerCase() === data.station.toLowerCase());
+		found.length > 0 ? newHomeData.station = found[0].name : problems.push("Home station")
+	}
+
+	if (data.faction && Object.keys(factions.data).length > 0 && factions.data.factions.length > 0) {
+		let found = factions.data.factions.filter(elem => elem.name.toLowerCase() === data.faction.toLowerCase());
+		found.length > 0 ? newHomeData.faction = found[0].name : problems.push("Home faction")
+	}
+
+	// check if all the 4 arrays needed are the same length
+	if (serviceNames.length !== restStationData.length || serviceNames.length !== restCoordsData.length) {
+		return tempMessage.edit("Please let my devs know something's off.");
+	}
+
+	// loop over all the extra bits
+	for (let i = 0; i < serviceNames.length; i++) {
+		// check if data got for both inputs
+		if (restStationData[i] && restCoordsData[i] && Object.keys(restStationData[i]).length > 0 && Object.keys(restCoordsData[i]).length > 0) {
+			let returnData = checkForStations(restStationData[i], serviceNames[i].serviceName, systemCoords, restCoordsData[i]);
+			if (returnData) {
+				returnData.fullName = serviceNames[i].fullName;
+				newHomeData[serviceNames[i].keyName] = returnData;
+			} else {problems.push(`${serviceNames[i].fullName}`)}
+		}
+	}
+
+	if (problems.length > 0) {
+		return tempMessage.edit(`Had issues finding some things: \`${problems.join(", ")}\` please check you spelled things right`)
+	} else {
+		await client.serverData.update(`${message.guild.id}.home`, newHomeData);
+		return tempMessage.edit("All Done!");
+	}
 }

@@ -1,27 +1,25 @@
+// module requires
+const { Client, MessageEmbed } = require('discord.js');
+
 exports.run = async(client, message) => {
-    const { Client, MessageEmbed } = require('discord.js');
+    //grab data from mongo and check if we have a home system set
+	let homeInfo = await client.serverData.get(`${message.guild.id}.home`);
+	if (homeInfo.system === null) return message.channel.send("You know you have to set that up first, right?");
 
-    //grab data from mongo
-	if (client.cache[message.guild.id].homeSys === null) return message.channel.send("You know you have to set that up first, right?")
-    let homeInfo = await client.serverData.get(`${message.guild.id}.home`)
-
+	// create and populate the embed
     let embed = new MessageEmbed()
-        .setTitle(`${homeInfo.homeSys}${homeInfo.homeStation ? `, ${homeInfo.homeStation}` : ""}`)
+        .setTitle(`${homeInfo.faction ? `'${homeInfo.faction}' in ` : ""}'${homeInfo.system}'${homeInfo.station ? ` at '${homeInfo.station}'` : ""}`)
         .setAuthor(message.guild)
         .setColor('RANDOM');
 
-    //add additional data if required
-    homeInfo.encTrd ? embed.addField(`Nearest Encoded Material Trader`, `${homeInfo.encTrd}`) : ""
-    homeInfo.manfTrd ? embed.addField(`Nearest Manufactured Material Trader`, `${homeInfo.manfTrd}`) : ""
-    homeInfo.rawTrd ? embed.addField(`Nearest Raw Material Trader`, `${homeInfo.rawTrd}`) : ""
-    homeInfo.grdBrk ? embed.addField(`Nearest Guardian Tech Broker`, `${homeInfo.grdBrk}`) : ""
-    homeInfo.hmnBrk ? embed.addField(`Nearest Human Tech Broker`, `${homeInfo.hmnBrk}`) : ""
-    homeInfo.iF ? embed.addField(`Nearest Interstellar Factor`, `${homeInfo.iF}`) : ""
-    homeInfo.fcv ? embed.addField(`Nearest Fleet Carrier Vendor`, `${homeInfo.fcv}`) : ""
-    homeInfo.fca ? embed.addField(`Nearest Fleet Carrier Administrator`, `${homeInfo.fca}`) : ""
+    //add additional data if found
+	for (let [key, value] of Object.entries(homeInfo)) {
+		if (!key.match("(system|station|faction)")) {
+			embed.addField(`Nearest ${value.fullName}`, `${value.system}, ${value.station}, ${value.distanceToArrival.toFixed(1)} Ls, ${value.distanceHome} Ly`);
+		}
+	}
 
 	message.channel.send({embeds:[embed]});
-
 };
 
 exports.config = {

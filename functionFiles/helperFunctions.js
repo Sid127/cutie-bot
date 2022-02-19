@@ -72,10 +72,15 @@ const checkForStations = (serviceSystem, serviceName, homeCoords, serviceCoords)
 	if(serviceSystem !== undefined){
 		for(station of serviceSystem.data.stations) {
 			if(station.otherServices.includes(serviceName)){
-				return retStation = `${serviceSystem.data.name}, ${station.name}, ${station.distanceToArrival.toFixed(1)} Ls, ${distanceCalc(homeCoords.data.coords, serviceCoords.data.coords, 2)} Ly`
+				return {
+					system: serviceSystem.data.name,
+					station: station.name,
+					distanceToArrival: station.distanceToArrival,
+					distanceHome: distanceCalc(homeCoords.data.coords, serviceCoords.data.coords, 2)
+				}
 			}
 		}
-		if(!retStation) return false
+		return false
 	}
 }
 

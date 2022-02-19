@@ -7,11 +7,6 @@ const { asyncEBGS } = require("../../functionFiles/APICalls.js");
 const { capitalizeString } = require("../../functionFiles/helperFunctions.js");
 
 exports.run = async(client, message, args) => {
-	// check for empty args
-	if (args.trim().length === 0) {
-		return message.reply("A system to gather data for would be helpful so I can show something.");
-	}
-
 	// special tag variable creation and check for special tags as the first thing in the args
 	let specialTag = "";
 	if (args.toLowerCase().match("(chart|conflicts).*")) {
@@ -22,15 +17,21 @@ exports.run = async(client, message, args) => {
 		args = args.join(" ").trim();
 	}
 
-	// check for empty args
-	if (specialTag && args.length === 0) {
-		return message.reply("Oh, you gave me a special tag, but still I'd be more helpful if I got a faction name with that still...");
+	// small bit to allow for "home" to be used for data about home system/faction
+	if (args.length === 0 || args.toLowerCase() === "home") {
+		let homeInfo = await client.serverData.get(`${message.guild.id}.home`);
+
+		if (!homeInfo.system) {
+			return message.reply("I don't know your home system, please add it via 'setup home' or give me a system name.");
+		}
+
+		args = homeInfo.system;
 	}
 
 	// send the temp message and do the API call to EBGS for the faction data and the tick data
 	let tempMessage = await message.channel.send("Retrieving data...");
-	let systemData = await asyncEBGS("/systems", {name: args})
-	let tickData = client.cache.tick
+	let systemData = await asyncEBGS("/systems", {name: args});
+	let tickData = client.cache.tick;
 
 	// check if the api call did return some data
 	if (!systemData.data || systemData.data.docs.length === 0) {
@@ -56,7 +57,7 @@ exports.run = async(client, message, args) => {
 	}
 
 	// variable creation for the output text
-	let outputData = "";
+	let outputData = `== "${systemData.data.docs[0].name}" == Updated: ${updatedString}\n\n`;
 
 	// check if no special tag, at which point get all faction data etc...
 	if (!specialTag) {
@@ -94,12 +95,9 @@ exports.run = async(client, message, args) => {
 					`B. Wins  :: ${conflict.faction2.days_won}\n`
 			}
 		} else {
-			outputData += `No conflicts found in :: ${systemData.data.docs[0].name}\n`
+			outputData += `No conflicts found`;
 		}
 	}
-
-	// add when updated to the end of the message
-	outputData += `\nUpdated :: ${updatedString}`
 
 	// send the message
 	tempMessage.edit({

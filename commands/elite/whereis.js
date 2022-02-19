@@ -19,7 +19,7 @@ exports.run = async(client, message, args) => { // eslint-disable-line no-unused
 	// do send a temp message to tell something's going on, and do an EDSM api call to get commander data and home system data
 	let tempMessage = await message.channel.send("Retrieving data...");
 	let cmdrData = await asyncEDSM("/api-logs-v1/get-position", {"showCoordinates": 1, "commanderName": cmdrName});
-	let homeSysData = await asyncEDSM("/api-v1/system", {"showCoordinates": 1, "systemName": client.cache[message.guild.id].homeSys || "Sol"});
+	let homeSysData = await asyncEDSM("/api-v1/system", {"showCoordinates": 1, "systemName": await client.serverData.get(`${message.guild.id}.home.system`) || "Sol"});
 
 	// check if commander API call message status ok
 	if (cmdrData.status === "ok") {

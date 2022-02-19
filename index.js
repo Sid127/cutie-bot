@@ -115,7 +115,6 @@ const init = async() => {
             client.cache[key]["enabledModules"] = tempCache[key].enabledModules
             client.cache[key]["prefix"] = tempCache[key].prefix
             client.cache[key]["activityLeaderboard"] = tempCache[key].activityLeaderboard
-            client.cache[key]["homeSys"] = tempCache[key].home.homeSys
             client.cache[key]["cc"] = Object.keys(tempCache[key].customCommands)
 			client.cache[key]["reactionRoles"] = Object.keys(tempCache[key].reactionRoles)
         }

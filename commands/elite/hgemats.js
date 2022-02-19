@@ -25,10 +25,10 @@ exports.run = async(client, message, args) => {
 	let radius = parseInt(argsSplit[2]);
 
 	// list all materials if first argument was "list" or if no arguments specified
-	if (material == "list" || args.length == 0) {
+	if (material.toLowerCase() == "list" || args.length == 0) {
 		let output = (
 			`== List of all possible materials from an High Grade Emissions signal source. ==\n` +
-			`Finding possible systems for specific material can be found by: !hgemats <material>, <referenceSystem>\n\n`)
+			`Finding possible systems for specific material can be found by: ${client.prefix}hgemats [material name], [<reference system>]\n\n`)
 		for (mat of materialsArray) {
 			output += (
 				`= ${mat.material} =\n` +
@@ -108,7 +108,7 @@ exports.run = async(client, message, args) => {
 		return tempMessage.edit(
 			`No systems within distance of: ${radius}Ly of: \`${refSystem}\`.\n` +
 			`Try with increasing the search radius (up to max 100Ly)\n` +
-			`\`hgemats [material name], [<reference system>], (<search radius (max 100Ly)>)\``);
+			`\`${client.prefix}hgemats [material name], [<reference system>], (<search radius (max 100Ly)>)\``);
 	}
 
 	// sort the list according to the distance from reference
