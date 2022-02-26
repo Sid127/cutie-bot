@@ -2,6 +2,8 @@ exports.run = async(client, message, args) => {
 
     let [mention, amount] = args.split(" ")
 
+    if(amount.startsWith("-")) return message.channel.send("No negatives allowed, fren. Use the takeaway command.")
+
     const user = message.mentions.users.first();
     if (!user) return message.reply({content:"You must mention!"});
 
@@ -11,7 +13,7 @@ exports.run = async(client, message, args) => {
 
     // Ensure there is a points entry for this user.
     await client.peopleData.ensure(`${message.guild.id}-${user.id}`, {
-        user: message.author.id,
+        user: user.id,
         guild: message.guild.id,
         points: 0,
         level: 0
