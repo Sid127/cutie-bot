@@ -23,6 +23,9 @@ exports.run = async (client, message, args) => {
 		if (typeof(value) === "object" && value) {
 			currentHomeData[key] = value.system;
 		}
+		if (key.match(/(systemid|stationid|factionid)/gi)) {
+			delete currentHomeData[key]
+		}
 	}
 
 	// check on if we want to remove the home system from use
