@@ -74,7 +74,9 @@ const checkForStations = (serviceSystem, serviceName, homeCoords, serviceCoords)
 			if(station.otherServices.includes(serviceName)){
 				return {
 					system: serviceSystem.data.name,
+					systemID: serviceSystem.data.id,
 					station: station.name,
+					stationID: station.id,
 					distanceToArrival: station.distanceToArrival,
 					distanceHome: distanceCalc(homeCoords.data.coords, serviceCoords.data.coords, 2)
 				}

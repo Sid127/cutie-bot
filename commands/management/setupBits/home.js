@@ -5,7 +5,7 @@ const { checkForStations } = require('../../../functionFiles/helperFunctions');
 
 exports.run = async (client, message, args) => {
 	// create a template variable holding the object to be sent
-	let template = {system: "<system name>", station: "<station name>", faction: "<faction name>",
+	let template = {system: "<system name>", station: "<station name>", faction: "<faction name>", homeImageURL: "<Discord image link>",
 	encodedTrader: "<nearest system>", manufacturedTrader: "<nearest system>", rawTrader: "<nearest system>",
 	guardianBroker: "<nearest system>", humanBroker: "<nearest system>", iFactor: "<nearest system>", fcVendor: "<nearest system>", fcAdmin: "<nearest system>"};
 
@@ -113,12 +113,20 @@ exports.run = async (client, message, args) => {
 	// special check for home station and faction
 	if (data.station && Object.keys(stations.data).length > 0 && stations.data.stations.length > 0) {
 		let found = stations.data.stations.filter(elem => elem.name.toLowerCase() === data.station.toLowerCase());
-		found.length > 0 ? newHomeData.station = found[0].name : problems.push("Home station")
+		if (found.length > 0) {
+			newHomeData.systemID = stations.data.id;
+			newHomeData.station = found[0].name;
+			newHomeData.stationID = found[0].id;
+		} else {problems.push("Home station")}
 	}
 
 	if (data.faction && Object.keys(factions.data).length > 0 && factions.data.factions.length > 0) {
 		let found = factions.data.factions.filter(elem => elem.name.toLowerCase() === data.faction.toLowerCase());
-		found.length > 0 ? newHomeData.faction = found[0].name : problems.push("Home faction")
+		if (found.length > 0) {
+			newHomeData.systemID = factions.data.id;
+			newHomeData.faction = found[0].name;
+			newHomeData.factionID = found[0].id;
+		} else {problems.push("Home faction")}
 	}
 
 	// check if all the 4 arrays needed are the same length
