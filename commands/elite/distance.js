@@ -1,5 +1,5 @@
 // our own API caller and helper files
-const { asyncEDSM } = require("../../functionFiles/APICalls.js");
+const { AxiosEDSM } = require("../../functionFiles/APICalls.js");
 const { distanceCalc } = require("../../functionFiles/helperFunctions.js");
 
 exports.run = async(client, message, args) => {
@@ -26,28 +26,28 @@ exports.run = async(client, message, args) => {
 	// ternaries for checking if a cmdr data or a system was given
 	let [input1Data, input2Data] = await Promise.all([
 		(input1.toLowerCase().startsWith("cmdr")
-			? asyncEDSM("/api-logs-v1/get-position", {"showCoordinates": 1, "commanderName": input1.slice(4).trim()})
-			: asyncEDSM("/api-v1/system", {"showCoordinates": 1, "systemName": (input1.toLowerCase() === "home" ? homeInfo.system : input1)})),
+			? AxiosEDSM("/api-logs-v1/get-position", {showCoordinates: 1, commanderName: input1.slice(4).trim()})
+			: AxiosEDSM("/api-v1/system", {showCoordinates: 1, systemName: (input1.toLowerCase() === "home" ? homeInfo.system : input1)})),
 
 		(input2.toLowerCase().startsWith("cmdr")
-			? asyncEDSM("/api-logs-v1/get-position", {"showCoordinates": 1, "commanderName": input2.slice(4).trim()})
-			: asyncEDSM("/api-v1/system", {"showCoordinates": 1, "systemName": (input2.toLowerCase() === "home" ? homeInfo.system : input2)}))
+			? AxiosEDSM("/api-logs-v1/get-position", {showCoordinates: 1, commanderName: input2.slice(4).trim()})
+			: AxiosEDSM("/api-v1/system", {showCoordinates: 1, systemName: (input2.toLowerCase() === "home" ? homeInfo.system : input2)}))
 	]);
 
 	// check for validity of the data got back
-	if (checkForMissingData(input1Data.data) || checkForMissingData(input2Data.data)) {
+	if (checkForMissingData(input1Data) || checkForMissingData(input2Data)) {
 		return tempMessage.edit(`Couldn't find data about ` +
-		`\`${((!input1Data.data.name && !input1Data.data.url) && (!input2Data.data.name && !input2Data.data.url))
+		`\`${((!input1Data.name && !input1Data.url) && (!input2Data.name && !input2Data.url))
 			? `${input1.replace(/\`/g, "")}\` nor \`${input2.replace(/\`/g, "")}`
-			: ((!input1Data.data.name && !input1Data.data.url) ? input1.replace(/\`/g, "") : input2.replace(/\`/g, ""))}\`.\n` +
+			: ((!input1Data.name && !input1Data.url) ? input1.replace(/\`/g, "") : input2.replace(/\`/g, ""))}\`.\n` +
 		`Please check your spelling... Or that EDSM has the data.`);
 	}
 
 	// if we're this far in, we should have the data, do distance calculation and edit temp message
 	tempMessage.edit(`Distance between ` +
-		`\`${input1Data.data.name || `CMDR ` + input1Data.data.url.split("/").pop().replace(/\+/g, " ") + ` (` + input1Data.data.system + `)`}\` and ` +
-		`\`${input2Data.data.name || `CMDR ` + input2Data.data.url.split("/").pop().replace(/\+/g, " ") + ` (` + input2Data.data.system + `)`}\` is ` +
-		`\`${distanceCalc(input1Data.data.coords || input1Data.data.coordinates, input2Data.data.coords || input2Data.data.coordinates, 2)}\`Ly.`);
+		`\`${input1Data.name || `CMDR ` + input1Data.url.split("/").pop().replace(/\+/g, " ") + ` (` + input1Data.system + `)`}\` and ` +
+		`\`${input2Data.name || `CMDR ` + input2Data.url.split("/").pop().replace(/\+/g, " ") + ` (` + input2Data.system + `)`}\` is ` +
+		`\`${distanceCalc(input1Data.coords || input1Data.coordinates, input2Data.coords || input2Data.coordinates, 2)}\`Ly.`);
 };
 
 // helper function to know if any data is present

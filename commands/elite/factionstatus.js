@@ -1,9 +1,9 @@
 // module requires
-const { Formatters, Util } = require("discord.js");
 const moment = require("moment");
+const { Formatters, Util } = require("discord.js");
 
 // our own API handler file
-const { asyncEBGS } = require("../../functionFiles/APICalls.js");
+const { AxiosEBGS } = require("../../functionFiles/APICalls.js");
 const { capitalizeString } = require("../../functionFiles/helperFunctions.js");
 
 exports.run = async(client, message, args) => {
@@ -30,22 +30,22 @@ exports.run = async(client, message, args) => {
 
 	// send the temp message and do the API call to EBGS for the faction data and the tick data
 	let tempMessage = await message.channel.send("Retrieving data...");
-	let factionData = await asyncEBGS("/factions", {name: args});
+	let factionData = await AxiosEBGS("/factions", {name: args});
 	let tickData = client.cache.tick;
 
 	// variable to set moment parsed date value
 	let lastTick = tickData ? moment(tickData.time) : undefined
 
 	// check if the api call did return some data
-	if (!factionData.data || factionData.data.docs.length === 0) {
+	if (!factionData || factionData.docs.length === 0) {
 		return tempMessage.edit(`No data found for \`${args.replace(/\`/g, "")}\`. Did you write the name correctly..?`);
 	}
 
 	// start the output data with some general faction info
-	let outputData = `== "${factionData.data.docs[0].name}" present in: ${factionData.data.docs[0].faction_presence.length} system${factionData.data.docs[0].faction_presence.length === 1 ? "" : "s"}. ==\n\n`;
+	let outputData = `== "${factionData.docs[0].name}" present in: ${factionData.docs[0].faction_presence.length} system${factionData.docs[0].faction_presence.length === 1 ? "" : "s"}. ==\n\n`;
 
 	// loop through the systems the faction is present in
-	for (let system of factionData.data.docs[0].faction_presence) {
+	for (let system of factionData.docs[0].faction_presence) {
 		let tempOutput = "";
 
 		// start checking what data we want where and with what special tags
@@ -76,16 +76,16 @@ exports.run = async(client, message, args) => {
 
 					// get the info of the enemy as well
 					//if (specialTag) {
-					let enemyData = await asyncEBGS("/factions", {name: conflict.opponent_name});
+					let enemyData = await AxiosEBGS("/factions", {name: conflict.opponent_name});
 
 					// if no enemy data...
-					if (enemyData.data.docs.length === 0) {
+					if (enemyData.docs.length === 0) {
 						tempOutput += ` * No enemy data *\n`;
 					} else {
 						// find the system and the conflict
-						let enemySystem = enemyData.data.docs[0].faction_presence.find(elem => elem.system_name === system.system_name);
+						let enemySystem = enemyData.docs[0].faction_presence.find(elem => elem.system_name === system.system_name);
 						if (enemySystem) {
-							let enemyConflict = enemySystem.conflicts.find(elem => elem.opponent_name === factionData.data.docs[0].name);
+							let enemyConflict = enemySystem.conflicts.find(elem => elem.opponent_name === factionData.docs[0].name);
 
 							tempOutput += ` * Enemy data *\n` +
 							`At stake :: ${enemyConflict.stake ? enemyConflict.stake : "Nothing"}\n` +

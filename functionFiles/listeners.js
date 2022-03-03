@@ -2,7 +2,7 @@ const moment = require("moment-timezone")
 
 //our very own BGS tick listener
 tickListener = async (client) => {
-    const { asyncEBGS } = require("./APICalls.js");
+	const { AxiosEBGS } = require("./APICalls.js");
 
     //create an empty tick table
     await client.serverData.ensure(`tick`, {
@@ -13,8 +13,7 @@ tickListener = async (client) => {
     });
 
     //get tick data from EBGS
-    var tempData = await asyncEBGS("/ticks")
-    var tickData = tempData.data
+    let tickData = await AxiosEBGS("/ticks");
 
     //check to see if tick id changed, and if it has, push new data to mongo and send an update message
     let oldID = client.cache.tick.id

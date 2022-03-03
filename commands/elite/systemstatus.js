@@ -1,9 +1,9 @@
 // module requires
-const { Formatters } = require("discord.js");
 const moment = require("moment");
+const { Formatters } = require("discord.js");
 
 // our own api caller file
-const { asyncEBGS } = require("../../functionFiles/APICalls.js");
+const { AxiosEBGS } = require("../../functionFiles/APICalls.js");
 const { capitalizeString } = require("../../functionFiles/helperFunctions.js");
 
 exports.run = async(client, message, args) => {
@@ -30,21 +30,21 @@ exports.run = async(client, message, args) => {
 
 	// send the temp message and do the API call to EBGS for the faction data and the tick data
 	let tempMessage = await message.channel.send("Retrieving data...");
-	let systemData = await asyncEBGS("/systems", {name: args});
+	let systemData = await AxiosEBGS("/systems", {name: args});
 	let tickData = client.cache.tick;
 
 	// check if the api call did return some data
-	if (!systemData.data || systemData.data.docs.length === 0) {
+	if (!systemData || systemData.docs.length === 0) {
 		return tempMessage.edit(`No data found for \`${args.replace(/\`/g, "")}\`. You sure it's populated and that you spelled it correctly..?`);
 	}
 
 	// variable to set moment parsed date value
 	let lastTick = tickData ? moment(tickData.time) : undefined
-	let updatedWhen = moment(systemData.data.docs[0].updated_at);
+	let updatedWhen = moment(systemData.docs[0].updated_at);
 	let updatedString = `${updatedWhen.fromNow()}${updatedWhen.isBefore(lastTick) ? " (Stale data)" : ""}`;
 
 	// get the chart for the system
-	let systemChart = `http://jegin.net/testchart2.php?sysid=${systemData.data.docs[0].eddb_id}.png`;
+	let systemChart = `http://jegin.net/testchart2.php?sysid=${systemData.docs[0].eddb_id}.png`;
 
 	// if we have the chart special tag we want that sent but nothing else
 	if (specialTag.match("(chart)")) {
@@ -57,22 +57,22 @@ exports.run = async(client, message, args) => {
 	}
 
 	// variable creation for the output text
-	let outputData = `== "${systemData.data.docs[0].name}" == Updated: ${updatedString}\n\n`;
+	let outputData = `== "${systemData.docs[0].name}" == Updated: ${updatedString}\n\n`;
 
 	// check if no special tag, at which point get all faction data etc...
 	if (!specialTag) {
 		// since we're this far, get the data for all the factions in the system
 		let factionDataArr = await Promise.all(
-			systemData.data.docs[0].factions.map(faction => asyncEBGS("/factions", {name: faction.name}))
+			systemData.docs[0].factions.map(faction => AxiosEBGS("/factions", {name: faction.name}))
 		);
 
 		// loop through all factions and get the data from them that's wanted
 		for (let faction of factionDataArr) {
 			// find the system specific data for the faction we're on
-			let factionSystemData = faction.data.docs[0].faction_presence.find(system => system.system_name === systemData.data.docs[0].name);
+			let factionSystemData = faction.docs[0].faction_presence.find(system => system.system_name === systemData.docs[0].name);
 
 			// if no special tag, just gather the default stuff
-			outputData += `\n== ${faction.data.docs[0].name} == ${systemData.data.docs[0].controlling_minor_faction_cased === faction.data.docs[0].name ? "*CONTROLLING FACTION*" : ""}\n` +
+			outputData += `\n== ${faction.docs[0].name} == ${systemData.docs[0].controlling_minor_faction_cased === faction.docs[0].name ? "*CONTROLLING FACTION*" : ""}\n` +
 				`Influence  :: ${(factionSystemData.influence * 100).toFixed(2)}%\n` +
 				`State      :: ${capitalizeString(factionSystemData.state)}\n` +
 				`${factionSystemData.pending_states.length === 0 ? "" : `Pending    :: ${factionSystemData.pending_states.map(elem => capitalizeString(elem.state)).join(" ")}\n`}` +
@@ -84,9 +84,9 @@ exports.run = async(client, message, args) => {
 	// check if conflicts special tag first
 	if (specialTag.match("(conflicts)")) {
 		// then check if there are any, if not, else out a message with explanation
-		if (systemData.data.docs[0].conflicts.length > 0) {
+		if (systemData.docs[0].conflicts.length > 0) {
 			// loop through all the conflicts
-			for (let conflict of systemData.data.docs[0].conflicts) {
+			for (let conflict of systemData.docs[0].conflicts) {
 				outputData += `\n== A: ${conflict.faction1.name} *VS* B: ${conflict.faction2.name} ==\n` +
 					`Type     :: ${capitalizeString(conflict.type)} (${conflict.status ? capitalizeString(conflict.status) : "What? A status? I don't know"})\n` +
 					`A. Stake :: ${conflict.faction1.stake === "" ? "Nothing" : conflict.faction1.stake}\n` +

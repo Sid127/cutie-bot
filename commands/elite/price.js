@@ -1,7 +1,7 @@
 // require file containing the commodity ID data
 const commodities = require("../../functionFiles/commodities.json");
 // require for the EDDB page call
-const { asyncEDDBPage } = require("../../functionFiles/APICalls.js");
+const { AxiosEDDBPage } = require("../../functionFiles/APICalls.js");
 
 exports.run = async(client, message, args) => {
 	// check for empty string input
@@ -26,13 +26,13 @@ exports.run = async(client, message, args) => {
 	let tempMessage = await message.channel.send("Retrieving data...");
 
 	// get the HTML page from EDDB.io for the commodity.. since there is no good API to use for said data
-	const eddbPage = await asyncEDDBPage(`/commodity/${foundItem.id}`);
+	const eddbPage = await AxiosEDDBPage(`/commodity/${foundItem.id}`);
 
 	// split out useless info from the HTML page (not quite all of it tho)
 	let parsedPage = [];
 	let dataIndexes = {};
 	// loop through the page data, splitting by line
-	for (line of eddbPage.data.split(`\n`)) {
+	for (line of eddbPage.split(`\n`)) {
 		let changedLine = line.trim();
 		// check if there is a /station or /system string in the line, if there is, don't change it, otherwise leave just normal characters and numbers left
 		if (!changedLine.includes("/station") && !changedLine.includes("/system")) {

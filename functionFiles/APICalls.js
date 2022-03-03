@@ -1,48 +1,48 @@
 // module requires
 const https = require("https");
 const querystring = require("querystring");
+const axios = require("axios");
 
-// an async API function for EDSM endpoints
-module.exports.asyncEDSM = async (endpoint, params = {}) => {
-	let callData = await apiCall(`https://www.edsm.net${endpoint}?${querystring.encode(params)}`);
-	// if there was data returned, parse that
-	callData.data ? callData.data = JSON.parse(callData.data) : ""
-
-	return callData;
+// Axios calls to different sites for ease of use and way to limit calls
+module.exports.AxiosEDSM = async (endpoint, params = {}) => {
+	return AxiosCall(`https://edsm.net${endpoint}?${querystring.encode(params)}`)
 }
 
-// an async API function for Elite BGS endpoints
-module.exports.asyncEBGS = async (endpoint, params = {}) => {
-	let callData = await apiCall(`https://elitebgs.app/api/ebgs/v5${endpoint}?${querystring.encode(params)}`);
-	// if there was data returned, parse that
-	callData.data ? callData.data = JSON.parse(callData.data) : ""
-
-	return callData;
+module.exports.AxiosEDDBPage = async (endpoint, params = {}) => {
+	return AxiosCall(`https://eddb.io${endpoint}`);
 }
 
-// an async call to get the EDDB.io HTML pages since no good API there
-module.exports.asyncEDDBPage = async (endpoint, params = {}) => {
-	let callData = await apiCall(`https://eddb.io${endpoint}`);
-
-	return callData;
+module.exports.AxiosEBGS = async (endpoint, params = {}) => {
+	return AxiosCall(`https://elitebgs.app/api/ebgs/v5${endpoint}?${querystring.encode(params)}`);
 }
 
-// function that does the actual API call
-async function apiCall(endpoint) {
-	// create and return a new promise, this way we can await for the response
-	return new Promise((resolve, reject) => {
-		// make a GET call to the endpoint (which has the query params already added)
-		https.get(endpoint, (res) => {
-			// if the response is less than 200, or more than 300 something probably went wrong, catch these
-			if (res.statusCode < 200 || res.statusCode > 299) {
-				// if one of these was found, resolve this with a message showing the code and a "problem" status
-				resolve({message: `Server responded with code: ${res.statusCode}`, status: "problem", statusCode: res.statusCode});
-			}
+module.exports.AxiosSpansh = async (endpoint, method, params = {}) => {
+	return AxiosCall(`https://www.spansh.co.uk/api${endpoint}`, method, params);
+}
 
-			let data = "";
+module.exports.AxiosImgur = async (endpoint, params = {}) => {
+	return AxiosCall(`https://imgur.com${endpoint}`);
+}
 
-			// on data respose add to the data variable, on end response resolve the promise with the data and an "ok" status
-			res.on("data", (chunk) => { data += chunk; }).on("end", () => { resolve({data: data, status: "ok"}); });
-		}).on("error", (err) => { console.log(err); });
+// async function to do the Axios call itself, with endpoint, method and data handed in, endpoint also includes already urlencoded query params
+async function AxiosCall(endpoint, method = "GET", data) {
+	return axios({
+		url: endpoint,
+		method: method,
+		data: data
+	})
+	.then(res => res.data)	// return the request data
+	.catch(error => {			// on possible errors, catch those and throw them to the console
+		if (error.response) {
+			// The request was made and the server responded with a status code that falls out of the range of 2xx
+			console.error(error.response.status, error.response.headers);
+		} else if (error.request) {
+			// The request was made but no response was received
+			console.error(error.request);
+		} else {
+			// Something happened in setting up the request that triggered an Error
+			console.error('Error', error.message);
+		}
+		console.error(error.config);
 	});
 }

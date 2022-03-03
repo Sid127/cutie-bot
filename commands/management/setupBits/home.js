@@ -1,6 +1,6 @@
 // module requires
 const { Formatters } = require("discord.js");
-const { asyncEDSM } = require("../../../functionFiles/APICalls.js");
+const { AxiosEDSM } = require("../../../functionFiles/APICalls.js");
 const { checkForStations } = require('../../../functionFiles/helperFunctions');
 
 exports.run = async (client, message, args) => {
@@ -74,29 +74,29 @@ exports.run = async (client, message, args) => {
 
     // make all our station data API calls at once
     let [stations, factions, ...restStationData] = await Promise.all([
-        data.station ? asyncEDSM('/api-system-v1/stations', {"systemName": data.system || currentHomeData.system}) : undefined,
-		data.faction ? asyncEDSM('/api-system-v1/factions', {"systemName": data.system || currentHomeData.system}) : undefined,
-        data.encodedTrader ? asyncEDSM('/api-system-v1/stations', {"systemName": data.encodedTrader}) : undefined,
-        data.manufacturedTrader ? asyncEDSM('/api-system-v1/stations', {"systemName": data.manufacturedTrader}) : undefined,
-        data.rawTrader ? asyncEDSM('/api-system-v1/stations', {"systemName": data.rawTrader}) : undefined,
-        data.guardianBroker ? asyncEDSM('/api-system-v1/stations', {"systemName": data.guardianBroker}) : undefined,
-        data.humanBroker ? asyncEDSM('/api-system-v1/stations', {"systemName": data.humanBroker}) : undefined,
-        data.iFactor ? asyncEDSM('/api-system-v1/stations', {"systemName": data.iFactor}) : undefined,
-        data.fcVendor ? asyncEDSM('/api-system-v1/stations', {"systemName": data.fcVendor}) : undefined,
-        data.fcAdmin ? asyncEDSM('/api-system-v1/stations', {"systemName": data.fcAdmin}) : undefined
+        data.station ? AxiosEDSM('/api-system-v1/stations', {"systemName": data.system || currentHomeData.system}) : undefined,
+		data.faction ? AxiosEDSM('/api-system-v1/factions', {"systemName": data.system || currentHomeData.system}) : undefined,
+        data.encodedTrader ? AxiosEDSM('/api-system-v1/stations', {"systemName": data.encodedTrader}) : undefined,
+        data.manufacturedTrader ? AxiosEDSM('/api-system-v1/stations', {"systemName": data.manufacturedTrader}) : undefined,
+        data.rawTrader ? AxiosEDSM('/api-system-v1/stations', {"systemName": data.rawTrader}) : undefined,
+        data.guardianBroker ? AxiosEDSM('/api-system-v1/stations', {"systemName": data.guardianBroker}) : undefined,
+        data.humanBroker ? AxiosEDSM('/api-system-v1/stations', {"systemName": data.humanBroker}) : undefined,
+        data.iFactor ? AxiosEDSM('/api-system-v1/stations', {"systemName": data.iFactor}) : undefined,
+        data.fcVendor ? AxiosEDSM('/api-system-v1/stations', {"systemName": data.fcVendor}) : undefined,
+        data.fcAdmin ? AxiosEDSM('/api-system-v1/stations', {"systemName": data.fcAdmin}) : undefined
     ]);
 
     // make all our system data API calls at once
     let [systemCoords, ...restCoordsData] = await Promise.all([
-        data.system ? asyncEDSM('/api-v1/system', {"showCoordinates": 1, "systemName": data.system || currentHomeData.system}) : undefined,
-        data.encodedTrader ? asyncEDSM('/api-v1/system', {"showCoordinates": 1, "systemName": data.encodedTrader}) : undefined,
-        data.manufacturedTrader ? asyncEDSM('/api-v1/system', {"showCoordinates": 1, "systemName": data.manufacturedTrader}) : undefined,
-        data.rawTrader ? asyncEDSM('/api-v1/system', {"showCoordinates": 1, "systemName": data.rawTrader}) : undefined,
-        data.guardianBroker ? asyncEDSM('/api-v1/system', {"showCoordinates": 1, "systemName": data.guardianBroker}) : undefined,
-        data.humanBroker ? asyncEDSM('/api-v1/system', {"showCoordinates": 1, "systemName": data.humanBroker}) : undefined,
-        data.iFactor ? asyncEDSM('/api-v1/system', {"showCoordinates": 1, "systemName": data.iFactor}) : undefined,
-        data.fcVendor ? asyncEDSM('/api-v1/system', {"showCoordinates": 1, "systemName": data.fcVendor}) : undefined,
-        data.fcAdmin ? asyncEDSM('/api-v1/system', {"showCoordinates": 1, "systemName": data.fcAdmin}) : undefined
+        data.system ? AxiosEDSM('/api-v1/system', {"showCoordinates": 1, "systemName": data.system || currentHomeData.system}) : undefined,
+        data.encodedTrader ? AxiosEDSM('/api-v1/system', {"showCoordinates": 1, "systemName": data.encodedTrader}) : undefined,
+        data.manufacturedTrader ? AxiosEDSM('/api-v1/system', {"showCoordinates": 1, "systemName": data.manufacturedTrader}) : undefined,
+        data.rawTrader ? AxiosEDSM('/api-v1/system', {"showCoordinates": 1, "systemName": data.rawTrader}) : undefined,
+        data.guardianBroker ? AxiosEDSM('/api-v1/system', {"showCoordinates": 1, "systemName": data.guardianBroker}) : undefined,
+        data.humanBroker ? AxiosEDSM('/api-v1/system', {"showCoordinates": 1, "systemName": data.humanBroker}) : undefined,
+        data.iFactor ? AxiosEDSM('/api-v1/system', {"showCoordinates": 1, "systemName": data.iFactor}) : undefined,
+        data.fcVendor ? AxiosEDSM('/api-v1/system', {"showCoordinates": 1, "systemName": data.fcVendor}) : undefined,
+        data.fcAdmin ? AxiosEDSM('/api-v1/system', {"showCoordinates": 1, "systemName": data.fcAdmin}) : undefined
     ]);
 
 	tempMessage.edit("System data acquired, verifying things...");
@@ -111,22 +111,22 @@ exports.run = async (client, message, args) => {
 	}
 
 	// start checking for what's given in
-	if (data.system) { Object.keys(systemCoords.data).length > 0 ? newHomeData.system = systemCoords.data.name : problems.push("Home system") }
+	if (data.system) { Object.keys(systemCoords).length > 0 ? newHomeData.system = systemCoords.name : problems.push("Home system") }
 
 	// special check for home station and faction
-	if (data.station && Object.keys(stations.data).length > 0 && stations.data.stations.length > 0) {
-		let found = stations.data.stations.filter(elem => elem.name.toLowerCase() === data.station.toLowerCase());
+	if (data.station && Object.keys(stations).length > 0 && stations.stations.length > 0) {
+		let found = stations.stations.filter(elem => elem.name.toLowerCase() === data.station.toLowerCase());
 		if (found.length > 0) {
-			newHomeData.systemID = stations.data.id;
+			newHomeData.systemID = stations.id;
 			newHomeData.station = found[0].name;
 			newHomeData.stationID = found[0].id;
 		} else {problems.push("Home station")}
 	}
 
-	if (data.faction && Object.keys(factions.data).length > 0 && factions.data.factions.length > 0) {
-		let found = factions.data.factions.filter(elem => elem.name.toLowerCase() === data.faction.toLowerCase());
+	if (data.faction && Object.keys(factions).length > 0 && factions.factions.length > 0) {
+		let found = factions.factions.filter(elem => elem.name.toLowerCase() === data.faction.toLowerCase());
 		if (found.length > 0) {
-			newHomeData.systemID = factions.data.id;
+			newHomeData.systemID = factions.id;
 			newHomeData.faction = found[0].name;
 			newHomeData.factionID = found[0].id;
 		} else {problems.push("Home faction")}

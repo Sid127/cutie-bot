@@ -1,5 +1,5 @@
 // module requires
-const {Formatters} = require("discord.js");
+const { Formatters } = require("discord.js");
 
 exports.run = async(client, message, args) => {
 	// check if args empty
