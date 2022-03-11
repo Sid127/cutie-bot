@@ -1,6 +1,4 @@
 exports.run = (client, message, args) => {
-  if(!message.member.permissions.has('MANAGE_MESSAGES'))
-    return;
 
   let [channel, ...text] = args.split(" ")
 
