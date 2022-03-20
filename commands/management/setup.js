@@ -19,16 +19,16 @@ exports.run = async(client, message, args) => {
 
     let [arg1, ...arg2] = args.split(" ")
 
-	if (!client.cache[message.guild.id].enabledModules.includes(moduleList[arg1])) return message.channel.send("That module is disabled, frendo. Enable it first, and then you can set it up")
-
     fs.access(`${__dirname}/setupBits/${arg1}.js`, (err) => {
         if (err) {
-            message.channel.send("Lord help me D:")
+            return message.channel.send("Lord help me D:")
         } else {
+	        if (!client.cache[message.guild.id].enabledModules.includes(moduleList[arg1])) return message.channel.send("That module is disabled, frendo. Enable it first, and then you can set it up")
             const code = require(`${__dirname}/setupBits/${arg1}.js`);
             code.run(client, message, arg2)
         }
     });
+
 }
 
 exports.config = {
