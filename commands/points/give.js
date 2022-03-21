@@ -27,6 +27,26 @@ exports.run = async(client, message, args) => {
     // And we save it!
     await client.peopleData.set(`${message.guild.id}-${user.id}.points`, userPoints)
 
+    // Calculate the user's current level
+    const curLevel = Math.floor(0.1 * Math.sqrt(await client.peopleData.get(`${message.guild.id}-${user.id}.points`)));
+
+    // Act upon level up by sending a message and updating the user's level in enmap.
+    if (await client.peopleData.get(`${message.guild.id}-${user.id}.level`) < curLevel) {
+        message.channel.send({content:`<@${user.id}> leveled up to level **${curLevel}**! :)`});
+        await client.peopleData.set(`${message.guild.id}-${user.id}.level`, curLevel);
+    }
+    if (await client.peopleData.get(`${message.guild.id}-${user.id}.level`) > curLevel) {
+        message.channel.send({content:`<@${user.id}> leveled down to level **${curLevel}** :(`});
+        await client.peopleData.set(`${message.guild.id}-${user.id}.level`, curLevel);
+    }
+    if (await client.peopleData.get(`${message.guild.id}-${user.id}.level`) === await client.serverData.get(`${message.guild.id}.prestigeLevel`)) {
+        const rankRole = await client.serverData.get(`${message.guild.id}.prestigeRole`)
+        if (!rankRole){}
+        else{
+            message.member.roles.add(rankRole).catch(console.error)
+        }
+    }
+
     message.channel.send({content:`${user.tag} has received ${pointsToAdd} points and now stands at ${userPoints} points.`});
 }
 
