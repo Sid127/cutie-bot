@@ -7,8 +7,11 @@ exports.run = async(client, message, args) => { // eslint-disable-line no-unused
     let verifyMember = message.mentions.members.first();
 
     let autorole = await client.serverData.get(`${message.guild.id}.autoRole`)
-    for (role of autorole){
-        verifyMember.roles.remove(role).catch(console.error);
+    
+    if (autorole){
+        for (role of autorole){
+            verifyMember.roles.remove(role).catch(console.error);
+        }
     }
 
     let verifyroles = await client.serverData.get(`${message.guild.id}.verifyRole`)
@@ -32,5 +35,5 @@ exports.config = {
 	permLevel: "modAssist",
 	name: "verify",
 	description: "Verifies a user",
-	usage: ["[<@user>]"]
+	usage: ["(18) [<@user>]"]
 };
