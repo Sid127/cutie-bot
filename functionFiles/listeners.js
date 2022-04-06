@@ -67,29 +67,29 @@ bdayChck = async (client) => {
         // these two variables are used in both cases 1/2
         const sendGuild = ident[1]['guild'];
 
-        //don't run this block if we're not in that guild
+        //run a few sanity checks
         if (!client.guilds.cache.get(sendGuild)) continue;
+        const birthdayRole = await client.serverData.get(`${sendGuild}.birthdayRole`);
+        const msgChannel = await client.serverData.get(`${sendGuild}.birthdayChnl`);
+        if (!birthdayRole || !msgChannel) {
+            console.log(`Birthday check, something went wrong... Guild ID: ${sendGuild}`);
+            continue;
+        }
 
         // user data we're targeting now
         const birthdayFolk = client.guilds.cache.get(sendGuild).members.cache.get(ident[1]['user']);
 
         if(!birthdayFolk) {} else{
-			// these two variables are used in both cases 2/2
-			const birthdayRole = await client.serverData.get(`${sendGuild}.birthdayRole`);
-
             // if statement for setting the role
             if (moment().tz(ident[1]['timezone']).format('MM-DD') === ident[1]['date']) {
                 // set role and send message
                 if (!birthdayFolk.roles.cache.get(birthdayRole)) {
                     birthdayFolk.roles.add(birthdayRole);
-
-                    // get the channel where to send a message
-                    const msgChannel = await client.serverData.get(`${sendGuild}.birthdayChnl`);
-					try{
-						await client.channels.cache.get(msgChannel).send(`Happy Birthday, <@${ident[1]['user']}>`)
-					} catch (e) {
-						throw new Error(`Error in birthday code, someone didn't set the channel right. Guild ID: ${sendGuild}`)
-					}
+                    try{
+                        await client.channels.cache.get(msgChannel).send(`Happy Birthday, <@${ident[1]['user']}>`)
+                    } catch (e) {
+                        throw new Error(`If you're reading this all hope is lost, as the birthday message failed again. Guild ID: ${sendGuild}`)
+                    }
                 }
             } else { // else remove the role
                 if (birthdayFolk.roles.cache.get(birthdayRole)) {
