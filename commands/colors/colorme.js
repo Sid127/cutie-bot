@@ -22,7 +22,7 @@ exports.run = (client, message, args) => {
         name: clr + ' col',
         color: clr,
         mentionable: false,
-        position: message.guild.me.roles.highest.position,
+        position: message.guild.me.roles.highest.position - 5,
         permissions: mmbr.permissions
       }).then(function(role) {
         mmbr.roles.add(role);
