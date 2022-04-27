@@ -69,17 +69,19 @@ bdayChck = async (client) => {
 
         //run a few sanity checks
         if (!client.guilds.cache.get(sendGuild)) continue;
-        const birthdayRole = await client.serverData.get(`${sendGuild}.birthdayRole`);
-        const msgChannel = await client.serverData.get(`${sendGuild}.birthdayChnl`);
-        if (!birthdayRole || !msgChannel) {
-            console.log(`Birthday check, something went wrong... Guild ID: ${sendGuild}`);
-            continue;
-        }
 
         // user data we're targeting now
         const birthdayFolk = client.guilds.cache.get(sendGuild).members.cache.get(ident[1]['user']);
 
-        if(!birthdayFolk) {} else{
+        if(!birthdayFolk) {} else {
+			// a few more sanity checks
+			const birthdayRole = await client.serverData.get(`${sendGuild}.birthdayRole`);
+			const msgChannel = await client.serverData.get(`${sendGuild}.birthdayChnl`);
+			if (!birthdayRole || !msgChannel) {
+				console.log(`Birthday check, something went wrong... Guild ID: ${sendGuild}`);
+				continue;
+			}
+
             // if statement for setting the role
             if (moment().tz(ident[1]['timezone']).format('MM-DD') === ident[1]['date']) {
                 // set role and send message
