@@ -83,7 +83,7 @@ bdayChck = async (client) => {
 			}
 
             // if statement for setting the role
-            if (moment().tz(ident[1]['timezone']).format('MM-DD') === ident[1]['date']) {
+            if (moment().tz(ident[1]['timezone']).format('MM-DD') === ident[1]['date'] || moment().tz(ident[1]['timezone']).format('MM-D') === ident[1]['date']) {
                 // set role and send message
                 if (!birthdayFolk.roles.cache.get(birthdayRole)) {
                     birthdayFolk.roles.add(birthdayRole);

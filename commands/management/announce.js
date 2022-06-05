@@ -32,5 +32,5 @@ exports.config = {
 	permLevel: "serverAdmin",
 	name: "announce",
 	description: "Sends an announcement to a specified channel",
-	usage: [`("@everyone") [<#channel>] [<announcement>]`]
+	usage: [`("everyone") [<#channel>] [<announcement>]`]
 };
