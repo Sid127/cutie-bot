@@ -6,6 +6,7 @@ exports.run = async (client, message, args) => {
 			if (message.member.permissions.has('VIEW_AUDIT_LOG') || message.member.permissions.has('ADMINISTRATOR') || client.hardcoded.botAdmin.includes(message.author.id)) {
 				response = response.join(" ")
 				if (response === "") return message.channel.send("The heck do you want me to respond with?")
+				if (!trigger.match(/^[0-9a-z]+$/)) return message.channel.send("Sorry, I can allow only English alpha-numeric characters in the trigger :(")
 				client.cache[message.guild.id].cc.push(trigger) //update cache
 				await client.serverData.set(`${message.guild.id}.customCommands.${trigger}`, response) //update mongo
 				message.channel.send(`Custom command ${client.prefix}${trigger} created!`)
