@@ -10,9 +10,9 @@ module.exports = {
             .setDescription(`${member.user} left the server`)
             .setTimestamp();
 
-        if (await client.peopleData.has(`${member.guild.id}-${member.id}`)){
-            await client.peopleData.delete(`${member.guild.id}-${member.id}`)
-        }
+        await client.peopleData.delete(`${member.id}.${member.guild.id}`)
+
+        if(Object.keys(await client.peopleData.get(`${member.id}`)).sort() === ["date", "timezone"]) {await client.peopleData.delete(`${member.id}`)}
 
         if (await !client.serverData.has(`${key}`)) return;
         if (await client.serverData.get(`${key}.logChnl`) === null) return;

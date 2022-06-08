@@ -64,38 +64,45 @@ bdayChck = async (client) => {
     //grab all data into a map
     let db = await client.peopleData.filter(p => p.date)
     for (ident of db) {
-        // these two variables are used in both cases 1/2
-        const sendGuild = ident[1]['guild'];
-
-        //run a few sanity checks
-        if (!client.guilds.cache.get(sendGuild)) continue;
-
-        // user data we're targeting now
-        const birthdayFolk = client.guilds.cache.get(sendGuild).members.cache.get(ident[1]['user']);
-
-        if(!birthdayFolk) {} else {
-			// a few more sanity checks
-			const birthdayRole = await client.serverData.get(`${sendGuild}.birthdayRole`);
-			const msgChannel = await client.serverData.get(`${sendGuild}.birthdayChnl`);
-			if (!birthdayRole || !msgChannel) {
-				console.log(`Birthday check, something went wrong... Guild ID: ${sendGuild}`);
+        for (userObjectKey of Object.keys(ident[1])) {
+			// check if date or timezone keys, skip those
+            if(userObjectKey === "date" || userObjectKey === "timezone"){
 				continue;
 			}
+            if(ident[1][userObjectKey]["bdayEnabled"] === true){
+                let sendGuild = userObjectKey
 
-            // if statement for setting the role
-            if (moment().tz(ident[1]['timezone']).format('MM-DD') === ident[1]['date'] || moment().tz(ident[1]['timezone']).format('MM-D') === ident[1]['date']) {
-                // set role and send message
-                if (!birthdayFolk.roles.cache.get(birthdayRole)) {
-                    birthdayFolk.roles.add(birthdayRole);
-                    try{
-                        await client.channels.cache.get(msgChannel).send(`Happy Birthday, <@${ident[1]['user']}>`)
-                    } catch (e) {
-                        throw new Error(`If you're reading this all hope is lost, as the birthday message failed again. Guild ID: ${sendGuild}`)
+                //run a few sanity checks
+                if (!client.guilds.cache.get(sendGuild)) continue;
+
+                // user data we're targeting now
+                const birthdayFolk = client.guilds.cache.get(sendGuild).members.cache.get(ident[0]);
+
+                if(!birthdayFolk) {} else {
+                    // a few more sanity checks
+                    const birthdayRole = await client.serverData.get(`${sendGuild}.birthdayRole`);
+                    const msgChannel = await client.serverData.get(`${sendGuild}.birthdayChnl`);
+                    if (!birthdayRole || !msgChannel) {
+                        console.log(`Birthday check, something went wrong... Guild ID: ${sendGuild}`);
+                        continue;
                     }
-                }
-            } else { // else remove the role
-                if (birthdayFolk.roles.cache.get(birthdayRole)) {
-                    birthdayFolk.roles.remove(birthdayRole);
+
+                    // if statement for setting the role
+                    if (moment().tz(ident[1]['timezone']).format('MM-DD') === ident[1]['date'] || moment().tz(ident[1]['timezone']).format('MM-D') === ident[1]['date']) {
+                        // set role and send message
+                        if (!birthdayFolk.roles.cache.get(birthdayRole)) {
+                            birthdayFolk.roles.add(birthdayRole);
+                            try{
+                                await client.channels.cache.get(msgChannel).send(`Happy Birthday, <@${ident[0]}>`)
+                            } catch (e) {
+                                throw new Error(`If you're reading this all hope is lost, as the birthday message failed again. Guild ID: ${sendGuild}`)
+                            }
+                        }
+                    } else { // else remove the role
+                        if (birthdayFolk.roles.cache.get(birthdayRole)) {
+                            birthdayFolk.roles.remove(birthdayRole);
+                        }
+                    }
                 }
             }
         }

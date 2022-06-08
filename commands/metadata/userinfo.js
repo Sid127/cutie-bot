@@ -20,7 +20,7 @@ exports.run = async (client, message) => {
 	let member;
 	message.mentions.members.size > 0 ? member = message.mentions.members.first() : member = message.member
 
-	let whitelistRoles = await blacklistChck(await mongoGet(client, message.guild.id, ["blacklistPfx", "hiddenRoles"]), member.roles.cache)
+	let whitelistRoles = await blacklistChck(await mongoGet(client, message.guild.id, ["blacklistPfx", "hiddenRoles"], "server"), member.roles.cache)
 
 	// now create the embed object and give it the data it wants
 	let embed = new Discord.MessageEmbed()

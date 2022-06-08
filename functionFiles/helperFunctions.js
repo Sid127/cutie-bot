@@ -33,13 +33,13 @@ const dynamicSort = (property) => {
 }
 
 // modular function to get data from mongodb
-const mongoGet = async (client, dbKey, valueKeys) => {
+const mongoGet = async (client, dbKey, valueKeys, collection) => {
 	returnMap = new Map()
-	if (dbKey.includes("-")){
+	if (collection === "people"){
 		for (k of valueKeys){
 			returnMap.set(k, await client.peopleData.get(`${dbKey}.${k}`))
 		}
-	} else {
+	} else if (collection === "server"){
 		for (k of valueKeys){
 			data = await client.serverData.get(`${dbKey}.${k}`)
 			returnMap.set(k, data)

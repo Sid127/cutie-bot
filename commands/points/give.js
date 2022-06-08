@@ -12,34 +12,35 @@ exports.run = async(client, message, args) => {
         return message.reply({content:"You didn't tell me how many points to give... :("})
 
     // Ensure there is a points entry for this user.
-    await client.peopleData.ensure(`${message.guild.id}-${user.id}`, {
-        user: user.id,
-        guild: message.guild.id,
+    let ensure = {}
+    ensure[`${message.guild.id}`] = {
         points: 0,
         level: 0
-    });
+    }
+
+    await client.peopleData.ensure(`${user.id}`, ensure);
 
     // Get their current points.
-    let userPoints = await client.peopleData.get(`${message.guild.id}-${user.id}.points`);
+    let userPoints = await client.peopleData.get(`${user.id}.${message.guild.id}.points`);
     userPoints += pointsToAdd;
 
 
     // And we save it!
-    await client.peopleData.set(`${message.guild.id}-${user.id}.points`, userPoints)
+    await client.peopleData.set(`${user.id}.${message.guild.id}.points`, userPoints)
 
     // Calculate the user's current level
-    const curLevel = Math.floor(0.1 * Math.sqrt(await client.peopleData.get(`${message.guild.id}-${user.id}.points`)));
+    const curLevel = Math.floor(0.1 * Math.sqrt(await client.peopleData.get(`${user.id}.${message.guild.id}.points`)));
 
     // Act upon level up by sending a message and updating the user's level in enmap.
-    if (await client.peopleData.get(`${message.guild.id}-${user.id}.level`) < curLevel) {
+    if (await client.peopleData.get(`${user.id}.${message.guild.id}.level`) < curLevel) {
         message.channel.send({content:`<@${user.id}> leveled up to level **${curLevel}**! :)`});
-        await client.peopleData.set(`${message.guild.id}-${user.id}.level`, curLevel);
+        await client.peopleData.set(`${user.id}.${message.guild.id}.level`, curLevel);
     }
-    if (await client.peopleData.get(`${message.guild.id}-${user.id}.level`) > curLevel) {
+    if (await client.peopleData.get(`${user.id}.${message.guild.id}.level`) > curLevel) {
         message.channel.send({content:`<@${user.id}> leveled down to level **${curLevel}** :(`});
-        await client.peopleData.set(`${message.guild.id}-${user.id}.level`, curLevel);
+        await client.peopleData.set(`${user.id}.${message.guild.id}.level`, curLevel);
     }
-    if (await client.peopleData.get(`${message.guild.id}-${user.id}.level`) === await client.serverData.get(`${message.guild.id}.prestigeLevel`)) {
+    if (await client.peopleData.get(`${user.id}.${message.guild.id}.level`) === await client.serverData.get(`${message.guild.id}.prestigeLevel`)) {
         const rankRole = await client.serverData.get(`${message.guild.id}.prestigeRole`)
         if (!rankRole){}
         else{

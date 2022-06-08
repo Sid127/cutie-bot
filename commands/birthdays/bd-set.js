@@ -1,9 +1,19 @@
 exports.run = async(client, message, args) => {
+
 	//inital setup
+	if(!args && await client.peopleData.has(`${message.author.id}.date`)) {
+		await client.peopleData.set(`${message.author.id}.${message.guild.id}.bdayEnabled`, true)
+		return message.channel.send("Hey, I remember your birthday already! I'll wish you here too from now on :D")
+	}
 	if (!args) return message.channel.send("Yeah... what?")
 	args = args.toLowerCase()
     const { capitalizeString } = require("../../functionFiles/helperFunctions.js");
     const moment = require("moment-timezone");
+
+	//extract the date from the input
+	let date = args.match(/\d+/)
+	if (!date) return message.channel.send("Wait.. where's the date? D:")
+	date = parseInt(date.shift())
 
 	//parse the month
 	let month = args.match(/jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec/g)
@@ -15,11 +25,6 @@ exports.run = async(client, message, args) => {
 		"!31" : ["feb", "apr", "jun", "sept", "nov"],
 		"!30" : ["feb"]
 	}
-
-	//extract the date from the input
-	let date = args.match(/\d+/)
-	if (!date) return message.channel.send("Wait.. where's the date? D:")
-	date = parseInt(date.shift())
 
 	//some date checks for date validation
 	if (date === 30 && dateLimits["!30"].includes(month))
@@ -45,17 +50,16 @@ exports.run = async(client, message, args) => {
 	month = moment(capitalizeString(month), "MMM").format("MM")
     birthDate = `${month}-${date}`
 
-    //create an empty mongo entry for the user that is also server specific
-    await client.peopleData.ensure(`${message.guild.id}-${message.author.id}`, {
-        guild: message.guild.id,
-        user: message.author.id,
+    //create an empty mongo entry for the user
+    await client.peopleData.ensure(`${message.author.id}`, { 
         date: null,
         timezone: null
     });
 
     //push this to mongo
-    await client.peopleData.set(`${message.guild.id}-${message.author.id}.date`, birthDate)
-    await client.peopleData.set(`${message.guild.id}-${message.author.id}.timezone`, timezone)
+    await client.peopleData.set(`${message.author.id}.date`, birthDate)
+    await client.peopleData.set(`${message.author.id}.timezone`, timezone)
+	await client.peopleData.set(`${message.author.id}.${message.guild.id}.bdayEnabled`, true)
 
     message.channel.send({content:"Your birthday has been recorded!"})
 }

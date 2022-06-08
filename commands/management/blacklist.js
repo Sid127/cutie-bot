@@ -12,7 +12,7 @@ exports.run = async(client, message, args) => {
     
     //display blacklist if no args passed
     if(!args){
-        blacklistMap = await mongoGet(client, message.guild.id, ["blacklistPfx", "hiddenRoles"])
+        blacklistMap = await mongoGet(client, message.guild.id, ["blacklistPfx", "hiddenRoles"], "server")
         roles = blacklistMap.get('hiddenRoles')
         if (!roles && !blacklistMap.get('blacklistPfx')) return message.channel.send("Blacklist isn't set, are you toying with me?")
         sendroles = []

@@ -1,6 +1,6 @@
 exports.run = async(client, message, [mention]) => {
     if (message.mentions.members.size === 0) {
-        const key = `${message.guild.id}-${message.author.id}`;
+        const key = `${message.author.id}.${message.guild.id}`;
         const point = await client.peopleData.get(`${key}.points`);
         if (point === null) return message.channel.send("Nothing to see here, move on")
         const lvl = await client.peopleData.get(`${key}.level`);

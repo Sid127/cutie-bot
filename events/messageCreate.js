@@ -7,16 +7,17 @@ module.exports = {
         // If this is not in a DM, execute the code.
         if (message.guild) {
             // We'll use the key often enough that simplifying it is worth the trouble.
-            const key = `${message.guild.id}-${message.author.id}`;
+            const key = `${message.author.id}.${message.guild.id}`;
 
             if(client.cache[message.guild.id].activityLeaderboard === "enabled"){
                 // Triggers on new users we haven't seen before.
-                await client.peopleData.ensure(key, {
-                    user: message.author.id,
-                    guild: message.guild.id,
+                let ensure = {}
+                ensure[`${message.guild.id}`] = {
                     points: 0,
-                    level: 0,
-                });
+                    level: 0
+                }
+
+                await client.peopleData.ensure(`${user.id}`, ensure);
 
                 if (message.content.length >= 7 && !message.content.startsWith(client.config.prefix) || !message.content.startsWith(client.cache[message.guild.id].prefix)) {
                     const oldP = await client.peopleData.get(`${key}.points`)

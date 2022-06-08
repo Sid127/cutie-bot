@@ -6,7 +6,7 @@ exports.run = async(client, message, args) => {
 
     //check validity of timezone before adding to mongo
     if (moment.tz.zone(args)) {
-        await client.peopleData.set(`${message.guild.id}-${message.author.id}.timezone`, args)
+        await client.peopleData.set(`${message.author.id}.timezone`, args)
         message.channel.send({content:"Added your timezone to my records"})
     } else {
         return message.channel.send({content:"Invalid timezone format :(\nFind your timezone here <https://xske.github.io/tz/>"})

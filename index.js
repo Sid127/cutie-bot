@@ -28,7 +28,7 @@ client.peopleData = new Josh({
     name: 'Cutie',
     provider,
     providerOptions: {
-        collection: "peopledata",
+        collection: "peopledata2",
         dbName: "Cutie",
         url: config.mongoURL
     }
