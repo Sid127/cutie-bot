@@ -17,7 +17,7 @@ module.exports = {
                     level: 0
                 }
 
-                await client.peopleData.ensure(`${user.id}`, ensure);
+                await client.peopleData.ensure(`${message.author.id}`, ensure);
 
                 if (message.content.length >= 7 && !message.content.startsWith(client.config.prefix) || !message.content.startsWith(client.cache[message.guild.id].prefix)) {
                     const oldP = await client.peopleData.get(`${key}.points`)
