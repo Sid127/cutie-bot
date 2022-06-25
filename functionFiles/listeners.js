@@ -61,8 +61,8 @@ tickListener = async (client) => {
 
 //a function that checks if there's a birthday right now
 bdayChck = async (client) => {
-    //grab all data into a map
-    let db = await client.peopleData.filter(p => p.date)
+    //grab all the people data which have a date
+    let db = await client.peopleData.filter(p => p && p.date)
     for (ident of db) {
         for (userObjectKey of Object.keys(ident[1])) {
 			// check if date or timezone keys, skip those
