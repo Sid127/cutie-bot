@@ -101,6 +101,72 @@ exports.run = async(client, message, args) => {
 		}
 		return message.channel.send(`Either "single" or "multi," nothing else"`)
 	}
+
+	if (param === "edit") {
+		// inital variables
+		let [header, description, id] = arguments.join(" ").split("|")
+		if(!id) return message.channel.send("Please also tell me what to edit")
+		id = id.trim()
+		descriptors = description.split("\n")
+		let limit = 0
+		
+		let currentMenu = await client.serverData.get(`${message.guild.id}.reactionRoles.${id}`)
+		let newMenu = {"header": header}
+		newMenu["mode"] = currentMenu["mode"]
+
+		let embed = new MessageEmbed()
+			.setColor('RANDOM')
+			.setTitle(header)
+		let embedDescription = ""
+
+		const emojiRegex = /(<a?:.+:(\d+)>|[\p{Extended_Pictographic}\u200d]+).*/gu
+
+		//parse emoji and role data
+		for (line of descriptors) {
+			for (const match of line.matchAll(emojiRegex)) {
+				limit ++
+				if (limit > 20) return message.channel.send("I'm sorry friendo, only 20 reactions per message") // exit if user tries to assing more than 20 roles at once
+
+				// add data to an object to be pushed to mongo
+				const emoji = match[1];
+				if(line.includes(';')){
+					roleStub = line.slice(line.lastIndexOf(';'))
+					role = roleStub.slice(roleStub.indexOf('&')+1, roleStub.indexOf('>'))
+					newMenu[emoji] = role
+				}
+			}
+			// also parse stuff to be put into the embed
+			line.includes(";") ? embedDescription = `${embedDescription} ${line.slice(0, line.lastIndexOf(';'))}\n` : embedDescription = `${embedDescription} ${line}\n`
+		}
+		// put parsed text into embed
+		embed.setDescription(embedDescription)
+		let [chnl, msg] = id.split("/")
+		let reactionMessage = await client.channels.cache.get(chnl).messages.fetch(msg);
+		reactionMessage.edit({embeds: [embed]})
+
+		//clear now-unused emoji from the reactions
+		for (emoji of Object.keys(currentMenu)) {
+			if(!Object.keys(newMenu).includes(emoji)){
+				reactionMessage.reactions.cache.get(emoji).remove()
+			}
+		}
+
+		//attempt adding all reactions
+		for (key of Object.keys(newMenu)){
+			if(!["header", "mode"].includes(key)){
+				try{
+					await reactionMessage.react(key)
+				} catch(err){
+					message.channel.send(`I seem to be having trouble reacting with ${key}, could you try using a different emoji for that one?`)
+					reactionMessage.reactions.removeAll()
+					break;
+				}
+			}
+		}
+
+		//finally, push to mongo
+		await client.serverData.set(`${message.guild.id}.reactionRoles.${id}`, newMenu)
+	}
 }
 
 exports.config = {
@@ -109,5 +175,5 @@ exports.config = {
 	permLevel: "serverAdmin",
 	name: "reactionroles",
 	description: "Creat, Edit, and Delete reaction based role assigners.",
-	usage: ["create [<heading>] | [<emoji - role description ; role>] *one per line* (| #channel)", "delete [<identifier>]", "list", "setmode [<identifier>] [multi | single]"]
+	usage: ["create [<heading>] | [<emoji - role description ; role>] *one per line* (| #channel)", "edit [<heading>] | [<emoji - role description ; role>] *one per line* (| <identifier>)", "delete [<identifier>]", "list", "setmode [<identifier>] [multi | single]"]
 };
