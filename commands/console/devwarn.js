@@ -14,11 +14,15 @@ exports.run = async(client, message, args) => {
 
     if(srvr === "all"){
         let guilds = await client.serverData.keys
+        sentOwners = []
         for (g of guilds) {
             //don't run this block if we're not in that guild
             if (!client.guilds.cache.get(g)) continue
             client.guilds.cache.get(g).fetchOwner().then(owner => {
-                owner.send({embeds: [embed]})
+                if (!sentOwners.includes(owner.id)){
+                    owner.send({embeds: [embed]})
+                    sentOwners.push(owner.id)
+                }
             })
         }
         return;
