@@ -125,8 +125,7 @@ const init = async() => {
 
 init();
 
-const { chck15, chck10 } = require("./functionFiles/listeners.js");
-chck15(client)
-chck10(client)
+const { listeners } = require("./functionFiles/listeners.js");
+listeners(client);
 
 client.login(config.token);

@@ -109,16 +109,14 @@ bdayChck = async (client) => {
     }
 }
 
-//listeners that operate on a 15 minute timer
-module.exports.chck15 = async (client) => {
-    setInterval(async() => {
-        bdayChck(client)
-    }, 900000)
-}
+module.exports.listeners = async (client) => {
+    var cron = require('node-cron');
 
-//listeners that operate on a 10 minute timer
-module.exports.chck10 = async (client) => {
-    setInterval(async() => {
+    cron.schedule('*/15 * * * *', () => {
+        bdayChck(client)
+    });
+    
+    cron.schedule('*/10 * * * *', () => {
         tickListener(client)
-    }, 600000)
+    });
 }
