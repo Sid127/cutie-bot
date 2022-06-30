@@ -17,7 +17,7 @@ exports.run = async(client, message, args) => { // eslint-disable-line no-unused
 	});
 
 	if (param === 'npm') {
-		exec(`npm install`, (err, stdout, stderr) => {
+		exec(`npm ci`, (err, stdout, stderr) => {
 			message.channel.send(Formatters.codeBlock("bash", stdout));
 			message.channel.send(Formatters.codeBlock("bash", stderr));
 		});
