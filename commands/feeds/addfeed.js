@@ -7,6 +7,7 @@ exports.run = async(client, message, args) => {
     let parser = new Parser();
 
     let [param, chnl, link] = args.split(" ")
+    if (!message.mentions.channels.first().id) return message.channel.send("Okay, but what channel do you want me to post to?")
     link = link.replace(/\/$/, "") //remove trailing slash
 
     //parse the command and construct various metadata
@@ -15,7 +16,7 @@ exports.run = async(client, message, args) => {
             if (!link.includes("store.steampowered.com")) return message.channel.send("Please give me a steam store page link :(")
             
             let appID = link.match(/\d+/)
-            niceName = link.match(/[^\/]+$/).shift().replace("_", " ")
+            niceName = link.match(/[^\/]+$/).shift().replaceAll("_", " ")
             appID = parseInt(appID.shift())
             
             rssURL = `https://store.steampowered.com/feeds/news/app/${appID}/`
@@ -47,23 +48,18 @@ exports.run = async(client, message, args) => {
         }
         case "other": {
             rssURL = link
-            mongoKey = rssURL
+            mongoKey = rssURL.replaceAll(".", ">")
             break;
         }
         default: return message.channel.send("That's not a valid feed type, my friend")
     }
 
-    //test the feed
-    try {
-        await parser.parseURL(rssURL);
-    } catch {
-        return message.channel.send("That's not a valid RSS URL man")
-    }
-
-    let feed = await parser.parseURL(rssURL);
-
-    if (!message.mentions.channels.first().id) return message.channel.send("Okay, but what channel do you want me to post to?")
+    let feed = await parser.parseURL(rssURL).catch(error => {
+        return message.channel.send("There was an error parsing the RSS feed");
+    })
     
+    if (param === "other") niceName = feed.title;
+
     let firstItem = feed.items.shift();
 
     let mongoObject = {
