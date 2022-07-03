@@ -109,6 +109,42 @@ bdayChck = async (client) => {
     }
 }
 
+// a function that posts the latest item in an RSS feed
+rssListener = async (client) => {
+    const feedType = {
+        "steam": "https://store.steampowered.com/feeds/news/app/",
+        "yt": "https://www.youtube.com/feeds/videos.xml?channel_id=",
+        "twitch": "https://twitchrss.appspot.com/vod/",
+        "other": ""
+    }
+    
+    let Parser = require('rss-parser');
+    let parser = new Parser();
+    
+    let db = await client.serverData.get(`feeds`)
+    for(rssKey of Object.keys(db)){
+        rssURL = `${feedType[db[`${rssKey}`].type]}${rssKey}`
+        let feed = await parser.parseURL(rssURL);
+        firstItem = feed.items.shift();
+    
+        if (firstItem.title === db[`${rssKey}`].latest) continue;
+    
+        let sendGuilds = Object.keys(db[`${rssKey}`])
+    
+        for(g of sendGuilds){
+            if(["latest", "type"].includes(g)) continue;
+    
+            //run a few sanity checks
+            if (!client.guilds.cache.get(g)) continue;
+    
+            let sendGuild = client.guilds.cache.get(g)
+            let msgChannel = db[`${rssKey}`][`${g}`]
+    
+            await client.channels.cache.get(msgChannel).send(`New post from ${db[`${rssKey}`].niceName} **${firstItem.title}**\n${firstItem.link}`)
+        }
+    }
+}
+
 module.exports.listeners = async (client) => {
     var cron = require('node-cron');
 
@@ -118,5 +154,6 @@ module.exports.listeners = async (client) => {
     
     cron.schedule('*/10 * * * *', () => {
         tickListener(client)
+        rssListener(client)
     });
 }

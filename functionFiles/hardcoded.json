@@ -4,7 +4,7 @@
 	"defaultEnabledModules": ["management", "moderation", "metadata", "support"],
 	"ticketEmoji": "🎫",
 	"badRMenuKeys": ["header", "mode"],
-	"badServerDataKeys": ["tick"],
+	"badServerDataKeys": ["tick", "feeds"],
 	"alwaysActiveModules": ["metadata", "management", "moderation"],
 	"DMModules": ["support", "confession"],
 	"defaultCache": {

@@ -4,7 +4,7 @@ Feel free to fork the repo and modify code according to your requirements.
 
 # How to host
 
-- Install node.js v16.x
+- Install the latest version of node.js
 - Clone this repo and move to the cloned directory
 - Place your "config.json" file in the base/cloned directory. Your Config file MUST be of this format:
 
@@ -43,3 +43,4 @@ Cutie has an ever expanding feature set, but the current modules include:
 - Per server prefixes
 - Ticket channels
 - Reaction Roles
+- Post updates from Steam Game News, YouTube, Twitch, and any RSS source 

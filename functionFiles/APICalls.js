@@ -12,6 +12,10 @@ module.exports.AxiosEDDBPage = async (endpoint, params = {}) => {
 	return AxiosCall(`https://eddb.io${endpoint}`);
 }
 
+module.exports.AxiosWebPage = async (website, endpoint, params = {}) => {
+	return AxiosCall(`${website}${endpoint}`);
+}
+
 module.exports.AxiosEBGS = async (endpoint, params = {}) => {
 	return AxiosCall(`https://elitebgs.app/api/ebgs/v5${endpoint}?${querystring.encode(params)}`);
 }
