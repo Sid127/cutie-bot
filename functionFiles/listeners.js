@@ -149,12 +149,9 @@ rssListener = async (client) => {
 module.exports.listeners = async (client) => {
     var cron = require('node-cron');
 
-    cron.schedule('*/15 * * * *', () => {
+    cron.schedule('*/30 * * * *', () => {
         bdayChck(client)
-    });
-    
-    cron.schedule('*/10 * * * *', () => {
-        tickListener(client)
         rssListener(client)
+        tickListener(client)
     });
 }
