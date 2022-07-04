@@ -9,6 +9,10 @@ exports.run = async(client, message, args) => {
 		await client.serverData.delete(`feeds.${feedID}.${message.guild.id}`)
 		message.channel.send("Feed deleted")
 	}
+
+	if(JSON.stringify(Object.keys(await client.serverData.get(`feeds.${feedID}`).sort())) === JSON.stringify(["latest", "niceName", "type"])) {
+		await client.serverData.delete(`feeds.${feedID}`)
+	}
 }
 
 exports.config = {

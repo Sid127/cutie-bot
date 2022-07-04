@@ -11,7 +11,7 @@ module.exports = {
             .setTimestamp();
 
         await client.peopleData.delete(`${member.id}.${member.guild.id}`)
-        if(Object.keys(await client.peopleData.get(`${member.id}`)).sort() == ["date", "timezone"] || Object.keys(await client.peopleData.get(`${member.id}`)).length === 0) {await client.peopleData.delete(`${member.id}`)}
+        if(JSON.stringify(Object.keys(await client.peopleData.get(`${member.id}`)).sort()) === JSON.stringify(["date", "timezone"]) || Object.keys(await client.peopleData.get(`${member.id}`)).length === 0) {await client.peopleData.delete(`${member.id}`)}
 
         if (await !client.serverData.has(`${key}`)) return;
         if (await client.serverData.get(`${key}.logChnl`) === null) return;
