@@ -124,7 +124,7 @@ rssListener = async (client) => {
     let db = await client.serverData.get(`feeds`)
     for(rssKey of Object.keys(db)){
         rssURL = `${feedType[db[`${rssKey}`].type]}${rssKey}`
-        if (db[`${rssKey}`].type === "other") rssURL.replace(">", ".")
+        if (db[`${rssKey}`].type === "other") { rssURL = [db[`${rssKey}`].url] }
         let feed = await parser.parseURL(rssURL);
         firstItem = feed.items.shift();
     
