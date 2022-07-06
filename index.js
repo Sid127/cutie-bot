@@ -118,8 +118,8 @@ const init = async() => {
             client.cache[key]["cc"] = Object.keys(tempCache[key].customCommands)
 			client.cache[key]["reactionRoles"] = Object.keys(tempCache[key].reactionRoles)
         }
-        client.cache.tick = tempCache.tick
     }
+    client.cache.tick = tempCache.tick
     console.log("Local cache created")
 }
 

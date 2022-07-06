@@ -14,11 +14,12 @@ exports.run = async(client, message, args) => {
 
 	let feedInfo = await client.serverData.get(`feeds.${feedID}`)
 		
-	if (!feedInfo) return message.channel.send("I'm sorry, I don't think I have any information on that feed")
+	if (!feedInfo) return message.channel.send("I'm sorry, I don't think I have any information on that feed, did you enter the ID correctly?")
 
 	if(!Object.keys(feedInfo).includes(message.guild.id)) return message.channel.send("I do have information on that feed, but it isn't enabled here")
 
 	rssURL = `${feedType[feedInfo.type]}${feedID}`
+	if (feedInfo.type === "other") { rssURL = feedInfo.url }
 	let feed = await parser.parseURL(rssURL);
 	firstItem = feed.items.shift();
 

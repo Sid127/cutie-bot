@@ -47,12 +47,9 @@ exports.run = async(client, message, args) => {
             rssURL = `https://twitchrss.appspot.com/vod/${mongoKey}`
         }
         case "other": {
-            var crypto = require('crypto')
-
             rssURL = link
-            var current_date = (new Date()).valueOf().toString();
-            var random = Math.random().toString();
-            mongoKey = crypto.createHash('sha1').update(current_date + random).digest('hex').slice(0,6)
+            const { hostname } = new URL(rssUrl);
+            mongoKey = hostname.match(/(?<=\.).+?(?=\.)/g).shift()
             break;
         }
         default: return message.channel.send("That's not a valid feed type, my friend")
@@ -63,6 +60,11 @@ exports.run = async(client, message, args) => {
     })
     
     if (param === "other") niceName = feed.title;
+
+    if(await client.serverData.has(`feeds.${mongoKey}`)) {
+        await client.serverData.set(`feeds.${mongoKey}.${message.guild.id}`, message.mentions.channels.first().id)
+        return message.channel.send(`Okay! Reading feed ${niceName}, and I'll post updates in ${message.mentions.channels.first()}`);
+    }
 
     let firstItem = feed.items.shift();
 

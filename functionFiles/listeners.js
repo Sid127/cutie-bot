@@ -124,7 +124,7 @@ rssListener = async (client) => {
     let db = await client.serverData.get(`feeds`)
     for(rssKey of Object.keys(db)){
         rssURL = `${feedType[db[`${rssKey}`].type]}${rssKey}`
-        if (db[`${rssKey}`].type === "other") { rssURL = [db[`${rssKey}`].url] }
+        if (db[`${rssKey}`].type === "other") { rssURL = db[`${rssKey}`].url }
         let feed = await parser.parseURL(rssURL);
         firstItem = feed.items.shift();
     
@@ -138,11 +138,11 @@ rssListener = async (client) => {
             //run a few sanity checks
             if (!client.guilds.cache.get(g)) continue;
     
-            let sendGuild = client.guilds.cache.get(g)
             let msgChannel = db[`${rssKey}`][`${g}`]
     
-            await client.channels.cache.get(msgChannel).send(`New post from ${db[`${rssKey}`].niceName} **${firstItem.title}**\n${firstItem.link}`)
+            await client.channels.cache.get(msgChannel).send(`New post from ${db[`${rssKey}`].niceName}\n**${firstItem.title}**\n${firstItem.link}`)
         }
+        await client.serverData.set(`feeds.${rssKey}.latest`, firstItem.title)
     }
 }
 
