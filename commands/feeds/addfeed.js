@@ -50,6 +50,8 @@ exports.run = async(client, message, args) => {
             rssURL = link
             const { hostname } = new URL(rssURL);
             mongoKey = hostname.match(/(?<=\.).+?(?=\.)/g).shift()
+            mongoKey === "gonegeeky" ? mongoKey = "galnet" : {}
+            mongoKey === "indiegamebundles" ? mongoKey = "freegames" : {}
             break;
         }
         default: return message.channel.send("That's not a valid feed type, my friend")
@@ -88,6 +90,6 @@ exports.config = {
 	aliases: ["newfeed"],
 	permLevel: "modAssist",
 	name: "addfeed",
-	description: "Create a new RSS feed",
+	description: "Create a new RSS feed\n\nSome useful \"other\" feeds:\nGalNet :: http://proxy.gonegeeky.com/edproxy/\nFree Games :: https://www.indiegamebundles.com/category/free/feed",
 	usage: ["[steam|yt|twitch|other] [#channel] [<url>]"]
 };
