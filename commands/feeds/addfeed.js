@@ -48,7 +48,7 @@ exports.run = async(client, message, args) => {
         }
         case "other": {
             rssURL = link
-            const { hostname } = new URL(rssUrl);
+            const { hostname } = new URL(rssURL);
             mongoKey = hostname.match(/(?<=\.).+?(?=\.)/g).shift()
             break;
         }
