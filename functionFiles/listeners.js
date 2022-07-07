@@ -146,6 +146,70 @@ rssListener = async (client) => {
     }
 }
 
+//special schedule event creator for HeartSupport discord
+hsScheduler = async(client) => {
+	const config = require("../../config.json")
+	var Airtable = require("airtable");
+	const moment = require("moment");
+	Airtable.configure({
+		endpointUrl: 'https://api.airtable.com',
+		apiKey: config.airtableKey
+	});
+	var base = Airtable.base('appxrV30LkfcX8cXw');
+	
+	let guild = client.guilds.cache.get("283353256330002432");
+
+	base('tbl91WRo8tiVllXSQ').select({
+		filterByFormula: "(DATESTR({Date}) = DATESTR(TODAY()))",
+		sort: [{field: "Date", direction: "desc"}],
+		view: "HeartSupport Community Schedule",
+		timeZone: "America/Chicago" //timezone events are originally created in
+	}).eachPage(function page(records, fetchNextPage) {
+		records.forEach(function(record) {
+
+			let type = "VOICE"
+			let meta = null
+			let chnl = ""
+			let endTime = null
+
+			if (record.get('Event').includes("ACTION")) { 
+				chnl = guild.channels.cache.get("826884365232373840")
+			} else if (record.get('Event').includes("SWAT")) {
+				chnl = guild.channels.cache.get("987349692771876884")
+			} else if (record.get('Event').toLowerCase().includes("youth action")) {
+				chnl = guild.channels.cache.get("831950164708687933")
+			} else if (record.get('Event').toLowerCase().includes("youth swat")) {
+				chnl = guild.channels.cache.get("987196257514692668") 
+			} else {
+				chnl = null
+				type = "EXTERNAL"
+				meta = "https://twitch.tv/heartsupport"
+				endTime = moment(record.get('Date')).add(2, 'hours')
+			}
+
+			if(!guild.scheduledEvents.cache.find(e => e.name === record.get('Event').trim())) {
+				guild.scheduledEvents.create({
+					name: record.get('Event').replace("copy", "").trim(),
+					privacyLevel: "GUILD_ONLY",
+					scheduledStartTime: record.get('Date'),
+					scheduledEndTime: endTime,
+					entityType: `${type}`,
+					channel: chnl,
+					entityMetadata: { location: meta },
+					description: `${record.get('Show') ? record.get('Show') : "Regular Scheduled Event, you can make sure there's something for everyone <3"}`
+				})
+			}
+		});
+	    // To fetch the next page of records, call `fetchNextPage`.
+		// If there are more records, `page` will get called again.
+		// If there are no more records, `done` will get called.
+		fetchNextPage();
+
+	}, function done(err) {
+		if (err) { console.error(err); return; }
+	});
+}
+
 module.exports.listeners = async (client) => {
     var cron = require('node-cron');
 
@@ -153,5 +217,12 @@ module.exports.listeners = async (client) => {
         bdayChck(client)
         rssListener(client)
         tickListener(client)
+    });
+
+    cron.schedule('01 00 * * *', () => {
+        hsScheduler(client)
+    }, {
+        scheduled: true,
+        timezone: "America/Chicago"
     });
 }
