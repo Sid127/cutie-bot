@@ -7,9 +7,9 @@ exports.run = (client, message, args) => {
   if (param === "everyone"){
     // Remove the "everyone" text from the [param, ...announcement] arguments
     let channel = message.mentions.channels.first();
-    var announce = announcement.join(" ")
-    var space = announce.indexOf(' ')
-    var msg = announce.slice(space, announce.length)
+    let announce = announcement.join(" ")
+    let space = announce.indexOf(' ')
+    let msg = announce.slice(space, announce.length)
     const embed = new MessageEmbed()
       .setColor(0xffd1dc)
       .setDescription(`${msg}`)

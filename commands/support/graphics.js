@@ -1,5 +1,5 @@
 exports.run = (client, message, args) => {
-  var graphics_img = [
+  let graphics_img = [
   "https://i.redd.it/58f7d2z4dgv01.jpg",
   "https://i.pinimg.com/originals/0a/97/12/0a9712edbaa154f6ff5e00fe29e45f91.jpg",
   "https://i.pinimg.com/originals/13/3d/fb/133dfb2b5f930e2f85e9faa763bd66eb.jpg",
@@ -7,7 +7,7 @@ exports.run = (client, message, args) => {
   "https://static1.squarespace.com/static/57f5632e893fc04e80091c4b/t/58f6b4dce4fcb54285fb71a8/1492563173142/six-ways-to-practice-grounding?format=500w",
   "https://i.imgur.com/JvEO7KS.png"
   ];
-  var img = Math.floor(Math.random() * graphics_img.length);
+  let img = Math.floor(Math.random() * graphics_img.length);
   message.channel.send({content:graphics_img[img]});
 }
 

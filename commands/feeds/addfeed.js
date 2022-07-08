@@ -7,13 +7,13 @@ exports.run = async(client, message, args) => {
     let parser = new Parser();
 
     let [param, chnl, link] = args.split(" ")
-    if (!message.mentions.channels.first().id) return message.channel.send("Okay, but what channel do you want me to post to?")
+    if (!message.mentions.channels.first()) return message.channel.send("Okay, but what channel do you want me to post to?")
     link = link.replace(/\/$/, "") //remove trailing slash
 
     //parse the command and construct various metadata
     switch (param.toLowerCase().trim()){
         case "steam": {
-            if (!link.includes("store.steampowered.com")) return message.channel.send("Please give me a steam store page link :(")
+            if (!link.includes("store.steampowered.com")) return message.reply("Please give me a steam store page link :(")
             
             let appID = link.match(/\d+/)
             niceName = link.match(/[^\/]+$/).shift().replaceAll("_", " ")
@@ -34,17 +34,18 @@ exports.run = async(client, message, args) => {
                     channelURL = dataStream.match(/(?<=og:url" content=").*?(?=\">)/gi).shift()
                     niceName = dataStream.match(/(?=itemprop="name" content=").*?(?=\">)/gi).shift().match(/[^\"]+$/).shift()
                 }
-            } else return message.channel.send("Please give me a youtube channel's home page link :(")
+            } else return message.reply("Please give me a youtube channel's home page link :(")
             
             mongoKey = channelURL.match(/[^\/]+$/)
             rssURL = rssURL + mongoKey
             break;
         }
         case "twitch": {
-            if(!link.includes("twitch.tv")) return message.channel.send("Please give me a twitch channel link :(")
+            if(!link.includes("twitch.tv")) return message.reply("Please give me a twitch channel link :(")
             mongoKey = link.match(/[^\/]+$/)
             niceName = mongoKey
             rssURL = `https://twitchrss.appspot.com/vod/${mongoKey}`
+            break;
         }
         case "other": {
             rssURL = link
@@ -54,7 +55,7 @@ exports.run = async(client, message, args) => {
             mongoKey === "indiegamebundles" ? mongoKey = "freegames" : {}
             break;
         }
-        default: return message.channel.send("That's not a valid feed type, my friend")
+        default: return message.reply("That's not a valid feed type, my friend")
     }
 
     let feed = await parser.parseURL(rssURL).catch(error => {
@@ -68,7 +69,7 @@ exports.run = async(client, message, args) => {
         return message.channel.send(`Okay! Reading feed ${niceName}, and I'll post updates in ${message.mentions.channels.first()}`);
     }
 
-    let firstItem = feed.items.shift();
+    let firstItem = feed.items ? feed.items.shift() : message.channel.send("I'll read the feed, yes, but right now it appears empty to me :|\nPlease re-check it once? Your link could also be wrong")
 
     let mongoObject = {
         "type": param,

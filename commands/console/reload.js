@@ -15,7 +15,7 @@ exports.run = async (client, message, args) => {
 	    }
 		return message.channel.send("Local cache updated")
 	}
-    var commandName = args;
+	let commandName = args;
     let category = ""
 
     // Check if the command exists and is valid

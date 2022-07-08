@@ -123,14 +123,14 @@ rssListener = async (client) => {
     
     let db = await client.serverData.get(`feeds`)
     for(rssKey of Object.keys(db)){
-        rssURL = `${feedType[db[`${rssKey}`].type]}${rssKey}`
-        if (db[`${rssKey}`].type === "other") { rssURL = db[`${rssKey}`].url }
+        rssURL = `${feedType[db[rssKey].type]}${rssKey}`
+        if (db[rssKey].type === "other") { rssURL = db[rssKey].url }
         let feed = await parser.parseURL(rssURL);
         firstItem = feed.items.shift();
     
-        if (firstItem.title === db[`${rssKey}`].latest) continue;
+        if (firstItem.title === db[rssKey].latest) continue;
     
-        let sendGuilds = Object.keys(db[`${rssKey}`])
+        let sendGuilds = Object.keys(db[rssKey])
     
         for(g of sendGuilds){
             if(["latest", "type"].includes(g)) continue;
@@ -138,9 +138,9 @@ rssListener = async (client) => {
             //run a few sanity checks
             if (!client.guilds.cache.get(g)) continue;
     
-            let msgChannel = db[`${rssKey}`][`${g}`]
+            let msgChannel = db[rssKey][g]
     
-            await client.channels.cache.get(msgChannel).send(`New post from ${db[`${rssKey}`].niceName}\n**${firstItem.title}**\n${firstItem.link}`)
+            await client.channels.cache.get(msgChannel).send(`New post from ${db[rssKey].niceName}\n**${firstItem.title}**\n${firstItem.link}`)
         }
         await client.serverData.set(`feeds.${rssKey}.latest`, firstItem.title)
     }
@@ -149,13 +149,13 @@ rssListener = async (client) => {
 //special schedule event creator for HeartSupport discord
 hsScheduler = async(client) => {
 	const config = require("../config.json")
-	var Airtable = require("airtable");
+	const Airtable = require("airtable");
 	const moment = require("moment");
 	Airtable.configure({
 		endpointUrl: 'https://api.airtable.com',
 		apiKey: config.airtableKey
 	});
-	var base = Airtable.base('appxrV30LkfcX8cXw');
+	let base = Airtable.base('appxrV30LkfcX8cXw');
 	
 	let guild = client.guilds.cache.get("283353256330002432");
 
@@ -211,7 +211,7 @@ hsScheduler = async(client) => {
 }
 
 module.exports.listeners = async (client) => {
-    var cron = require('node-cron');
+    const cron = require('node-cron');
 
     cron.schedule('*/30 * * * *', () => {
         bdayChck(client)
