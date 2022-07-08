@@ -148,7 +148,7 @@ rssListener = async (client) => {
 
 //special schedule event creator for HeartSupport discord
 hsScheduler = async(client) => {
-	const config = require("../../config.json")
+	const config = require("../config.json")
 	var Airtable = require("airtable");
 	const moment = require("moment");
 	Airtable.configure({
