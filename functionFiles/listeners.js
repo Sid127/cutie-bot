@@ -175,9 +175,9 @@ hsScheduler = async(client) => {
 			if (record.get('Event').includes("ACTION")) { 
 				chnl = guild.channels.cache.get("826884365232373840")
 			} else if (record.get('Event').includes("SWAT")) {
-				chnl = guild.channels.cache.get("987349692771876884")
-			} else if (record.get('Event').toLowerCase().includes("youth action")) {
 				chnl = guild.channels.cache.get("831950164708687933")
+			} else if (record.get('Event').toLowerCase().includes("youth action")) {
+				chnl = guild.channels.cache.get("987349692771876884")
 			} else if (record.get('Event').toLowerCase().includes("youth swat")) {
 				chnl = guild.channels.cache.get("987196257514692668") 
 			} else {
