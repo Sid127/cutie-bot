@@ -7,7 +7,7 @@ module.exports = {
 
         await client.peopleData.delete(`${member.id}.${member.guild.id}`)
         let memberData = await client.peopleData.get(member.id)
-        if(JSON.stringify(Object.keys(memberData).sort()) === JSON.stringify(["date", "timezone"]) || Object.keys(memberData).length === 0) {await client.peopleData.delete(`${member.id}`)}
+        if(!memberData || JSON.stringify(Object.keys(memberData).sort()) === JSON.stringify(["date", "timezone"]) || Object.keys(memberData).length === 0) {await client.peopleData.delete(`${member.id}`)}
 
         if (await client.serverData.get(`${key}.logChnl`) === null) return;
         
