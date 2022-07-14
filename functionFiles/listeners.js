@@ -159,11 +159,13 @@ hsScheduler = async(client) => {
 	
 	let guild = client.guilds.cache.get("283353256330002432");
 
+    let date = moment().format('YYYY-MM-DD')
+
 	base('tbl91WRo8tiVllXSQ').select({
-		filterByFormula: "(DATESTR({Date}) = DATESTR(TODAY()))",
+        timeZone: "America/Chicago", //timezone events are originally created in
+		filterByFormula: `(DATESTR({Date}) = ${date})`,
 		sort: [{field: "Date", direction: "desc"}],
-		view: "HeartSupport Community Schedule",
-		timeZone: "America/Chicago" //timezone events are originally created in
+		view: "HeartSupport Community Schedule"
 	}).eachPage(function page(records, fetchNextPage) {
 		records.forEach(function(record) {
 
@@ -219,10 +221,7 @@ module.exports.listeners = async (client) => {
         tickListener(client)
     });
 
-    cron.schedule('01 00 * * *', () => {
+    cron.schedule('55 04 * * *', () => {
         hsScheduler(client)
-    }, {
-        scheduled: true,
-        timezone: "America/Chicago"
     });
 }
