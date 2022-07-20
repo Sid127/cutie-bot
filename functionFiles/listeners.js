@@ -159,7 +159,8 @@ hsScheduler = async(client) => {
 	
 	let guild = client.guilds.cache.get("283353256330002432");
 
-    let date = moment().format('YYYY-MM-DD')
+    let date = new Date()
+    date = moment.utc(date.format('YYYY-MM-DD'))
 
 	base('tbl91WRo8tiVllXSQ').select({
         timeZone: "America/Chicago", //timezone events are originally created in
@@ -189,7 +190,7 @@ hsScheduler = async(client) => {
 				endTime = moment(record.get('Date')).add(2, 'hours')
 			}
 
-			if(!guild.scheduledEvents.cache.find(e => e.name === record.get('Event').trim())) {
+			if(!guild.scheduledEvents.cache.find(e => e.name === record.get('Event').replace("copy", "").trim())) {
 				guild.scheduledEvents.create({
 					name: record.get('Event').replace("copy", "").trim(),
 					privacyLevel: "GUILD_ONLY",
@@ -221,7 +222,10 @@ module.exports.listeners = async (client) => {
         tickListener(client)
     });
 
-    cron.schedule('55 04 * * *', () => {
+    cron.schedule('55 4 * * *', () => {
         hsScheduler(client)
+    }, {
+        scheduled: true,
+        timezone: "Etc/UTC"
     });
 }
