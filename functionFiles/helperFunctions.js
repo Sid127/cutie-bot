@@ -69,20 +69,20 @@ const blacklistChck = async(blacklistMap, mmbrRolesCache) => {
 }
 
 const checkForStations = (serviceSystem, serviceName, homeCoords, serviceCoords) => {
-	if(serviceSystem !== undefined){
-		for(station of serviceSystem.data.stations) {
-			if(station.otherServices.includes(serviceName)){
+	if (serviceSystem !== undefined) {
+		for (station of serviceSystem.stations) {
+			if (station.otherServices.includes(serviceName)) {
 				return {
-					system: serviceSystem.data.name,
-					systemID: serviceSystem.data.id,
+					system: serviceSystem.name,
+					systemID: serviceSystem.id,
 					station: station.name,
 					stationID: station.id,
 					distanceToArrival: station.distanceToArrival,
-					distanceHome: distanceCalc(homeCoords.data.coords, serviceCoords.data.coords, 2)
+					distanceHome: distanceCalc(homeCoords.coords, serviceCoords.coords, 2)
 				}
 			}
 		}
-		return false
+		return false;
 	}
 }
 
