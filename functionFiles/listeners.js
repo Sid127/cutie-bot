@@ -71,12 +71,13 @@ bdayChck = async (client) => {
 			}
             if(ident[1][userObjectKey]["bdayEnabled"] === true){
                 let sendGuild = userObjectKey
-
                 //run a few sanity checks
                 if (!client.guilds.cache.get(sendGuild)) continue;
 
+                let server = client.guilds.cache.get(sendGuild)
+
                 // user data we're targeting now
-                const birthdayFolk = client.guilds.cache.get(sendGuild).members.cache.get(ident[0]);
+                const birthdayFolk = server.members.cache.get(ident[0]);
 
                 if(!birthdayFolk) {} else {
                     // a few more sanity checks
@@ -91,11 +92,12 @@ bdayChck = async (client) => {
                     if (moment().tz(ident[1]['timezone']).format('MM-DD') === ident[1]['date'] || moment().tz(ident[1]['timezone']).format('MM-D') === ident[1]['date']) {
                         // set role and send message
                         if (!birthdayFolk.roles.cache.get(birthdayRole)) {
+                            if(server.roles.cache.get(birthdayRole).position > server.me.roles.highest.position) continue;
                             birthdayFolk.roles.add(birthdayRole);
                             try{
                                 await client.channels.cache.get(msgChannel).send(`Happy Birthday, <@${ident[0]}>`)
                             } catch (e) {
-                                throw new Error(`If you're reading this all hope is lost, as the birthday message failed again. Guild ID: ${sendGuild}`)
+                                throw new Error(`Either I couldn't add a role, or couldn't send the message. Guild ID: ${sendGuild}. Member ID: ${ident[0]}`)
                             }
                         }
                     } else { // else remove the role
@@ -159,8 +161,8 @@ hsScheduler = async(client) => {
 	
 	let guild = client.guilds.cache.get("283353256330002432");
 
-    let date = new Date()
-    date = moment.utc(date.format('YYYY-MM-DD'))
+    let date = Date.now()
+    date = moment.utc(date).format('YYYY-MM-DD')
 
 	base('tbl91WRo8tiVllXSQ').select({
         timeZone: "America/Chicago", //timezone events are originally created in
