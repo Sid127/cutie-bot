@@ -21,7 +21,7 @@ module.exports = {
         if (!await client.serverData.get(`${key}.welcomeChnl`)){} else {
             const sendChnl = await client.serverData.get(`${key}.welcomeChnl`)
             let welcomeMsg = await client.serverData.get(`${key}.welcome`)
-            welcomeMsg = welcomeMsg.replace("{user}", `<@${member.id}>`).replace("{server}", `${member.guild.name}`)
+            welcomeMsg = welcomeMsg.replaceAll("{user}", `<@${member.id}>`).replaceAll("{server}", `${member.guild.name}`)
 
             client.channels.cache.get(sendChnl).send(welcomeMsg).catch(console.error);
 
