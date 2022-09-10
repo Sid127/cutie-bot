@@ -32,5 +32,5 @@ exports.config = {
 	permLevel: "modAssist",
 	name: "testfeed",
 	description: "Test an existing RSS feed",
-	usage: []
+	usage: ["(feed ID)"]
 };

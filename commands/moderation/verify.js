@@ -7,6 +7,8 @@ exports.run = async(client, message, args) => { // eslint-disable-line no-unused
     let verifyMember = message.mentions.members.first();
 
     let autorole = await client.serverData.get(`${message.guild.id}.autoRole`)
+
+    if(!Array.isArray(autorole) || autorole.length === 0) return message.channel.send("There's no roles set up yet!")
     
     if (autorole){
         for (role of autorole){

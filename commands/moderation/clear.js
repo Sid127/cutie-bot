@@ -1,4 +1,5 @@
 exports.run = async(client, message, args) => {
+    const { MessageEmbed } = require("discord.js");
 
     const amount = parseInt(args); // Amount of messages which should be deleted
 
@@ -15,8 +16,20 @@ exports.run = async(client, message, args) => {
             .then(msg => {
                 msg.delete({ timeout: 5000 })
             })
-            .catch(console.error); // Bulk deletes all messages that have been fetched and are not older than 14 days (due to the Discord API)
+            .catch(message.channel.send("Hey, some of the messages in this range are older than 14 days, could you recount for me?")); // Bulk deletes all messages that have been fetched and are not older than 14 days (due to the Discord API)
     });
+
+    const sendChnl = await client.serverData.get(`${key}.logChnl`)
+
+    if(!sendChnl) {} else {
+        const embed = new MessageEmbed()
+            .setColor(0xffd1dc)
+            .addField(`${amount} messages deleted in #${message.channel.name}`)
+            .addField(`Purge initiated by`, `${message.author || 'Unknown D:'}`)
+            .setTimestamp();
+    
+        client.channels.cache.get(sendChnl).send({embeds: [embed]})
+    }
 }
 
 exports.config = {
