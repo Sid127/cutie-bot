@@ -2,36 +2,28 @@ const moment = require("moment-timezone")
 
 //our very own BGS tick listener
 tickListener = async (client) => {
-	const { AxiosEBGS } = require("./APICalls.js");
+	const { AxiosWebPage } = require("./APICalls.js");
 
     //create an empty tick table
     await client.serverData.ensure(`tick`, {
-        id: null,
         time: "1970-01-01T00:00:00.000Z",
-        updatedAt: null,
-        v: null
     });
 
     //get tick data from EBGS
-    let tickData = await AxiosEBGS("/ticks");
+    let tickData = await AxiosWebPage("https://tick.edcd.io", "/api/tick");
 
     //check to see if tick id changed, and if it has, push new data to mongo and send an update message
-    let oldID = client.cache.tick.id
-    if(oldID !== tickData[0]._id){
-        //update out local cache
-        client.cache.tick.id = tickData[0]._id
-        client.cache.tick.time = tickData[0].time
-        client.cache.tick.updatedAt = tickData[0].updated_at
-        client.cache.tick.v = tickData[0].__v
+    let oldID = client.cache.tick.time
+
+    if(oldID !== tickData){
+        //update our local cache
+        client.cache.tick.time = tickData
 
         //update mongo while we're at it too
-        await client.serverData.set(`tick.id`, tickData[0]._id)
-        await client.serverData.set(`tick.time`, tickData[0].time)
-        await client.serverData.set(`tick.updatedAt`, tickData[0].updated_at)
-        await client.serverData.set(`tick.v`, tickData[0].__v)
+        await client.serverData.set(`tick.time`, tickData)
 
-		let year = parseInt(moment.utc(tickData[0].time).format(`YYYY`))+1286
-        let ticktime = moment.utc(tickData[0].time).format(`MMMM Do ${year}, h:mm a`)
+		let year = parseInt(moment.utc(tickData).format(`YYYY`))+1286
+        let ticktime = moment.utc(tickData).format(`MMMM Do ${year}, h:mm a`)
 
         //create the embed beforehand
         const embed = {
@@ -148,73 +140,6 @@ rssListener = async (client) => {
     }
 }
 
-//special schedule event creator for HeartSupport discord
-hsScheduler = async(client) => {
-	const config = require("../config.json")
-	const Airtable = require("airtable");
-	const moment = require("moment");
-	Airtable.configure({
-		endpointUrl: 'https://api.airtable.com',
-		apiKey: config.airtableKey
-	});
-	let base = Airtable.base('appxrV30LkfcX8cXw');
-	
-	let guild = client.guilds.cache.get("283353256330002432");
-
-    let date = Date.now()
-    date = moment.utc(date).format('YYYY-MM-DD')
-
-	base('tbl91WRo8tiVllXSQ').select({
-        timeZone: "America/Chicago", //timezone events are originally created in
-		filterByFormula: `(DATESTR({Date}) = ${date})`,
-		sort: [{field: "Date", direction: "desc"}],
-		view: "HeartSupport Community Schedule"
-	}).eachPage(function page(records, fetchNextPage) {
-		records.forEach(function(record) {
-
-			let type = "VOICE"
-			let meta = null
-			let chnl = ""
-			let endTime = null
-
-			if (record.get('Event').includes("ACTION")) { 
-				chnl = guild.channels.cache.get("826884365232373840")
-			} else if (record.get('Event').includes("SWAT")) {
-				chnl = guild.channels.cache.get("831950164708687933")
-			} else if (record.get('Event').toLowerCase().includes("youth action")) {
-				chnl = guild.channels.cache.get("987349692771876884")
-			} else if (record.get('Event').toLowerCase().includes("youth swat")) {
-				chnl = guild.channels.cache.get("987196257514692668") 
-			} else {
-				chnl = null
-				type = "EXTERNAL"
-				meta = "https://twitch.tv/heartsupport"
-				endTime = moment(record.get('Date')).add(2, 'hours')
-			}
-
-			if(!guild.scheduledEvents.cache.find(e => e.name === record.get('Event').replace("copy", "").trim())) {
-				guild.scheduledEvents.create({
-					name: record.get('Event').replace("copy", "").trim(),
-					privacyLevel: "GUILD_ONLY",
-					scheduledStartTime: record.get('Date'),
-					scheduledEndTime: endTime,
-					entityType: `${type}`,
-					channel: chnl,
-					entityMetadata: { location: meta },
-					description: `${record.get('Show') ? record.get('Show') : "Regular Scheduled Event, you can make sure there's something for everyone <3"}`
-				})
-			}
-		});
-	    // To fetch the next page of records, call `fetchNextPage`.
-		// If there are more records, `page` will get called again.
-		// If there are no more records, `done` will get called.
-		fetchNextPage();
-
-	}, function done(err) {
-		if (err) { console.error(err); return; }
-	});
-}
-
 module.exports.listeners = async (client) => {
     const cron = require('node-cron');
 
@@ -222,12 +147,5 @@ module.exports.listeners = async (client) => {
         bdayChck(client)
         rssListener(client)
         tickListener(client)
-    });
-
-    cron.schedule('55 4 * * *', () => {
-        hsScheduler(client)
-    }, {
-        scheduled: true,
-        timezone: "Etc/UTC"
     });
 }
