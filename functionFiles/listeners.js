@@ -121,11 +121,13 @@ rssListener = async (client) => {
         if (db[rssKey].type === "other") { rssURL = db[rssKey].url }
         let feed = await parser.parseURL(rssURL);
         firstItem = feed.items.shift();
-    
+
         if (firstItem.title === db[rssKey].latest) continue;
     
         let sendGuilds = Object.keys(db[rssKey])
     
+        await client.serverData.set(`feeds.${rssKey}.latest`, firstItem.title)
+
         for(g of sendGuilds){
             if(["latest", "type"].includes(g)) continue;
     
@@ -134,9 +136,10 @@ rssListener = async (client) => {
     
             let msgChannel = db[rssKey][g]
     
+            if(!client.channels.cache.get(msgChannel)) continue;
+
             await client.channels.cache.get(msgChannel).send(`New post from ${db[rssKey].niceName}\n**${firstItem.title}**\n${firstItem.link}`)
         }
-        await client.serverData.set(`feeds.${rssKey}.latest`, firstItem.title)
     }
 }
 
