@@ -8,7 +8,7 @@ exports.run = async(client, message, args) => { // eslint-disable-line no-unused
 
     let autorole = await client.serverData.get(`${message.guild.id}.autoRole`)
     
-    if(autorole && !autorole.length === 0){
+    if(autorole && autorole.length !== 0){
         for (role of autorole){
             verifyMember.roles.remove(role).catch(console.error);
         }
