@@ -143,6 +143,11 @@ rssListener = async (client) => {
     }
 }
 
+monitorPush = async (client) => {
+    const { exec } = require("child_process");
+    exec(`wget --quiet -O /dev/null ${client.hardcoded.monitor}`)
+}
+
 module.exports.listeners = async (client) => {
     const cron = require('node-cron');
 
@@ -150,5 +155,9 @@ module.exports.listeners = async (client) => {
         bdayChck(client)
         rssListener(client)
         tickListener(client)
+    });
+
+    cron.schedule('*/15 * * * *', () => {
+        monitorPush(client)
     });
 }

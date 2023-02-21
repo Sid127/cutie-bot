@@ -13,5 +13,6 @@
 		"activityLeaderboard": "disabled",
 		"cc": [],
 		"reactionRoles": []
-	}
+	},
+	"monitor": "https://status.sloughland.dev/api/push/Qw7hprv4G3?status=up\\&msg=OK"
 }
