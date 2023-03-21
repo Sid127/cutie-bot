@@ -24,7 +24,7 @@ exports.run = async (client, message, args) => {
   });
 
   //and here we log it, if logging channel is set
-  let logChnl = await client.serverData.get(`${message.guild.id}.ticLog`)
+  let logChnl = await client.serverData.get(`${message.guild.id}.modLog`)
   if(!logChnl) {logChnl = await client.serverData.get(`${message.guild.id}.logChnl`)}
   const logChannel = message.guild.channels.cache.find(channel => channel.id === logChnl).id;
   if (!logChannel) return;
