@@ -8,10 +8,6 @@ module.exports.AxiosEDSM = async (endpoint, params = {}) => {
 	return AxiosCall(`https://edsm.net${endpoint}?${querystring.encode(params)}`)
 }
 
-module.exports.AxiosEDDBPage = async (endpoint, params = {}) => {
-	return AxiosCall(`https://eddb.io${endpoint}`);
-}
-
 module.exports.AxiosWebPage = async (website, endpoint, params = {}) => {
 	return AxiosCall(`${website}${endpoint}`);
 }
