@@ -10,7 +10,7 @@ exports.run = (client, message) => {
 • Uptime     :: ${duration}
 • Servers    :: ${client.guilds.cache.size.toLocaleString()}
 • Users      :: ${client.users.cache.size.toLocaleString()}
-• Github     :: https://github.com/Sid127/cutie-bot
+• Github     :: https://codeberg.org/Sid127/cutie-bot
 = Cutie was queer coded by Sid <3 =`));
 
 }

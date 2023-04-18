@@ -7,16 +7,16 @@
         "start-prod": "pm2 start ecosystem.config.js"
     },
     "keywords": [],
-    "author": "\"Siddharth Pranjale \\ <sidpranjale127@protonmail.com\\> (https://github.com/Sid127)",
+    "author": "\"Sid Pranjale \\ <sidpranjale127@protonmail.com\\> (https://codeberg.org/Sid127)",
     "license": "ISC",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/Sid127/cutie-bot.git"
+        "url": "git+https://codeberg.org/Sid127/cutie-bot.git"
     },
     "bugs": {
-        "url": "https://github.com/Sid127/cutie-bot/issues"
+        "url": "https://codeberg.org/Sid127/cutie-bot/issues"
     },
-    "homepage": "https://github.com/Sid127/cutie-bot#readme",
+    "homepage": "https://codeberg.org/Sid127/cutie-bot",
     "description": "",
     "dependencies": {
         "@joshdb/core": "^1.2.7",
