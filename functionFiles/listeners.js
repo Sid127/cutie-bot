@@ -2,7 +2,7 @@ const moment = require("moment-timezone")
 
 //our very own BGS tick listener
 tickListener = async (client) => {
-	const { AxiosWebPage } = require("./APICalls.js");
+	const { AxiosEBGS } = require("./APICalls.js");
 
     //create an empty tick table
     await client.serverData.ensure(`tick`, {
@@ -10,20 +10,20 @@ tickListener = async (client) => {
     });
 
     //get tick data from EBGS
-    let tickData = await AxiosWebPage("https://tick.edcd.io", "/api/tick");
+    let tickData = await AxiosEBGS("/ticks");
 
     //check to see if tick id changed, and if it has, push new data to mongo and send an update message
     let oldID = client.cache.tick.time
 
-    if(oldID !== tickData){
+    if(oldID !== tickData[0].time){
         //update our local cache
-        client.cache.tick.time = tickData
+        client.cache.tick.time = tickData[0].time
 
         //update mongo while we're at it too
-        await client.serverData.set(`tick.time`, tickData)
+        await client.serverData.set(`tick.time`, tickData[0].time)
 
-		let year = parseInt(moment.utc(tickData).format(`YYYY`))+1286
-        let ticktime = moment.utc(tickData).format(`MMMM Do ${year}, h:mm a`)
+		let year = parseInt(moment.utc(tickData[0].time).format(`YYYY`))+1286
+        let ticktime = moment.utc(tickData[0].time).format(`MMMM Do ${year}, h:mm a`)
 
         //create the embed beforehand
         const embed = {
