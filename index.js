@@ -10,6 +10,7 @@ const config = require("./config.json");
 
 // note: some hardcoded stuff remains in places where mongo ensures are performed
 client.hardcoded = require("./functionFiles/hardcoded.json")
+client.shortcuts = require("./functionFiles/shortcuts.json")
 
 // We also need to make sure we're attaching the config to the CLIENT so it's accessible everywhere!
 client.config = {prefix: config.prefix};

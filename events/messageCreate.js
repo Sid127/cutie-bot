@@ -4,6 +4,26 @@ module.exports = {
         // Ignore all bots
         if (message.author.bot) return;
 
+        //define prefix
+        message.guild ? (client.cache[message.guild.id].prefix === "" ? client.prefix = client.config.prefix : client.prefix = client.cache[message.guild.id].prefix) : client.prefix = client.config.prefix
+
+        // Ignore messages not starting with the prefix
+        if (!message.content.toLowerCase().trim().startsWith(client.prefix)) return;
+
+        // Define command and the rest of the text in the message
+        let [command, ...args] = message.content.slice(client.prefix.length).trim().split(/ +/g);
+        // From command slice out prefix length and force lowercase while just joining args together to a string with spaces (since split by them)
+        command = command.toLowerCase();
+        args = args.join(" ").trim();
+
+        // Grab the command data from the client.commands Map or from the shortcuts object
+        let shortcut = Object.keys(client.shortcuts).find(sc => sc === command)
+        let cmd = client.commands.get(command) || client.commands.get(client.aliases.get(command)) || client.commands.get(client.shortcuts[command].cmd);
+
+        // if it's a shortcut, set our args
+        if(shortcut)
+            args = `${client.shortcuts[command].args} `+args
+
         // If this is not in a DM, execute the code.
         if (message.guild) {
             // We'll use the key often enough that simplifying it is worth the trouble.
@@ -52,52 +72,19 @@ module.exports = {
                 }
             }
 
-            //define prefix
-            message.guild ? (client.cache[message.guild.id].prefix === "" ? client.prefix = client.config.prefix : client.prefix = client.cache[message.guild.id].prefix) : client.prefix = client.config.prefix
-
-            // Ignore messages not starting with the prefix
-            if (!message.content.toLowerCase().trim().startsWith(client.prefix)) return;
-
-            // Define command and the rest of the text in the message
-            let [command, ...args] = message.content.slice(client.prefix.length).trim().split(/ +/g);
-            // From command slice out prefix length and force lowercase while just joining args together to a string with spaces (since split by them)
-            command = command.toLowerCase();
-            args = args.join(" ").trim();
-
             // if command is a server custom command, send the response
             if(client.cache[message.guild.id].cc.includes(command))
                 return message.channel.send(await client.serverData.get(`${message.guild.id}.customCommands.${command}`))
 
-            // Grab the command data from the client.commands Map
-            let cmd = client.commands.get(command) || client.commands.get(client.aliases.get(command));
-
-			// if no command found, return
-			if (!cmd) return;
-
             //grab our cache of disabled modules for this server
             let enabledModules = client.cache[message.guild.id].enabledModules
 
-            if (!enabledModules.includes(cmd.config.category) && !client.hardcoded.botAdmin.includes(`${message.author.id}`))
+            if (cmd && !enabledModules.includes(cmd.config.category) && !client.hardcoded.botAdmin.includes(`${message.author.id}`))
                 return message.channel.send("The module for that command has been disabled! Ask a server admin to enable it :3")
         }
-
-        //define prefix
-        message.guild ? (client.cache[message.guild.id].prefix === "" ? client.prefix = client.config.prefix : client.prefix = client.cache[message.guild.id].prefix) : client.prefix = client.config.prefix
-
-        // Ignore messages not starting with the prefix
-        if (!message.content.toLowerCase().trim().startsWith(client.prefix)) return;
-
-		// Define command and the rest of the text in the message
-		let [command, ...args] = message.content.slice(client.prefix.length).trim().split(/ +/g);
-		// From command slice out prefix length and force lowercase while just joining args together to a string with spaces (since split by them)
-		command = command.toLowerCase();
-		args = args.join(" ").trim();
-
-        // Grab the command data from the client.commands Map
-        let cmd = client.commands.get(command) || client.commands.get(client.aliases.get(command));
-
-        // If that command doesn't exist, silently exit and do nothing
-        if (!cmd) return;
+        
+        // if no command found, return
+		if (!cmd) return;
 
 		//handle DMs
 		if(!message.guild){

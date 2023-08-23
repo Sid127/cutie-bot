@@ -91,6 +91,8 @@ exports.run = async (client, message, args) => {
 			command = client.commands.get(command);
 		} else if (client.aliases.has(command)){
 			command = client.commands.get(client.aliases.get(command));
+		} else if (Object.keys(client.shortcuts).includes(command)) {
+			command = client.commands.get(client.shortcuts[command])
 		}
 		if(command){
 			// if (level < client.levelCache[command.config.permLevel])

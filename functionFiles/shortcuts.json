@@ -1,0 +1,18 @@
+{
+    "conflicts": {
+        "cmd": "factionstatus",
+        "args": "conflicts"
+    },
+    "wars": {
+        "cmd": "factionstatus",
+        "args": "conflicts"
+    },
+    "elections": {
+        "cmd": "factionstatus",
+        "args": "conflicts"
+    },
+    "chart": {
+        "cmd": "systemstatus",
+        "args": "chart"
+    }
+}
