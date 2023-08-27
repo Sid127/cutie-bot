@@ -37,8 +37,13 @@ client.peopleData = new Josh({
     }
 });
 
-const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'));
+// get the event files
+let eventFiles = fs.readdirSync('./events');
+eventFiles = eventFiles.concat(fs.readdirSync('./events/guild').map(elem => `guild/${elem}`));
+eventFiles = eventFiles.concat(fs.readdirSync('./events/message').map(elem => `message/${elem}`));
+eventFiles = eventFiles.filter(file => file.endsWith(".js"))
 
+// loop through and initialize the event files
 for (const file of eventFiles) {
 	const event = require(`./events/${file}`);
 	if (event.once) {
@@ -48,10 +53,12 @@ for (const file of eventFiles) {
 	}
 }
 
+// create maps to use for command names and aliases
 client.commands = new Map();
 client.aliases = new Map();
 
-loadCommand = (categoryName, commandName) => {
+// function to load commands
+const loadCommand = (categoryName, commandName) => {
     try {
         const props = require(`./commands/${categoryName}/${commandName}`);
         //console.log(`Loading Command: ${props.config.name}`);
@@ -74,6 +81,7 @@ loadCommand = (categoryName, commandName) => {
 const { promisify } = require("util");
 const readdir = promisify(require("fs").readdir);
 
+// init all the things needed for the bot to run
 const init = async() => {
 	// variables for holding number of commands found/loaded
 	let numFound = 0;
@@ -88,17 +96,15 @@ const init = async() => {
 			// check if file doesn't end with .js, not a command so return
             if (!f.endsWith(".js")) return;
 
-			// add a number to the commands found
+			// add a number to the commands found and try loading the command
 			numFound++;
-
-			// try loading the command
             const response = loadCommand(d, f);
 
 			// if there's a response, loading failed, log that, if no response, everything fine and increment number of loaded commands
             response ? console.log(`${response}\n`) : numLoaded++
         });
 
-		// on last iteration of the forEach
+		// on last iteration of the forEach, since this is async
 		if (index === moduleFolders.length - 1) {
 			// at the end log out a message of how many found, and how many loaded
 			console.log(`Found "${numFound}" commands, in "${moduleFolders.length}" modules.\n` +
