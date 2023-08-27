@@ -1,5 +1,5 @@
 // module requires
-const { Client, MessageEmbed } = require('discord.js');
+const { Client, EmbedBuilder } = require('discord.js');
 
 exports.run = async(client, message) => {
     //grab data from mongo and check if we have a home system set
@@ -7,9 +7,9 @@ exports.run = async(client, message) => {
 	if (homeInfo.system === null) return message.channel.send("You know this has to be set up first, right?");
 
 	// create and populate the embed
-    let embed = new MessageEmbed()
+    let embed = new EmbedBuilder()
         .setAuthor({name: message.guild.name, iconURL: message.guild.iconURL()})
-        .setColor('RANDOM')
+        .setColor('Random')
 		.setFields([{
 			name: "**Home Data:**",
 			value: `**System:** ${homeInfo.system ? `[${homeInfo.system}](${(homeInfo.system && homeInfo.systemID) ? encodeURI(`https://www.edsm.net/en/system/id/${homeInfo.systemID}/name/${homeInfo.system}`) : ""})` : "Unkown"}\n` +

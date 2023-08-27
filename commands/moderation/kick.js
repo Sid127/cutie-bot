@@ -8,7 +8,7 @@ exports.run = async (client, message, args) => {
     return message.reply({content:"please mention a user to kick"});
 
   //handle the bot not having the required permission
-  if (!message.guild.me.permissions.has("KICK_MEMBERS"))
+  if (!message.guild.me.permissions.has("KickMembers"))
     return message.reply({content:"I don't have the permission for this"});
 
   //grab offender metadata
@@ -16,7 +16,7 @@ exports.run = async (client, message, args) => {
 	const log = message.mentions.users.first().tag;
 
   //prevent self-moderation
-  if (kickMember.permissions.has('VIEW_AUDIT_LOG') || kickMember.permissions.has('ADMINISTRATOR')) return message.channel.send("I'm not kicking them! They're powerful D:")
+  if (kickMember.permissions.has('ViewAuditLog') || kickMember.permissions.has('Administrator')) return message.channel.send("I'm not kicking them! They're powerful D:")
 
   //the actual kick
   kickMember.kick(reason.join(" ")).then(member => {

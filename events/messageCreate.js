@@ -17,19 +17,19 @@ module.exports = {
         args = args.join(" ").trim();
 
         // Grab the command data from the client.commands Map or from the shortcuts object
-        let shortcut = Object.keys(client.shortcuts).find(sc => sc === command)
-        let cmd = client.commands.get(command) || client.commands.get(client.aliases.get(command)) || client.commands.get(client.shortcuts[command].cmd);
+        let shortcut = Object.keys(client.shortcuts).find(sc => sc === command);
+        let cmd = client.commands.get(command) || client.commands.get(client.aliases.get(command)) || (shortcut ? client.commands.get(client.shortcuts[command].cmd) : null);
 
         // if it's a shortcut, set our args
-        if(shortcut)
-            args = `${client.shortcuts[command].args} `+args
+        if (shortcut)
+            args = `${client.shortcuts[command].args} ` + args;
 
         // If this is not in a DM, execute the code.
         if (message.guild) {
             // We'll use the key often enough that simplifying it is worth the trouble.
             const key = `${message.author.id}.${message.guild.id}`;
 
-            if(client.cache[message.guild.id].activityLeaderboard === "enabled"){
+            if (client.cache[message.guild.id].activityLeaderboard === "enabled") {
                 // Triggers on new users we haven't seen before.
                 let ensure = {}
                 ensure[`${message.guild.id}`] = {
@@ -73,7 +73,7 @@ module.exports = {
             }
 
             // if command is a server custom command, send the response
-            if(client.cache[message.guild.id].cc.includes(command))
+            if (client.cache[message.guild.id].cc.includes(command))
                 return message.channel.send(await client.serverData.get(`${message.guild.id}.customCommands.${command}`))
 
             //grab our cache of disabled modules for this server
@@ -82,13 +82,13 @@ module.exports = {
             if (cmd && !enabledModules.includes(cmd.config.category) && !client.hardcoded.botAdmin.includes(`${message.author.id}`))
                 return message.channel.send("The module for that command has been disabled! Ask a server admin to enable it :3")
         }
-        
+
         // if no command found, return
 		if (!cmd) return;
 
 		//handle DMs
-		if(!message.guild){
-			if(client.hardcoded.DMModules.includes(cmd.config.category) || command === "help") {
+		if (!message.guild) {
+			if (client.hardcoded.DMModules.includes(cmd.config.category) || command === "help") {
 				cmd.run(client, message, args)
 				return
 			}
@@ -101,13 +101,13 @@ module.exports = {
         } else if (cmd.config.permLevel === "User"){
             cmd.run(client, message, args);
         } else if (cmd.config.permLevel === "modAssist"){
-            if (!message.member.permissions.has('VIEW_AUDIT_LOG')){
+            if (!message.member.permissions.has('ViewAuditLog')){
                 return message.reply({content:"you can't use this command."});
             } else {
                 cmd.run(client, message, args);
             }
         } else if (cmd.config.permLevel === "serverAdmin"){
-            if (!message.member.permissions.has('ADMINISTRATOR'))
+            if (!message.member.permissions.has('Administrator'))
                 return message.reply({content:"you can't use this command."});
             else {
                 cmd.run(client, message, args);

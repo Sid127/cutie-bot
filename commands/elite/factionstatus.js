@@ -1,10 +1,10 @@
 // module requires
 const moment = require("moment");
-const { Formatters, Util } = require("discord.js");
+const { codeBlock } = require("discord.js");
 
 // our own API handler file
 const { AxiosEBGS } = require("../../functionFiles/APICalls.js");
-const { capitalizeString } = require("../../functionFiles/helperFunctions.js");
+const { capitalizeString, splitMessage } = require("../../functionFiles/helperFunctions.js");
 
 exports.run = async(client, message, args) => {
 	// special tag variable creation and check for special tags as the first thing in the args
@@ -126,10 +126,10 @@ exports.run = async(client, message, args) => {
 	}
 
 	// need to do this silly thing...
-	let splitOutput = Util.splitMessage(outputData, {maxLength: 1900, char: "\u200b"});
-	await tempMessage.edit(Formatters.codeBlock("asciidoc", splitOutput.shift()));
+	let splitOutput = splitMessage(outputData, {maxLength: 1900, char: "\u200b"});
+	await tempMessage.edit(codeBlock("asciidoc", splitOutput.shift()));
 	for (let chunk of splitOutput) {
-		await message.channel.send(Formatters.codeBlock("asciidoc", chunk.trim()));
+		await message.channel.send(codeBlock("asciidoc", chunk.trim()));
 	}
 }
 

@@ -1,5 +1,5 @@
 // module requires
-const { Formatters } = require("discord.js");
+const { codeBlock } = require("discord.js");
 const { AxiosEDSM } = require("../../../functionFiles/APICalls.js");
 const { checkForStations } = require('../../../functionFiles/helperFunctions');
 
@@ -14,7 +14,7 @@ exports.run = async (client, message, args) => {
 		// return back the data
 		return message.channel.send({content: `\`setup home list\` to show current data, \`setup home delete|remove\` to delete home data.\n` +
 			`Use this template as an input, removing the <> characters and if you do not fill in some bits, you can remove that line.\n` +
-			`${Formatters.codeBlock("json", JSON.stringify(template, null, "\t"))}`});
+			`${codeBlock("json", JSON.stringify(template, null, "\t"))}`});
     }
 
 	// get the currently stored data and edit it slightly
@@ -33,12 +33,12 @@ exports.run = async (client, message, args) => {
 		await client.serverData.set(`${message.guild.id}.home`, {system: null});
 		return message.reply({content: `Home data was removed.\nYou can use \`${client.prefix}setup home list\` to make sure, if it was not, contact my devs.\n\n` +
 			`If this was a mistake, use \`${client.prefix}setup home\`to set it again. I have the old data below:\n` +
-			`${Formatters.codeBlock("json", JSON.stringify(currentHomeData, null, "\t"))}`});
+			`${codeBlock("json", JSON.stringify(currentHomeData, null, "\t"))}`});
 	}
 
 	// check if we want to list the data we have
 	if (args[0].toLowerCase() === "list") {
-		return message.reply({content: `Current data found:\n${Formatters.codeBlock("json", JSON.stringify(currentHomeData, null, "\t"))}`});
+		return message.reply({content: `Current data found:\n${codeBlock("json", JSON.stringify(currentHomeData, null, "\t"))}`});
 	}
 
 	// send temp message

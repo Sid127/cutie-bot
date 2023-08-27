@@ -1,5 +1,5 @@
 // module requires
-const { Formatters } = require("discord.js");
+const { codeBlock } = require("discord.js");
 
 exports.run = async(client, message, args) => {
 	// check if args empty
@@ -25,7 +25,7 @@ exports.run = async(client, message, args) => {
 	let time = new Date(((lightyears * 9.75) + 300).toFixed(2) * 1000).toISOString().substr(11, 8);
 
 	// do send the calculated data back to the user
-	message.channel.send(Formatters.codeBlock("asciidoc",
+	message.channel.send(codeBlock("asciidoc",
 		`== Ship transfer time and cost estimates ==\n` +
 		`Distance :: ${lightyears.toLocaleString("en-CA")} Ly.\n` +
 		`Rebuy    :: ${shipRebuy.toLocaleString("en-CA")} Cr.\n\n` +

@@ -8,7 +8,7 @@ exports.run = async (client, message, args) => {
     return message.reply({content:"please mention a user to ban"});
 
   //handle the bot not having the ban permission
-  if (!message.guild.me.permissions.has("BAN_MEMBERS"))
+  if (!message.guild.me.permissions.has("BanMembers"))
     return message.reply({content:"I don't have the permission for this"});
 
   //grab offender metadata
@@ -16,7 +16,7 @@ exports.run = async (client, message, args) => {
 	const log = message.mentions.users.first().tag;
 
   //prevent self-moderation
-  if (banMember.permissions.has('VIEW_AUDIT_LOG') || banMember.permissions.has('ADMINISTRATOR')) return message.channel.send("I'm not banning them! They're powerful D:")
+  if (banMember.permissions.has('ViewAuditLog') || banMember.permissions.has('Administrator')) return message.channel.send("I'm not banning them! They're powerful D:")
 
   //this is the actual ban
   banMember.ban({reason: reason.join(" ")}).then(member => {

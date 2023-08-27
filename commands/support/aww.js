@@ -12,11 +12,14 @@ exports.run = async (clients, message, args) => {
 	message.channel.send({content: `http://imgur.com/${randomPost.hash}${randomPost.ext.replace(/\?.*/, '')}`});
 }
 
-exports.config = {
-	guildOnly: true,
-	aliases: [],
-	permLevel: "User",
-	name: "aww",
-	description: "Sends random media from r/aww to act as a distraction",
-	usage: []
-};
+// soft drop this command
+// TO-DO: fix it
+
+// exports.config = {
+// 	guildOnly: true,
+// 	aliases: [],
+// 	permLevel: "User",
+// 	name: "aww",
+// 	description: "Sends random media from r/aww to act as a distraction",
+// 	usage: []
+// };

@@ -1,5 +1,5 @@
 exports.run = async(client, message, args) => {
-    const { Client, MessageEmbed } = require('discord.js');
+    const { Client, EmbedBuilder } = require('discord.js');
 
 	// Set the current guild id as a var for later use
 	let guildID = message.guild.id;
@@ -36,7 +36,7 @@ exports.run = async(client, message, args) => {
 	if (split10.length === 0) return message.reply(`I've not seen enough users active here to need so many pages. (last page used is: ${Math.ceil(filtered.length / 10)})`);
 
     // Now shake it and show it! (as a nice embed, too!)
-    const embed = new MessageEmbed()
+    const embed = new EmbedBuilder()
         .setTitle("Leaderboard")
         .setAuthor({name: `${client.user.username}`})
         .setDescription(page === 1 ? "Top 10 point leaders!" : `Showing page: ${page}`)
@@ -46,7 +46,7 @@ exports.run = async(client, message, args) => {
     for (const [index, data] of split10.entries()) {
 		let member = message.guild.members.cache.get(data[0]);
 
-		embed.addField(`#${(10 * (page - 1)) + (index + 1)}: ${member.user.username}`, `${data[1][guildID].points} point${data[1][guildID].points === 1 ? "" : "s"} (level ${data[1][guildID].level})`);
+		embed.addFields({name: `#${(10 * (page - 1)) + (index + 1)}: ${member.user.username}`, value: `${data[1][guildID].points} point${data[1][guildID].points === 1 ? "" : "s"} (level ${data[1][guildID].level})`});
     }
 
     message.channel.send({embeds: [embed] });

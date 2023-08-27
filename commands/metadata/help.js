@@ -1,6 +1,6 @@
 // module requires
-const { Util, Formatters } = require("discord.js");
-const { capitalizeString, dynamicSort, capitalizeAll } = require("../../functionFiles/helperFunctions.js");
+const { codeBlock } = require("discord.js");
+const { capitalizeString, dynamicSort, capitalizeAll, splitMessage } = require("../../functionFiles/helperFunctions.js");
 
 exports.run = async (client, message, args) => {
 	// If no specific command is called, show all filtered commands.
@@ -12,9 +12,9 @@ exports.run = async (client, message, args) => {
 
 		// check what perms the user has and add to userAllowedCmds
 		if(message.guild) {
-			if (message.member.permissions.has('SEND_MESSAGES')) userAllowedCmds.push("User");
-			if (message.member.permissions.has('VIEW_AUDIT_LOG')) userAllowedCmds.push("modAssist", "User");
-			if (message.member.permissions.has('ADMINISTRATOR')) userAllowedCmds.push("serverAdmin", "modAssist", "User");
+			if (message.member.permissions.has('SendMessages')) userAllowedCmds.push("User");
+			if (message.member.permissions.has('ViewAuditLog')) userAllowedCmds.push("modAssist", "User");
+			if (message.member.permissions.has('Administrator')) userAllowedCmds.push("serverAdmin", "modAssist", "User");
 		}
 
 		// loop through the commands, checking that it's a guild only one and check if the user perms are enough to use the command (or is bot admin)
@@ -80,9 +80,9 @@ exports.run = async (client, message, args) => {
 				}
 			}
 		}
-		let splitOutput = Util.splitMessage(output, {maxLength: 1900, char: "\u200b"});
+		let splitOutput = splitMessage(output, {maxLength: 1900, char: "\u200b"});
 		for (let chunk of splitOutput) {
-			await message.channel.send(Formatters.codeBlock("asciidoc", chunk.trim()));
+			await message.channel.send(codeBlock("asciidoc", chunk.trim()));
 		}
 	} else {
 		// Show individual command's help.
@@ -97,7 +97,7 @@ exports.run = async (client, message, args) => {
 		if(command){
 			// if (level < client.levelCache[command.config.permLevel])
 			// 	return;
-			message.channel.send(Formatters.codeBlock('asciidoc',
+			message.channel.send(codeBlock('asciidoc',
 				`== ${capitalizeString(command.config.name)} == \n` +
 				`${command.config.description}\n` +
 				`usage   :: ${command.config.name} ${command.config.usage.join(`\n${" ".repeat(11) + command.config.name} `)}\n` +

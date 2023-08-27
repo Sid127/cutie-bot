@@ -1,5 +1,6 @@
 exports.run = async (client, message, args) => {
-	const { Util, Formatters } = require("discord.js");
+	const { codeBlock } = require("discord.js");
+	const { splitMessage } = require("../../functionFiles/helperFunctions.js")
 
 	// variables for different things used
 	let longestName = 0;
@@ -21,9 +22,9 @@ exports.run = async (client, message, args) => {
 		output += `${g.padEnd(longestName, " ")} :: ${guilds[g]}\n`
 	}
 
-	let splitOutput = Util.splitMessage(output, {maxLength: 1900, char: "\u200b"});
+	let splitOutput = splitMessage(output, {maxLength: 1900, char: "\u200b"});
 	for (let chunk of splitOutput) {
-		await message.channel.send(Formatters.codeBlock("asciidoc", chunk.trim()));
+		await message.channel.send(codeBlock("asciidoc", chunk.trim()));
 	}
 }
 

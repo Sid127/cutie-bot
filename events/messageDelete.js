@@ -1,7 +1,7 @@
 module.exports = {
     name: "messageDelete",
     async execute(message, client) {
-        const { MessageEmbed } = require("discord.js");
+        const { EmbedBuilder } = require("discord.js");
         if (!message.guild) return;
         const key = `${message.guild.id}`
 
@@ -12,18 +12,18 @@ module.exports = {
         if (message.content === null) return;
 
         if (message.attachments.size > 0) {
-            const embed = new MessageEmbed()
+            const embed = new EmbedBuilder()
                 .setColor(0xffd1dc)
-                .addField(`Message deleted in #${message.channel.name}`, `*An image/video was deleted*`)
-                .addField(`Message Author`, `${message.author} || 'Unknown D:'`)
+                .addFields([{name: `Message deleted in #${message.channel.name}`, value: `*An image/video was deleted*`},
+                            {name: `Message Author`, value: `${message.author} || 'Unknown D:'`}])
                 .setTimestamp();
             const sendChnl = await client.serverData.get(`${key}.logChnl`)
             client.channels.cache.get(sendChnl).send({embeds: [embed]})
         } else if (message.author.bot) {} else {
-            const embed = new MessageEmbed()
+            const embed = new EmbedBuilder()
                 .setColor(0xffd1dc)
-                .addField(`Message deleted in #${message.channel.name}`, `${message.content || 'Unknown D:'}`)
-                .addField(`Message Author`, `${message.author || 'Unknown D:'}`)
+                .addFields([{name: `Message deleted in #${message.channel.name}`, value: `${message.content || 'Unknown D:'}`},
+                            {name:`Message Author`, value:`${message.author || 'Unknown D:'}`}])
                 .setTimestamp();
             const sendChnl = await client.serverData.get(`${key}.logChnl`)
             client.channels.cache.get(sendChnl).send({embeds: [embed]})

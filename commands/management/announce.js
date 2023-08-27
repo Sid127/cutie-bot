@@ -1,5 +1,5 @@
 exports.run = (client, message, args) => {
-  const { Client, MessageEmbed } = require('discord.js');
+  const { Client, EmbedBuilder } = require('discord.js');
 
   let [param, ...announcement] = args.split(" ")
  
@@ -10,14 +10,14 @@ exports.run = (client, message, args) => {
     let announce = announcement.join(" ")
     let space = announce.indexOf(' ')
     let msg = announce.slice(space, announce.length)
-    const embed = new MessageEmbed()
+    const embed = new EmbedBuilder()
       .setColor(0xffd1dc)
       .setDescription(`${msg}`)
       .setTimestamp();
 
     message.guild.channels.cache.get(channel.id).send({content: `@everyone`, embeds: [embed]})
   } else {
-    const embed = new MessageEmbed()
+    const embed = new EmbedBuilder()
       .setColor(0xffd1dc)
       .setDescription(`${announcement.join(" ")}`)
       .setTimestamp();

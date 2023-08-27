@@ -10,8 +10,6 @@ module.exports = {
 			enabledModules: ["management", "moderation", "metadata", "support"],
             customCommands: {},
             home: {system: null},
-            hiddenRoles: [],
-            blacklistPfx: [],
 			reactionRoles: {}
         });
 

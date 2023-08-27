@@ -1,5 +1,5 @@
 // module requires
-const { Formatters } = require("discord.js");
+const { codeBlock } = require("discord.js");
 const { capitalizeAll } = require("../../functionFiles/helperFunctions.js");
 
 exports.run = async (client, message, args) => {
@@ -32,7 +32,7 @@ exports.run = async (client, message, args) => {
 			let disabledModules = modules.filter(name => (alwaysActiveModules.includes(name) || enabledModules.includes(name) ? false : true));
 
 			// return message showing all modules
-            return message.channel.send(Formatters.codeBlock("asciidoc",
+            return message.channel.send(codeBlock("asciidoc",
 				`== I have quite a few modules... ==\n\n` +
 				`Always enabled modules ::\n${alwaysActiveModules.map(item => capitalizeAll(item)).join("\n")}\n\n` +
 				`${enabledModules.length === 0 ? `= No other modules are enabled right now. =` : `Enabled modules ::\n${enabledModules.map(item => capitalizeAll(item)).sort().join("\n")}`}\n\n` +
@@ -53,7 +53,7 @@ exports.run = async (client, message, args) => {
 
 			// message if no commands found in category
             if (commands.length === 0) return message.channel.send("What. the. hell. do you want from me ;-;\nI don't know of such a categry")
-            return message.channel.send(Formatters.codeBlock("asciidoc",
+            return message.channel.send(codeBlock("asciidoc",
 				`== Here's all the commands in the ${capitalizeAll(moduleInput)} module ==\n\n` +
 				`${commands.map(item => `${item.config.name.padEnd(longestName, " ")} :: ${item.config.description}`).join("\n")}`
 			));

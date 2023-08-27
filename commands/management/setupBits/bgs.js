@@ -1,5 +1,5 @@
 exports.run = async (client, message, args) => {
-    const { MessageEmbed } = require("discord.js")
+    const { EmbedBuilder } = require("discord.js")
 
     if(args[0] === "off") {
         await client.serverData.set(`${message.guild.id}.bgsChnl`, null);
@@ -15,7 +15,7 @@ exports.run = async (client, message, args) => {
     await client.serverData.set(`${message.guild.id}.bgsChnl`, bgsChnl);
 
     //send a confirmation
-    let embed = new MessageEmbed()
+    let embed = new EmbedBuilder()
         .setColor(0xffd1dc)
         .setDescription(`BGS Tick detector set to <#${channel.id}>.`)
     message.channel.send({embeds:[embed]})

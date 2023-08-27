@@ -1,6 +1,6 @@
 // module requires
 const moment = require("moment");
-const { Formatters } = require("discord.js");
+const { codeBlock } = require("discord.js");
 
 // our own api caller file
 const { AxiosEBGS } = require("../../functionFiles/APICalls.js");
@@ -101,7 +101,7 @@ exports.run = async(client, message, args) => {
 
 	// send the message
 	tempMessage.edit({
-		content: Formatters.codeBlock("asciidoc", outputData.trim()),
+		content: codeBlock("asciidoc", outputData.trim()),
 		files: !specialTag ? [{ attachment: systemChart, name: "file.png" }] : []
 	});
 };

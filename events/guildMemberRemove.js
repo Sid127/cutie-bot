@@ -1,7 +1,7 @@
 module.exports = {
     name: "guildMemberRemove",
     async execute(member, client) {
-        const { MessageEmbed } = require("discord.js");
+        const { EmbedBuilder } = require("discord.js");
 
         const key = `${member.guild.id}`
 
@@ -11,7 +11,7 @@ module.exports = {
 
         if (await client.serverData.get(`${key}.logChnl`) === null) return;
         
-        const embed = new MessageEmbed()
+        const embed = new EmbedBuilder()
             .setColor(0xffd1dc)
             .setDescription(`${member.user} left the server`)
             .setTimestamp();

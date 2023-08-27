@@ -1,13 +1,13 @@
 exports.run = async(client, message, args) => {
-	const { Client, MessageEmbed } = require('discord.js');
+	const { Client, EmbedBuilder } = require('discord.js');
 
-	const embed = new MessageEmbed()
+	const embed = new EmbedBuilder()
 	.setColor(0xffd1dc)
 	.setTitle(`List of active feeds`)
 	let feeds = await client.serverData.get("feeds")
 	for(feed of Object.keys(feeds)) {
 		if(Object.keys(feeds[feed]).includes(message.guild.id)){
-			embed.addField(`${feeds[feed].niceName}`, `ID: ${feed}\nLatest post: ${feeds[feed]["latest"]}`)
+			embed.addFields([{name: `${feeds[feed].niceName}`, value: `ID: ${feed}\nLatest post: ${feeds[feed]["latest"]}`}])
 		}
 	}
 

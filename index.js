@@ -1,11 +1,13 @@
-const {Client, Intents} = require("discord.js");
+const {Client, GatewayIntentBits, Partials} = require("discord.js");
 const Josh = require("@joshdb/core");
 const provider = require("@joshdb/mongo");
 const fs = require("fs");
 
-const myIntents = new Intents();
-myIntents.add(Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_BANS, Intents.FLAGS.GUILD_MESSAGE_REACTIONS, Intents.FLAGS.GUILD_PRESENCES, Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.DIRECT_MESSAGES, Intents.FLAGS.GUILD_SCHEDULED_EVENTS);
-const client = new Client({ partials: ["MESSAGE", "USER", "REACTION", "CHANNEL"], intents: myIntents});
+// set the Discord intents and partials
+const myIntents = [GatewayIntentBits.Guilds, GatewayIntentBits.GuildPresences, GatewayIntentBits.GuildScheduledEvents, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMessageReactions, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildBans, GatewayIntentBits.DirectMessages, GatewayIntentBits.MessageContent];
+const myPartials = [Partials.Channel, Partials.Message, Partials.User, Partials.Reaction];
+
+const client = new Client({ partials: myPartials, intents: myIntents});
 const config = require("./config.json");
 
 // note: some hardcoded stuff remains in places where mongo ensures are performed
@@ -69,9 +71,7 @@ loadCommand = (categoryName, commandName) => {
 
 // Here we load **commands** into memory, as a collection, so they're accessible
 // here and everywhere else.
-const {
-	promisify
-} = require("util");
+const { promisify } = require("util");
 const readdir = promisify(require("fs").readdir);
 
 const init = async() => {

@@ -1,5 +1,5 @@
 exports.run = async(client, message, args) => {
-	const { MessageEmbed } = require("discord.js")
+	const { EmbedBuilder } = require("discord.js")
     let [param, ...arguments] = args.split(" ")
 
 	//code to delete a reaction role
@@ -21,12 +21,12 @@ exports.run = async(client, message, args) => {
 		if (client.cache[message.guild.id]["reactionRoles"].length === 0){
 			return message.channel.send("https://tenor.com/view/nothingtosee-disperse-casual-explosion-gif-4545906")
 		}
-		let embed = new MessageEmbed()
-			.setColor('RANDOM')
+		let embed = new EmbedBuilder()
+			.setColor('Random')
 			.setTitle("List of active reaction role menus")
 		for (menu of client.cache[message.guild.id]["reactionRoles"]){
 			header = await client.serverData.get(`${message.guild.id}.reactionRoles.${menu}.header`)
-			embed.addField(header, menu)
+			embed.addFields({name: header, value: menu})
 		}
 		message.channel.send({embeds: [embed]})
 	}
@@ -42,8 +42,8 @@ exports.run = async(client, message, args) => {
 			"header": header,
 			"mode": "multi"
 			}
-		let embed = new MessageEmbed()
-	        .setColor('RANDOM')
+		let embed = new EmbedBuilder()
+	        .setColor('Random')
 			.setTitle(header)
 		let embedDescription = ""
 
@@ -114,8 +114,8 @@ exports.run = async(client, message, args) => {
 		let newMenu = {"header": header}
 		newMenu["mode"] = currentMenu["mode"]
 
-		let embed = new MessageEmbed()
-			.setColor('RANDOM')
+		let embed = new EmbedBuilder()
+			.setColor('Random')
 			.setTitle(header)
 		let embedDescription = ""
 

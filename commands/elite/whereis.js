@@ -1,6 +1,6 @@
 // module requires
 const moment = require("moment");
-const { Formatters } = require("discord.js");
+const { codeBlock } = require("discord.js");
 
 // our own api caller file and helper functions
 const { AxiosEDSM } = require("../../functionFiles/APICalls.js");
@@ -60,7 +60,7 @@ exports.run = async(client, message, args) => { // eslint-disable-line no-unused
 					dataRes += `\n\n * No data about reference (${refSystem}) system found *`
 				}
 
-				tempMessage.edit(Formatters.codeBlock('asciidoc', dataRes));
+				tempMessage.edit(codeBlock('asciidoc', dataRes));
 			} else { // .systems is missing, so most likely profile is private
 				tempMessage.edit(`Looks like CMDR \`${cmdrName.replace(/\`/g, "")}\` has their EDSM profile set to "Private"`);
 			}

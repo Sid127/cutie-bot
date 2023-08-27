@@ -32,42 +32,6 @@ const dynamicSort = (property) => {
     }
 }
 
-// modular function to get data from mongodb
-const mongoGet = async (client, dbKey, valueKeys, collection) => {
-	returnMap = new Map()
-	if (collection === "people"){
-		for (k of valueKeys){
-			returnMap.set(k, await client.peopleData.get(`${dbKey}.${k}`))
-		}
-	} else if (collection === "server"){
-		for (k of valueKeys){
-			data = await client.serverData.get(`${dbKey}.${k}`)
-			returnMap.set(k, data)
-		}
-	}
-	return returnMap
-}
-
-// function to return a collection/map of whitelisted roles a user has
-const blacklistChck = async(blacklistMap, mmbrRolesCache) => {
-	prefixes = blacklistMap.get('blacklistPfx')
-	roles = blacklistMap.get('hiddenRoles')
-
-	if(prefixes.length === 0){
-		return mmbrRolesCache.filter(r => r.id !== r.guild.id && (roles && !roles.includes(r.id)))
-	} else {
-		// regex constructor to create match string for prefixes
-		matchString = []
-		for (pfx of prefixes){
-			//regex to check if starting is alphanumeric
-			pfx.match(/^[a-z0-9]+$/i) ? matchString.push(pfx) : matchString.push(`\\${pfx}`)
-		}
-		matchString = matchString.join("|")
-
-		return mmbrRolesCache.filter(r => r.id !== r.guild.id && (roles && !roles.includes(r.id)) && !r.name.match(`${matchString}.*`))
-	}
-}
-
 const checkForStations = (serviceSystem, serviceName, homeCoords, serviceCoords) => {
 	if (serviceSystem !== undefined) {
 		for (station of serviceSystem.stations) {
@@ -86,4 +50,42 @@ const checkForStations = (serviceSystem, serviceName, homeCoords, serviceCoords)
 	}
 }
 
-module.exports = {distanceCalc, capitalizeString, capitalizeAll, dynamicSort, mongoGet, blacklistChck, checkForStations}
+// function to find and split the message leaving as close to maxLength in one "block"
+const splitMessage = (text, { maxLength = 1750, char = '\u200b'} = {}) => {
+	// check if test is shorter than maxLength given, then just return it back in an array
+	if (text.length < maxLength) return [text];
+
+	// check if maxLength is more than 2000, if so, throw error
+	if (maxLength > 2000) throw new Error("maxLength more than 2000 characters.");
+
+	// split up the whole message by the separator char, filter out empty elements
+	const splitText = text.trim().split(char).filter(elem => elem.trim().length > 0);
+
+	// check if there are chunks longer than maxLength, if so, error out
+	if (splitText.some(elem => elem.length > maxLength)) throw new Error(`Found chunks longer than maxLength of: "${maxLength}"`);
+
+	// create two variables, one array for holding all the return chunks, the other for holding the stiched together part
+	let returnChunks = [];
+	let stichedChunk = "";
+
+	// loop over all the splitText chunks, stich together enough of those to go over maxLength
+	for (const chunk of splitText) {
+		// check if adding the chunk to stichedChunk would go over maxLength chars, if so, add currently stored chunk to return
+		if (stichedChunk && (stichedChunk + char + chunk).length > maxLength) {
+			// add to return array and create new stichedChunk empty string
+			returnChunks.push(stichedChunk);
+			stichedChunk = "";
+		}
+
+		// add in the current chunk to stichedChunk, and add in char if not empty
+		stichedChunk += (stichedChunk && stichedChunk.lenght !== 0 ? char : "") + chunk;
+	}
+
+	// add in the last bit by pushing it on as last
+	returnChunks.push(stichedChunk);
+
+	// return the final things back
+	return returnChunks;
+}
+
+module.exports = {distanceCalc, capitalizeString, capitalizeAll, dynamicSort, checkForStations, splitMessage}

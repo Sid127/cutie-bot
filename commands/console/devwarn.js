@@ -1,10 +1,10 @@
 exports.run = async(client, message, args) => {
-    const { Client, MessageEmbed } = require('discord.js');
+    const { Client, EmbedBuilder } = require('discord.js');
     
     let [srvr, ...mail] = args.split(" ")
     
     //put the anon message in a neat little embed
-    const embed = new MessageEmbed()
+    const embed = new EmbedBuilder()
         .setColor(0xffd1dc)
         .setTitle("Support Server")
         .setThumbnail(message.guild.me.avatarURL())

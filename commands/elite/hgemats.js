@@ -1,5 +1,5 @@
 // module requires
-const { Formatters } = require("discord.js");
+const { codeBlock } = require("discord.js");
 const { AxiosSpansh, AxiosEDSM } = require("../../functionFiles/APICalls.js");
 const { capitalizeAll } = require("../../functionFiles/helperFunctions.js");
 
@@ -37,7 +37,7 @@ exports.run = async(client, message, args) => {
 				`State      :: ${mat.state == "War" ? "War or Civil war" : mat.state}\n`
 			);
 		}
-		return message.channel.send(Formatters.codeBlock("asciidoc", output));
+		return message.channel.send(codeBlock("asciidoc", output));
 	}
 
 	// check if the specified material is in the list, if not, give a response
@@ -115,7 +115,7 @@ exports.run = async(client, message, args) => {
 	}
 
 	// and at the end let the user know
-	return tempMessage.edit(Formatters.codeBlock("asciidoc", outputData));
+	return tempMessage.edit(codeBlock("asciidoc", outputData));
 }
 
 exports.config = {

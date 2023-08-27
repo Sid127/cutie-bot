@@ -1,7 +1,7 @@
 module.exports = {
     name: "messageUpdate",
     async execute(oldMessage, newMessage, client) {
-        const { MessageEmbed } = require("discord.js");
+        const { EmbedBuilder } = require("discord.js");
 
         if (!oldMessage.guild) return;
         if (oldMessage.partial) return;
@@ -9,12 +9,14 @@ module.exports = {
         if (oldMessage.content === newMessage.content) return;
 
         const key = `${oldMessage.guild.id}`
-        const embed = new MessageEmbed()
+        const embed = new EmbedBuilder()
             .setColor(0xffd1dc)
             .setTitle(`Message updated in #${oldMessage.channel.name}`)
-            .addField(`Message Author`, `${oldMessage.author}`)
-            .addField(`Old Message`, oldMessage.content)
-            .addField(`New Message`, newMessage.content)
+            .addFields([
+                {name: `Message Author`, value: `${oldMessage.author}`},
+                {name: `Old Message`, value: oldMessage.content},
+                {name: `New Message`, value: newMessage.content
+            }])
             .setTimestamp()
 
         if (await !client.serverData.has(`${key}`)) return;

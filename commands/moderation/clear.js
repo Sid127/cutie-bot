@@ -1,5 +1,5 @@
 exports.run = async(client, message, args) => {
-    const { MessageEmbed } = require("discord.js");
+    const { EmbedBuilder } = require("discord.js");
 
     const amount = parseInt(args); // Amount of messages which should be deleted
 
@@ -22,10 +22,10 @@ exports.run = async(client, message, args) => {
     const sendChnl = await client.serverData.get(`${key}.logChnl`)
 
     if(!sendChnl) {} else {
-        const embed = new MessageEmbed()
+        const embed = new EmbedBuilder()
             .setColor(0xffd1dc)
-            .addField(`${amount} messages deleted in #${message.channel.name}`)
-            .addField(`Purge initiated by`, `${message.author || 'Unknown D:'}`)
+            .setTitle(`${amount} messages deleted in #${message.channel.name}`)
+            .addFields({name: `Purge initiated by`, value: `${message.author || 'Unknown D:'}`})
             .setTimestamp();
     
         client.channels.cache.get(sendChnl).send({embeds: [embed]})

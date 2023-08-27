@@ -1,19 +1,21 @@
 exports.run = async (client, message, args) => {
+	const { splitMessage } = require("../../functionFiles/helperFunctions.js")
+
 	// get the data from the message
     let [action, trigger, ...response] = args.split(" ");
 
 	// check if we have list, which everyone can use
 	if (action.toLowerCase().trim() === "list" || !action.trim()) {
-		const { Formatters, Util } = require("discord.js");
+		const { codeBlock } = require("discord.js");
 
 		// build the "header" for the message, and add on all customs found sorted by name
 		let output = `= Here's a list of all the custom commands on this server: =\n\n` +
 		`${client.cache[message.guild.id].cc.sort().join("\n")}`
 
 		// split the output if longer than 1900 chars, to get around the message length limit
-		let splitOutput = Util.splitMessage(output, {maxLength: 1900, char: "\n"});
+		let splitOutput = splitMessage(output, {maxLength: 1900, char: "\n"});
 		for (let chunk of splitOutput) {
-			await message.channel.send(Formatters.codeBlock("asciidoc", chunk.trim()));
+			await message.channel.send(codeBlock("asciidoc", chunk.trim()));
 		}
 
 		// just return to not continue doing anything else
@@ -21,7 +23,7 @@ exports.run = async (client, message, args) => {
 	}
 
 	// if we're here the action was not empty and isn't list, check if the user has right perms first
-	if (message.member.permissions.has('VIEW_AUDIT_LOG' || 'ADMINISTRATOR') || client.hardcoded.botAdmin.includes(message.author.id)) {
+	if (message.member.permissions.has('ViewAuditLog' || 'Administrator') || client.hardcoded.botAdmin.includes(message.author.id)) {
 		// combine the response back to one thing and trim out extra whitespace
 		response = response.join(" ").trim();
 

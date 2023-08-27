@@ -1,7 +1,7 @@
 module.exports = {
     name: "guildMemberAdd",
     async execute(member, client) {
-        const { MessageEmbed } = require("discord.js");
+        const { EmbedBuilder } = require("discord.js");
         let roles = await client.serverData.get(`${member.guild.id}.autoRole`)
         if (!roles){} else{
             for (role of roles){
@@ -11,7 +11,7 @@ module.exports = {
 
         const key = `${member.guild.id}`
 
-        const embed = new MessageEmbed()
+        const embed = new EmbedBuilder()
             .setColor(0xffd1dc)
             .setDescription(`${member.user} joined the server`)
             .setTimestamp();

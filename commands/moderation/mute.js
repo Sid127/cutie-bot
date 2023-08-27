@@ -6,7 +6,7 @@ exports.run = (client, message, args) => {
     const muteMember = message.mentions.members.first();
 
 	//prevent self-moderation
-	if (muteMember.permissions.has('VIEW_AUDIT_LOG') || muteMember.permissions.has('ADMINISTRATOR')) return message.channel.send("I'm not muting them! They're powerful D:")
+	if (muteMember.permissions.has('ViewAuditLog') || muteMember.permissions.has('Administrator')) return message.channel.send("I'm not muting them! They're powerful D:")
 
 	//apply timeout
     muteMember.timeout(604800000, args).catch(console.error);

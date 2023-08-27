@@ -1,5 +1,5 @@
 exports.run = async (client, message, args) => {
-    const { MessageEmbed } = require("discord.js")
+    const { EmbedBuilder } = require("discord.js")
 
     if(args[0] === "off") {
         await client.serverData.set(`${message.guild.id}.anonChnl`, null);
@@ -15,7 +15,7 @@ exports.run = async (client, message, args) => {
     await client.serverData.set(`${message.guild.id}.anonChnl`, confessChnl);
 
     // confirm it to the user with usage example
-    let embed = new MessageEmbed()
+    let embed = new EmbedBuilder()
         .setColor(0xffd1dc)
         .setDescription(`Anonymous channel set to <#${channel.id}>. DM me a message like this:\n\n ${client.config.prefix} anon ${message.guild.id} [message]`)
     client.channels.cache.get(confessChnl).send({embeds: [embed]})
