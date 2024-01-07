@@ -107,7 +107,7 @@ module.exports = {
                 cmd.run(client, message, args);
             }
         } else if (cmd.config.permLevel === "serverAdmin"){
-            if (!message.member.permissions.has('Administrator'))
+            if (!message.member.permissions.has('Administrator') && (command !== "ban" || command !== "kick"))
                 return message.reply({content:"you can't use this command."});
             else {
                 cmd.run(client, message, args);

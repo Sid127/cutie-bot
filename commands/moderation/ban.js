@@ -3,6 +3,10 @@ exports.run = async (client, message, args) => {
 
   let [mention, ...reason] = args.split(" ")
 
+  //check ban perm
+  if (!message.member.permissions.has('BanMembers'))
+    return message.reply({content:"you can't use this command."});
+
   //handle there not being a mentioned member
   if (message.mentions.members.size === 0)
     memberUID = message.guild.members.cache.get(mention);

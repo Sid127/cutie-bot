@@ -3,9 +3,15 @@ exports.run = async (client, message, args) => {
 
   let [mention, ...reason] = args.split(" ")
 
+  //check ban perm
+  if (!message.member.permissions.has('KickMembers'))
+    return message.reply({content:"you can't use this command."});
+
   //handle there not being a mentioned member
   if (message.mentions.members.size === 0)
-    return message.reply({content:"please mention a user to kick"});
+    memberUID = message.guild.members.cache.get(mention);
+    if (!memberUID)
+      return message.reply({content:"please mention a user to ban"});
 
   //handle the bot not having the required permission
   if (!message.guild.me.permissions.has("KickMembers"))
