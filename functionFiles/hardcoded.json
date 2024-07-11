@@ -1,5 +1,5 @@
 {
-	"botAdmin": ["319391726613823489", "283607841779089409"],
+	"botAdmin": ["319391726613823489", "283607841779089409", "567664739845537795"],
 	"logDumpChnl": "935580808842977340",
 	"defaultEnabledModules": ["management", "moderation", "metadata", "support"],
 	"ticketEmoji": "🎫",
