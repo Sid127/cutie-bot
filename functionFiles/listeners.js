@@ -84,7 +84,7 @@ bdayChck = async (client) => {
                     if (moment().tz(ident[1]['timezone']).format('MM-DD') === ident[1]['date'] || moment().tz(ident[1]['timezone']).format('MM-D') === ident[1]['date']) {
                         // set role and send message
                         if (!birthdayFolk.roles.cache.get(birthdayRole)) {
-                            if(server.roles.cache.get(birthdayRole).position > server.me.roles.highest.position) continue;
+                            if(server.roles.cache.get(birthdayRole).position > server.members.me.roles.highest.position) continue;
                             birthdayFolk.roles.add(birthdayRole);
                             try{
                                 await client.channels.cache.get(msgChannel).send(`Happy Birthday, <@${ident[0]}>`)

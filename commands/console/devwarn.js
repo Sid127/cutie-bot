@@ -7,7 +7,7 @@ exports.run = async(client, message, args) => {
     const embed = new EmbedBuilder()
         .setColor(0xffd1dc)
         .setTitle("Support Server")
-        .setThumbnail(message.guild.me.avatarURL())
+        .setThumbnail(message.guild.members.me.avatarURL())
         .setDescription(`${mail.join(" ")}`)
         .setURL("https://discord.gg/pDrmgrY2tK")
         .setFooter({text: "This is not an auto-generated message, but replies are not being monitored. For any questions, contact us at our support server"});

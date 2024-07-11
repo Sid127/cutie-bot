@@ -14,7 +14,7 @@ exports.run = async (client, message, args) => {
       return message.reply({content:"please mention a user to ban"});
 
   //handle the bot not having the required permission
-  if (!message.guild.me.permissions.has("KickMembers"))
+  if (!message.guild.members.me.permissions.has("KickMembers"))
     return message.reply({content:"I don't have the permission for this"});
 
   //grab offender metadata

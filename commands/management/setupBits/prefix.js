@@ -3,14 +3,14 @@ exports.run = async (client, message, args) => {
     if(args[0] === client.config.prefix){
         client.cache[message.guild.id].prefix = "" //update our local cache
         await client.serverData.set(`${message.guild.id}.prefix`, "")//update mongo
-        let nick = message.guild.me.displayName.replace(/ *\[[^\]]*]/, '')
-        message.guild.me.setNickname(`${nick}`)
+        let nick = message.guild.members.me.displayName.replace(/ *\[[^\]]*]/, '')
+        message.guild.members.me.setNickname(`${nick}`)
         message.channel.send(`Done! New server prefix is \`${args[0]}\``)
     } else {
         client.cache[message.guild.id].prefix = args[0] //update our local cache
         await client.serverData.set(`${message.guild.id}.prefix`, args[0])//update mongo
-        let nick = message.guild.me.displayName.replace(/ *\[[^\]]*]/, '')
-        message.guild.me.setNickname(`${nick} [${args[0]}]`)
+        let nick = message.guild.members.me.displayName.replace(/ *\[[^\]]*]/, '')
+        message.guild.members.me.setNickname(`${nick} [${args[0]}]`)
         message.channel.send(`Done! New server prefix is \`${args[0]}\``)
     }
 }
