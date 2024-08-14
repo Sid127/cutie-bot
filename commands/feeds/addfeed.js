@@ -9,9 +9,10 @@ exports.run = async(client, message, args) => {
     let [param, chnl, link] = args.split(" ")
     if (!message.mentions.channels.first()) return message.channel.send("Okay, but what channel do you want me to post to?")
     link = link.replace(/\/$/, "") //remove trailing slash
+    param = param.toLowerCase().trim()
 
     //parse the command and construct various metadata
-    switch (param.toLowerCase().trim()){
+    switch (param){
         case "steam": {
             if (!link.includes("store.steampowered.com")) return message.reply("Please give me a steam store page link :(")
             

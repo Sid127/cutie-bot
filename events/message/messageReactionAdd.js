@@ -1,7 +1,7 @@
 module.exports = {
   name: "messageReactionAdd",
   async execute(reaction, user, client) {
-    const { PermissionsBitField, EmbedBuilder } = require("discord.js");
+    const { PermissionsBitField, EmbedBuilder, ChannelType } = require("discord.js");
 
     if(reaction.message.channel.type === 'DM') return;
     if(user.partial) await user.fetch();
@@ -41,15 +41,15 @@ module.exports = {
 
 	  if(reaction.message.channel.id == ticketid && reaction.emoji.name == client.hardcoded.ticketEmoji) {
 	      reaction.users.remove(user);
-	      reaction.message.guild.channels.create(`ticket-${user.username}`, {
+	      reaction.message.guild.channels.create({
+			name: `ticket-${user.username}`,
 	        parent: `${reaction.message.channel.parentId}`,
-	        type: 'text'
+	        type: ChannelType.GuildText,
+			permissionOverwrites: [{
+				id: mmbr.id,
+				allow: [PermissionsBitField.Flags.ViewChannel, PermissionsBitField.Flags.SendMessages]
+			}]
 	      }).then(channel => {
-	          //update ticket channel permissions
-	          channel.permissionOverwrites.set([{
-	            id: mmbr.id,
-	            allow: [PermissionsBitField.Flags.ViewChannel, PermissionsBitField.Flags.SendMessages]
-	          }])
 	          let embed= new EmbedBuilder().setTitle("Welcome to your ticket!").setDescription(`Thanks for trying out our ticket support system. You've opened a ticket, which creates this channel that will last as long as you need it to. When your support conversation is done, please use the command \`${client.prefix} close\` to close the channel.`).setColor(0xffd1dc)
 	          channel.send({embeds:[embed]})
 			  channel.lockPermissions()
