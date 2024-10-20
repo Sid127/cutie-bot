@@ -10,7 +10,7 @@ exports.run = async(client, message) => {
     let embed = new EmbedBuilder()
         .setAuthor({name: message.guild.name, iconURL: message.guild.iconURL()})
         .setColor('Random')
-		.setFields([{
+		.addFields([{
 			name: "**Home Data:**",
 			value: `**System:** ${homeInfo.system ? `[${homeInfo.system}](${(homeInfo.system && homeInfo.systemID) ? encodeURI(`https://www.edsm.net/en/system/id/${homeInfo.systemID}/name/${homeInfo.system}`) : ""})` : "Unkown"}\n` +
 				`**Station:** ${homeInfo.station ? `[${homeInfo.station}](${(homeInfo.system && homeInfo.systemID && homeInfo.station && homeInfo.stationID) ? encodeURI(`https://www.edsm.net/en/system/stations/id/${homeInfo.systemID}/name/${homeInfo.system}/details/idS/${homeInfo.stationID}/nameS/${homeInfo.station}`) : ""})` : "Unkown"}\n` +
@@ -18,7 +18,7 @@ exports.run = async(client, message) => {
 		}, {
 			name: "\u200B", value: "\u200B"
 		}])
-		.setImage(homeInfo.homeImageURL ? homeInfo.homeImageURL : "")
+		.setImage(homeInfo.homeImageURL ? homeInfo.homeImageURL : null)
 		.setFooter({text: "All links go to EDSM"});
 
     //add additional data if found
@@ -34,8 +34,8 @@ exports.run = async(client, message) => {
 		if (fieldType) {
 			let inputString = `**${fieldType === "Other:" ? value.fullName : value.fullName.split(" ")[0]}**: ${value.system}, [${value.station}](${(value.system && value.systemID && value.station && value.stationID) ? encodeURI(`https://edsm.net/en/system/stations/id/${value.systemID}/name/${value.system}/details/idS/${value.stationID}/nameS/${value.station}`) : ""}), ${value.distanceToArrival.toFixed(1)} Ls, ${value.distanceHome} Ly`
 
-			let foundFieldIndex = embed.fields.findIndex(elem => elem.name.includes(fieldType));
-			foundFieldIndex === -1 ? embed.addField(fieldType, inputString) : embed.fields[foundFieldIndex].value += `\n${inputString}`
+			let foundFieldIndex = embed.data.fields.findIndex(elem => elem.name.includes(fieldType));
+			foundFieldIndex === -1 ? embed.addFields({ name: fieldType, value: inputString}) : embed.data.fields[foundFieldIndex].value += `\n${inputString}`
 		}
 	}
 
