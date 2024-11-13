@@ -1,6 +1,6 @@
 module.exports = {
 	name: "messageReactionRemove",
-	async execute(reaction, user, client) {
+	async execute(reaction, user, superReact, client) {
 		if(reaction.message.channel.type === 'DM') return;
 		if(user.partial) await user.fetch();
 		if(reaction.partial) await reaction.fetch();

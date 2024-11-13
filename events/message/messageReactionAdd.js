@@ -1,6 +1,6 @@
 module.exports = {
   name: "messageReactionAdd",
-  async execute(reaction, user, client) {
+  async execute(reaction, user, superReact, client) {
     const { PermissionsBitField, EmbedBuilder, ChannelType } = require("discord.js");
 
     if(reaction.message.channel.type === 'DM') return;
