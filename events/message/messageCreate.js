@@ -4,6 +4,11 @@ module.exports = {
         // Ignore all bots
         if (message.author.bot) return;
 
+        if (!client.cache.tick) {
+            console.log('Waiting for cache before processing message');
+            await new Promise(resolve => setTimeout(resolve, 2500));
+        }
+
         //define prefix
         message.guild ? (client.cache[message.guild.id].prefix === "" ? client.prefix = client.config.prefix : client.prefix = client.cache[message.guild.id].prefix) : client.prefix = client.config.prefix
 

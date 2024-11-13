@@ -1,6 +1,10 @@
 module.exports = {
     name: "guildCreate",
     async execute(guild, client) {
+        if (!client.cache.tick) {
+            console.log('Waiting for cache before processing message');
+            await new Promise(resolve => setTimeout(resolve, 2500));
+        }
         await client.serverData.ensure(`${guild.id}`, {
             guild: guild.id,
             anonChnl: null,

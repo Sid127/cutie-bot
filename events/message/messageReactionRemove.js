@@ -11,6 +11,11 @@ module.exports = {
 
 		let reactionMenu = `${reaction.message.channel.id}/${reaction.message.id}`
 
+        if (!client.cache.tick) {
+            console.log('Waiting for cache before processing message');
+            await new Promise(resolve => setTimeout(resolve, 2500));
+        }
+
 		if(client.cache[reaction.message.guild.id].reactionRoles.includes(reactionMenu)){
 			let reactions = await client.serverData.get(`${reaction.message.guild.id}.reactionRoles.${reactionMenu}`)
 			for (key of Object.keys(reactions)){
