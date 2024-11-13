@@ -7,8 +7,8 @@ module.exports = {
             status: 'online',
             activities: [{
                 name: "you | qt help",
-                type: "WATCHING",
-                url: "https://www.youtube.com/watch?v=bxqLsrlakK8"
+                type: 3,
+                url: "https://www.youtube.com/watch?v=yKQ_sQKBASM"
             }]
         });
 

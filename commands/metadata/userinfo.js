@@ -4,10 +4,12 @@ const status = {
 	idle: "Idle",
 	dnd: "Do Not Disturb",
 	offline: "Offline/Invisible",
-	PLAYING: "Playing",
-	STREAMING: "Streaming",
-	LISTENING: "Listening to",
-	WATCHING: "Watching"
+	0: "Playing",
+	1: "Streaming",
+	2: "Listening",
+	3: "Watching",
+	4: "Custom",
+	5: "Competing"
 };
 
 exports.run = async (client, message) => {
@@ -31,7 +33,7 @@ exports.run = async (client, message) => {
 
 	// create activities object if available
 	if (member.presence) {
-		let activities = member.presence.activities.filter(elem => elem.type.toLowerCase() !== "custom")
+		let activities = member.presence.activities.filter(elem => elem.type !== 4)
 		for (activity of activities) {
 			activity !== undefined ? embed.addFields({ name: status[activity.type], value: `${activity.name}\n\`${activity.details}\n${activity.state}\``, inline: true}) : {}
 		}
