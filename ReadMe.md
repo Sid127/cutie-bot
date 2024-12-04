@@ -11,15 +11,15 @@ Feel free to fork the repo and modify code according to your requirements.
 ```
 {
     "token": "<yourToken>",
-    "prefix": "<yourPrefix>",
-    "mongoURL": "<mongoAuthUrl"
+    "clientId": "<yourApplicationID>",
+    "mongoURL": "<mongoAuthUrl>"
 }
 ```
 
 - Run the following command
 
 ```
-npm ci
+npm install
 ```
 
 - Run this final command to get the bot online

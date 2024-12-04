@@ -1,4 +1,4 @@
-const {Client, GatewayIntentBits, Partials} = require("discord.js");
+const {Client, Collection, GatewayIntentBits, Partials, REST, Routes} = require("discord.js");
 const Josh = require("@joshdb/core");
 const provider = require("@joshdb/mongo");
 const fs = require("fs");
@@ -41,6 +41,7 @@ client.peopleData = new Josh({
 let eventFiles = fs.readdirSync('./events');
 eventFiles = eventFiles.concat(fs.readdirSync('./events/guild').map(elem => `guild/${elem}`));
 eventFiles = eventFiles.concat(fs.readdirSync('./events/message').map(elem => `message/${elem}`));
+eventFiles = eventFiles.concat(fs.readdirSync('./events/interaction').map(elem => `interaction/${elem}`));
 eventFiles = eventFiles.filter(file => file.endsWith(".js"))
 
 // loop through and initialize the event files
@@ -53,9 +54,8 @@ for (const file of eventFiles) {
     }
 }
 
-// create maps to use for command names and aliases
-client.commands = new Map();
-client.aliases = new Map();
+// create collection for commands
+client.commands = new Collection();
 
 // function to load commands
 const loadCommand = (categoryName, commandName) => {
@@ -66,10 +66,7 @@ const loadCommand = (categoryName, commandName) => {
             props.init(client);
         }
         props.config.category = categoryName;
-        client.commands.set(props.config.name, props);
-        props.config.aliases.forEach(alias => {
-            client.aliases.set(alias, props.config.name);
-        });
+        client.commands.set(props.data.name, props);
         return false;
     } catch (e) {
         return `Unable to load command ${commandName}: ${e}`;
@@ -112,8 +109,6 @@ const init = async() => {
         }
     });
 
-
-
     client.cache = new Object();
     let tempCache = await client.serverData.getMany(await client.serverData.keys)
     for (key of Object.keys(tempCache)) {
@@ -128,6 +123,22 @@ const init = async() => {
     }
     client.cache.tick = tempCache.tick
     console.log("Local cache created")
+
+    const rest = new REST().setToken(config.token);
+
+    let regArray = [];
+    client.commands.every(command => regArray.push(command.data.toJSON()));
+    try {
+        // The put method is used to fully refresh all commands in the guild with the current set
+        const data = await rest.put(
+          Routes.applicationGuildCommands(config.clientId, config.testGuild),
+                                    { body: regArray },
+        );
+
+        console.log(`Successfully loaded ${data.length} application (/) commands.`);
+    } catch (error) {
+        console.error(error);
+    }
 }
 
 init();
