@@ -55,18 +55,18 @@ module.exports = {
 
                 // Act upon level up by sending a message and updating the user's level in enmap.
                 if (await client.peopleData.get(`${key}.level`) < curLevel) {
-					const botChannel = await client.serverData.get(`${message.guild.id}.lvlUpChnl`)
+                    const botChannel = await client.serverData.get(`${message.guild.id}.lvlUpChnl`)
                     if (!botChannel) {} else{
-						client.channels.cache.get(botChannel).send({content:`<@${message.author.id}> leveled up to level **${curLevel}**! :)`});
-						await client.peopleData.set(`${key}.level`, curLevel);
-					}
+                        client.channels.cache.get(botChannel).send({content:`<@${message.author.id}> leveled up to level **${curLevel}**! :)`});
+                        await client.peopleData.set(`${key}.level`, curLevel);
+                    }
                 }
                 if (await client.peopleData.get(`${key}.level`) > curLevel) {
-					const botChannel = await client.serverData.get(`${message.guild.id}.lvlUpChnl`)
+                    const botChannel = await client.serverData.get(`${message.guild.id}.lvlUpChnl`)
                     if (!botChannel) {} else{
-						client.channels.cache.get(botChannel).send({content:`<@${message.author.id}> leveled down to level **${curLevel}** :(`});
-						await client.peopleData.set(`${key}.level`, curLevel);
-					}
+                        client.channels.cache.get(botChannel).send({content:`<@${message.author.id}> leveled down to level **${curLevel}** :(`});
+                        await client.peopleData.set(`${key}.level`, curLevel);
+                    }
                 }
                 if (await client.peopleData.get(`${key}.level`) === await client.serverData.get(`${message.guild.id}.prestigeLevel`)) {
                     const rankRole = await client.serverData.get(`${message.guild.id}.prestigeRole`)
@@ -89,16 +89,16 @@ module.exports = {
         }
 
         // if no command found, return
-		if (!cmd) return;
+        if (!cmd) return;
 
-		//handle DMs
-		if (!message.guild) {
-			if (client.hardcoded.DMModules.includes(cmd.config.category) || command === "help") {
-				cmd.run(client, message, args)
-				return
-			}
-			return
-		}
+        //handle DMs
+        if (!message.guild) {
+            if (client.hardcoded.DMModules.includes(cmd.config.category) || command === "help") {
+                cmd.run(client, message, args)
+                return
+            }
+            return
+        }
 
         // Check perm level and run the command
         if (client.hardcoded.botAdmin.includes(`${message.author.id}`)){

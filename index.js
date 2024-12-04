@@ -45,12 +45,12 @@ eventFiles = eventFiles.filter(file => file.endsWith(".js"))
 
 // loop through and initialize the event files
 for (const file of eventFiles) {
-	const event = require(`./events/${file}`);
-	if (event.once) {
-		client.once(event.name, (...args) => event.execute(...args, client));
-	} else {
-		client.on(event.name, (...args) => event.execute(...args, client));
-	}
+    const event = require(`./events/${file}`);
+    if (event.once) {
+        client.once(event.name, (...args) => event.execute(...args, client));
+    } else {
+        client.on(event.name, (...args) => event.execute(...args, client));
+    }
 }
 
 // create maps to use for command names and aliases
@@ -83,33 +83,33 @@ const readdir = promisify(require("fs").readdir);
 
 // init all the things needed for the bot to run
 const init = async() => {
-	// variables for holding number of commands found/loaded
-	let numFound = 0;
-	let numLoaded = 0;
+    // variables for holding number of commands found/loaded
+    let numFound = 0;
+    let numLoaded = 0;
 
-	// read the commands folder and loop through all modules found
+    // read the commands folder and loop through all modules found
     const moduleFolders = await readdir(`./commands/`);
     moduleFolders.forEach(async (d, index) => {
-		// read the module folder, and loop through all commands in there
+        // read the module folder, and loop through all commands in there
         const cmdFiles = await readdir(`./commands/${d}/`);
         cmdFiles.forEach(f => {
-			// check if file doesn't end with .js, not a command so return
+            // check if file doesn't end with .js, not a command so return
             if (!f.endsWith(".js")) return;
 
-			// add a number to the commands found and try loading the command
-			numFound++;
+            // add a number to the commands found and try loading the command
+            numFound++;
             const response = loadCommand(d, f);
 
-			// if there's a response, loading failed, log that, if no response, everything fine and increment number of loaded commands
+            // if there's a response, loading failed, log that, if no response, everything fine and increment number of loaded commands
             response ? console.log(`${response}\n`) : numLoaded++
         });
 
-		// on last iteration of the forEach, since this is async
-		if (index === moduleFolders.length - 1) {
-			// at the end log out a message of how many found, and how many loaded
-			console.log(`Found "${numFound}" commands, in "${moduleFolders.length}" modules.\n` +
-			`Loaded "${numLoaded}" commands successfully.\n`);
-		}
+        // on last iteration of the forEach, since this is async
+        if (index === moduleFolders.length - 1) {
+            // at the end log out a message of how many found, and how many loaded
+            console.log(`Found "${numFound}" commands, in "${moduleFolders.length}" modules.\n` +
+            `Loaded "${numLoaded}" commands successfully.\n`);
+        }
     });
 
 
@@ -123,7 +123,7 @@ const init = async() => {
             client.cache[key]["prefix"] = tempCache[key].prefix
             client.cache[key]["activityLeaderboard"] = tempCache[key].activityLeaderboard
             client.cache[key]["cc"] = Object.keys(tempCache[key].customCommands)
-			client.cache[key]["reactionRoles"] = Object.keys(tempCache[key].reactionRoles)
+            client.cache[key]["reactionRoles"] = Object.keys(tempCache[key].reactionRoles)
         }
     }
     client.cache.tick = tempCache.tick
