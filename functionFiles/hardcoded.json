@@ -9,7 +9,6 @@
 	"DMModules": ["support", "confession"],
 	"defaultCache": {
 		"enabledModules": ["management", "moderation", "metadata", "support"],
-		"prefix": "",
 		"activityLeaderboard": "disabled",
 		"cc": [],
 		"reactionRoles": []

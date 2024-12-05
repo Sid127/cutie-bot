@@ -12,10 +12,6 @@ const config = require("./config.json");
 
 // note: some hardcoded stuff remains in places where mongo ensures are performed
 client.hardcoded = require("./functionFiles/hardcoded.json")
-client.shortcuts = require("./functionFiles/shortcuts.json")
-
-// We also need to make sure we're attaching the config to the CLIENT so it's accessible everywhere!
-client.config = {prefix: config.prefix};
 
 //initialize mongo connections
 client.serverData = new Josh({
@@ -115,7 +111,6 @@ const init = async() => {
         if(!client.hardcoded.badServerDataKeys.includes(key)){
             client.cache[key] = {}
             client.cache[key]["enabledModules"] = tempCache[key].enabledModules
-            client.cache[key]["prefix"] = tempCache[key].prefix
             client.cache[key]["activityLeaderboard"] = tempCache[key].activityLeaderboard
             client.cache[key]["cc"] = Object.keys(tempCache[key].customCommands)
             client.cache[key]["reactionRoles"] = Object.keys(tempCache[key].reactionRoles)
