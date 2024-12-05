@@ -65,7 +65,7 @@ const loadCommand = (categoryName, commandName) => {
         client.commands.set(props.data.name, props);
         return false;
     } catch (e) {
-        return `Unable to load command ${commandName}: ${e}`;
+        return `Unable to load command ${commandName}: ${e.message}\n${e.stack}`;
     }
 };
 
