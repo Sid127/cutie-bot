@@ -1,4 +1,4 @@
-exports.run = async(client, message, args) => {
+  exports.run = async(client, message, args) => {
     if (!message.guild) {
         const { Client, EmbedBuilder } = require('discord.js');
         

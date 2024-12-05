@@ -9,7 +9,7 @@ exports.run = (client, message, args) => {
 }
 
 exports.config = {
-	guildOnly: true,
+	guildOnly: false,
 	aliases: [],
 	permLevel: "User",
 	name: "breathe",

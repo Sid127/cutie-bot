@@ -35,7 +35,7 @@ exports.run = async(client, message, args) => {
 };
 
 exports.config = {
-	guildOnly: true,
+	guildOnly: false,
 	aliases: ["cost"],
 	permLevel: "User",
 	name: "transfercost",

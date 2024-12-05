@@ -107,7 +107,7 @@ exports.run = async(client, message, args) => {
 };
 
 exports.config = {
-	guildOnly: true,
+	guildOnly: false,
 	aliases: ["ss"],
 	permLevel: "User",
 	name: "systemstatus",

@@ -69,7 +69,7 @@ function checkForMissingData(data) {
 }
 
 exports.config = {
-	guildOnly: true,
+	guildOnly: false,
 	aliases: ["dist"],
 	permLevel: "User",
 	name: "distance",

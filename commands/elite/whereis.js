@@ -82,7 +82,7 @@ exports.run = async(client, message, args) => { // eslint-disable-line no-unused
 };
 
 exports.config = {
-	guildOnly: true,
+	guildOnly: false,
 	aliases: [],
 	permLevel: "User",
 	name: "whereis",

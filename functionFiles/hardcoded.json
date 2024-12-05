@@ -6,7 +6,7 @@
 	"badRMenuKeys": ["header", "mode"],
 	"badServerDataKeys": ["tick", "feeds"],
 	"alwaysActiveModules": ["metadata", "management", "moderation"],
-	"DMModules": ["support", "confession"],
+	"DMModules": ["support", "confession", "nomanssky", "elite"],
 	"defaultCache": {
 		"enabledModules": ["management", "moderation", "metadata", "support"],
 		"prefix": "",

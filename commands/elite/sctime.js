@@ -47,7 +47,7 @@ exports.config = {
 	guildOnly: true,
 	aliases: [],
 	permLevel: "User",
-	name: "sctime",
+	name: "false",
 	description: "Calculates rough time for given distance in SuperCruise",
 	usage: ["(g || gravity) [<number>ls || kls || mls || ly]"]
 };

@@ -34,16 +34,18 @@ exports.run = async (client, message, args) => {
 				categories[command.config.category].push(command.config);
 			} else { // for DMs
 				if (client.hardcoded.DMModules.includes(command.config.category) || command.config.name === "help") {
-					// check for the longest name
-					longestName = Math.max(longestName, command.config.name.length);
+          if(command.config.guildOnly === false) {
+            // check for the longest name
+            longestName = Math.max(longestName, command.config.name.length);
 
-					// add the command to the categories object, with the key, if that exists just add the command to the array under it
-					if (!Object.keys(categories).includes(command.config.category)) {
-						categories[command.config.category] = [];
-					}
+            // add the command to the categories object, with the key, if that exists just add the command to the array under it
+            if (!Object.keys(categories).includes(command.config.category)) {
+              categories[command.config.category] = [];
+            }
 
-					// add the command to the category
-					categories[command.config.category].push(command.config);
+            // add the command to the category
+            categories[command.config.category].push(command.config);
+          }
 				}
 			}
 		});
@@ -107,7 +109,7 @@ exports.run = async (client, message, args) => {
 };
 
 exports.config = {
-	guildOnly: true,
+	guildOnly: false,
 	aliases: ["h", "halp","helpme"],
 	permLevel: "User",
 	name: "help",

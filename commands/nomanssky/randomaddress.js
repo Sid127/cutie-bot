@@ -30,7 +30,7 @@ function generateRandom(min = 0, max = 100) {
 }
 
 exports.config = {
-	guildOnly: true,
+	guildOnly: false,
 	aliases: ["ra"],
 	permLevel: "User",
 	name: "randomaddress",
