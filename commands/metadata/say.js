@@ -1,23 +1,30 @@
-exports.run = (client, message, args) => {
+const { SlashCommandBuilder } = require('discord.js');
 
-  let [channel, ...text] = args.split(" ")
+module.exports = {
+    config: {
+        guildOnly: true,
+        permLevel: "serverAdmin",
+    },
+    data: new SlashCommandBuilder()
+        .setName('say')
+        .setDescription('Give a user access to the rest of the server')
+        .addChannelOption(option =>
+            option.setName('channel')
+                .setDescription('Channel to post in')
+                .setRequired(true))
+        .addStringOption(option =>
+            option.setName('text')
+                .setDescription('The stuff to say')
+                .setRequired(true)),
+    async execute(interaction, client) {
+        let checkChannel = interaction.options.getChannel('channel').id
 
-  if (!message.mentions.channels.first()) return message.channel.send("Lmao at least tell me where to say stuff")
-  let checkChannel = message.mentions.channels.first().id
-
-  message.guild.channels.cache.get(checkChannel).sendTyping();
-  let timeout = text.length * 250
-	setTimeout(() => {
-		client.channels.cache.get(checkChannel).send({content:`${text.join(" ")}`}).then((message) => {
-		});
-	}, timeout)
+        interaction.guild.channels.cache.get(checkChannel).sendTyping();
+        let timeout = interaction.options.getString('text').length * 250
+        setTimeout(() => {
+            client.channels.cache.get(checkChannel).send({content:`${interaction.options.getString('text')}`}).then((message) => {
+            });
+        }, timeout)
+        interaction.reply({content: "Words have been spoken", ephemeral: true});
+    }
 }
-
-exports.config = {
-	guildOnly: true,
-	aliases: ["mimic", "utter"],
-	permLevel: "serverAdmin",
-	name: "say",
-	description: "Make me say things",
-	usage: ["[<#channel>] [<message>]"]
-};

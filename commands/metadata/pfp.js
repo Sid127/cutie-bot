@@ -1,15 +1,20 @@
-exports.run = async(client, message, args, level) => {
-	if (!args || args.length < 1)
-		return message.channel.send({content:message.author.avatarURL()});
-	let member = message.mentions.members.first();
-	message.channel.send({content:member.user.avatarURL()});
-};
+const { SlashCommandBuilder } = require("discord.js");
 
-exports.config = {
-	guildOnly: true,
-	aliases: ["avatar"],
-	permLevel: "User",
-	name: "pfp",
-	description: "Get a user's profile picture. If no user is mentioned, get yours",
-	usage: ["(<@user>)"]
+module.exports = {
+  config: {
+    guildOnly: true,
+    permLevel: "User",
+  },
+  data: new SlashCommandBuilder()
+    .setName('pfp')
+    .setDescription("Get a user's profile picture. If no user is mentioned, get yours")
+    .addUserOption(option =>
+      option.setName('user')
+        .setDescription('Member whose pfp you want')
+        .setRequired(false)),
+  async execute(interaction, client) {
+    let member = interaction.options.getMember('user') || interaction.member.user;
+    console.log(member);
+    interaction.reply(member.avatarURL() || `https://cdn.discordapp.com/avatars/${member.id}/${member.avatar}.webp`);
+  }
 };

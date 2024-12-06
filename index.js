@@ -65,7 +65,7 @@ const loadCommand = (categoryName, commandName) => {
         client.commands.set(props.data.name, props);
         return false;
     } catch (e) {
-        return `Unable to load command ${commandName}: ${e.message}\n${e.stack}`;
+        return `Unable to load command ${commandName}: ${e.stack}`;
     }
 };
 
@@ -125,6 +125,9 @@ const init = async() => {
     client.commands.every(command => regArray.push(command.data.toJSON()));
     try {
         // The put method is used to fully refresh all commands in the guild with the current set
+        // rest.put(Routes.applicationGuildCommands(config.clientId, config.testGuild), { body: [] })
+        //   .then(() => console.log('Successfully deleted all guild commands.'))
+        //   .catch(console.error);
         const data = await rest.put(
           Routes.applicationGuildCommands(config.clientId, config.testGuild),
                                     { body: regArray },
