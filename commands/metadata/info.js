@@ -47,8 +47,8 @@ module.exports = {
                 .addFields(
                     { inline: true, name: "Status", value: `${member.presence ? status[member.presence.status] : "I have no idea D:"}` },
                     { inline: true, name: "Roles", value: `${member.roles.cache.filter(role => role.id !== role.guild.id).map(roles => `\`${roles.name}\``).join(" **|** ") || "No roles to show."}` },
-                    { name: "Guild joined", value: `<t:${moment(member.joinedAt).unix()}:F> \n${moment().diff(moment.utc(member.joinedAt), 'days')} Days Ago.` },
-                    { name: "Account created", value: `<t:${moment(member.user.createdAt).unix()}:F> \n${moment().diff(moment.utc(member.user.createdAt), 'days')} Days Ago.` })
+                    { name: "Guild joined", value: `<t:${moment(member.joinedAt).unix()}:F> \n<t:${moment(member.joinedAt).unix()}:R>` },
+                    { name: "Account created", value: `<t:${moment(member.user.createdAt).unix()}:F> \n<t:${moment(member.user.createdAt).unix()}:R>` })
 
             // create activities object if available
             if (member.presence) {
